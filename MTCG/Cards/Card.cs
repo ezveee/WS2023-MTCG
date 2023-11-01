@@ -14,30 +14,16 @@ namespace MTCG
 		private string _name;
 		private int _attack;
 
-		protected Card(CardType cardType, ElementType elementType, string name, int attack)
+		protected Card(ElementType elementType, int attack)
 		{
-			_cardType = cardType;
 			_elementType = elementType;
-			_name = name;
 			_attack = attack;
 		}
 
-		public CardType CardType
-		{
-			get { return _cardType; }
-		}
-		public ElementType ElementType
-		{
-			get { return _elementType; }
-		}
-		public string Name
-		{
-			get { return _name; }
-		}
-		public int Attack
-		{
-			get { return _attack; }
-		}
+		public CardType CardType { get; set; }
+		public ElementType ElementType { get { return _elementType; } }
+		public string Name { get; set; }
+		public int Attack { get { return _attack; } }
 
 	}
 }

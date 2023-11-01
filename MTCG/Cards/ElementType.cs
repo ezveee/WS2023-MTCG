@@ -10,6 +10,6 @@ namespace MTCG.Cards
 	{
 		Water,
 		Fire,
-		Normal
+		Regular
 	}
 }

@@ -15,20 +15,17 @@ namespace MTCG
 			ElementType ownType = cardA.ElementType;
 			ElementType opposingType = cardB.ElementType;
 
+			if (ownType == opposingType) { return SpellEffect.NoEffect; }
+
 			switch (ownType)
 			{
 				case ElementType.Water when opposingType == ElementType.Fire:
-				case ElementType.Fire when opposingType == ElementType.Normal:
-				case ElementType.Normal when opposingType == ElementType.Water:
+				case ElementType.Fire when opposingType == ElementType.Regular:
+				case ElementType.Regular when opposingType == ElementType.Water:
 					return SpellEffect.Effective;
-
-				case ElementType.Water when opposingType == ElementType.Normal:
-				case ElementType.Normal when opposingType == ElementType.Fire:
-				case ElementType.Fire when opposingType == ElementType.Water:
-					return SpellEffect.NotEffective;
 			}
 
-			return SpellEffect.NoEffect;
+			return SpellEffect.NotEffective;
 		}
 
 	}
