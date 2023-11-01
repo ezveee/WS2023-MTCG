@@ -4,16 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MTCG.Cards
+namespace MTCG.Cards.MonsterCards
 {
-	public enum MonsterType
+	internal class MonsterCard
 	{
-		Goblin,
-		Dragon,
-		Wizard,
-		Ork,
-		Knight,
-		Kraken,
-		Elf
 	}
 }

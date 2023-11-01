@@ -8,7 +8,7 @@ namespace MTCG.Cards
 {
 	public enum CardType
 	{
-		spell,
-		monster
+		Spell,
+		Monster
 	}
 }

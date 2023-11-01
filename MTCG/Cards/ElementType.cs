@@ -8,8 +8,8 @@ namespace MTCG.Cards
 {
 	public enum ElementType
 	{
-		water,
-		fire,
-		normal
+		Water,
+		Fire,
+		Normal
 	}
 }

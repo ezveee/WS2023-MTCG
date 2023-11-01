@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MTCG.Cards
+namespace MTCG.Cards.SpellCards
 {
-	internal class SpellCard
+	public enum SpellEffect
 	{
+		Effective,
+		NotEffective,
+		NoEffect
 	}
 }

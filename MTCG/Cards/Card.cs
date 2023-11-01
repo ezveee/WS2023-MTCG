@@ -14,20 +14,29 @@ namespace MTCG
 		private string _name;
 		private int _attack;
 
-		public abstract void Fight();
-		// example for getters and setters
-		//public string FirstName
-		//{
-		//	get { return firstName; }
-		//	set { firstName = value; }
-		//}
-
-		public Card(CardType cardType, ElementType elementType, string name, int attack)
+		protected Card(CardType cardType, ElementType elementType, string name, int attack)
 		{
 			_cardType = cardType;
 			_elementType = elementType;
 			_name = name;
 			_attack = attack;
+		}
+
+		public CardType CardType
+		{
+			get { return _cardType; }
+		}
+		public ElementType ElementType
+		{
+			get { return _elementType; }
+		}
+		public string Name
+		{
+			get { return _name; }
+		}
+		public int Attack
+		{
+			get { return _attack; }
 		}
 
 	}
