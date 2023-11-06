@@ -31,9 +31,7 @@ namespace MTCG
 			playerA.Deck.AddRange(cards);
 			playerB.Deck.AddRange(cards);
 
-			//Console.WriteLine();
-			//Console.WriteLine(playerA.Deck[battleHandler.GetRandomCard(playerA.Deck)].Name);
-			//Console.WriteLine(playerB.Deck[battleHandler.GetRandomCard(playerB.Deck)].Name);
+			battleHandler.Battle(playerA, playerB);
 		}
 	}
 }

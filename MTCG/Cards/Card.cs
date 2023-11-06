@@ -21,9 +21,9 @@ namespace MTCG
 		}
 
 		public CardType CardType { get; set; }
-		public ElementType ElementType { get; }
+		public ElementType ElementType { get { return _elementType; } }
 		public string Name { get; set; }
-		public int Attack { get; }
+		public int Attack { get { return _attack; } }
 
 	}
 }

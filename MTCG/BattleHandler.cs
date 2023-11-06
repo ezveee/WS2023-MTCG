@@ -104,8 +104,29 @@ namespace MTCG
 			var cardA = playerA.Deck[GetRandomCard(playerA.Deck)];
 			var cardB = playerB.Deck[GetRandomCard(playerB.Deck)];
 
+			var damageA = CalculateDamage(cardA, cardB);
+			var damageB = CalculateDamage(cardB, cardA);
 
+			// TODO: change temporary winner output
+			// varies from fight to fight (see specification)
+			// TODO: add special lines if specialties apply
+			// TODO: dont display -1 as damage if knight drowns
+			Console.WriteLine($"PlayerA: {cardA.Name} ({damageA}) vs PlayerB: {cardB.Name} ({damageB}) => ");
+			// check who won
+			if (damageA > damageB)
+			{
+				Console.WriteLine($"{cardA.Name} defeats {cardB.Name} (Player A won!)");
+				return;
+			}
 
+			if (damageA < damageB)
+			{
+				Console.WriteLine($"{cardB.Name} defeats {cardA.Name} (Player B won!)");
+
+				return;
+			}
+
+			Console.WriteLine("It's a tie!");
 		}
 
 	}
