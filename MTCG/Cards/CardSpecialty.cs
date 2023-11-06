@@ -6,16 +6,10 @@ using System.Threading.Tasks;
 
 namespace MTCG.Cards
 {
-	public enum CardType
+	public enum CardSpecialty
 	{
-		Spell,
-		Goblin,
-		Dragon,
-		Wizard,
-		Ork,
-		Knight,
-		Kraken,
-		Elf,
-		Troll
+		CantAttack,
+		Dies,
+		None
 	}
 }

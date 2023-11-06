@@ -9,15 +9,12 @@ namespace MTCG.Cards.MonsterCards
 {
 	internal class MonsterCard : Card
 	{
-		private MonsterType _monsterType;
-		public MonsterCard(MonsterType monsterType, ElementType elementType, int attack)
+		public MonsterCard(CardType monsterType, ElementType elementType, int attack)
 			: base(elementType, attack)
 		{
-			CardType = CardType.Monster;
-			Name = Enum.GetName(typeof(ElementType), elementType) + Enum.GetName(typeof(MonsterType), monsterType);
-			_monsterType = monsterType;
+			CardType = monsterType;
+			Name = Enum.GetName(typeof(ElementType), elementType) + Enum.GetName(typeof(CardType), monsterType);
 		}
 
-		public MonsterType MonsterType { get { return _monsterType; } }
 	}
 }
