@@ -8,6 +8,9 @@ namespace MTCG
 	{
 		static void Main(string[] args)
 		{
+			HttpServer server = new HttpServer();
+			server.Start();
+
 			var battleHandler = new BattleHandler();
 			var playerA = new Player();
 			var playerB = new Player();

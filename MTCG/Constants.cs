@@ -8,6 +8,11 @@ namespace MTCG
 {
 	static class Constants
 	{
+		// http server
+		public const int HttpServerPort = 10001;
+
+
+		// battle logic
 		public const float EffectiveMultiplier = 2f;
 		public const float NotEffectiveMultiplier = .5f;
 	}
