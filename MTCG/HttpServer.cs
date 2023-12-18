@@ -13,10 +13,53 @@ namespace MTCG
 	internal class HttpServer
 	{
 		private readonly TcpListener listener;
+		private static readonly Dictionary<string, IHttpRequest> routeTable = new();
 
 		public HttpServer()
 		{
 			this.listener = new TcpListener(IPAddress.Loopback, Constants.HttpServerPort);
+			InitializRoutes();
+		}
+
+		private static void InitializRoutes()
+		{
+			// add keys and instances of classes to dictionary
+			routeTable["GET /hello"] = new Hello();
+			routeTable["GET /goodbye"] = new Goodbye();
+			routeTable["GET /users"] = new GetUsers();
+		}
+
+		interface IHttpRequest
+		{
+			// add to be implemented functions
+			// execution of request
+			string GetResponse();
+		}
+
+		// temp classes
+		class Hello : IHttpRequest
+		{
+			public string GetResponse()
+			{
+				return "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nHello, World!";
+			}
+		}
+
+		class Goodbye : IHttpRequest
+		{
+			public string GetResponse()
+			{
+				return "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nGoodbye, World!";
+			}
+		}
+
+		class GetUsers : IHttpRequest
+		{
+			public string GetResponse()
+			{
+				// get users
+				return "";
+			}
 		}
 
 		public void Start()
@@ -30,13 +73,16 @@ namespace MTCG
 				var clientSocket = this.listener.AcceptTcpClient();
 				Console.WriteLine("Client connected.");
 
-				HandleClient(clientSocket);
-
 				// create and start client thread
-				//var clientThread = new Thread(new ParameterizedThreadStart(HandleClient));
-				//clientThread.Start(clientSocket);
+				var clientThread = new Thread(new ParameterizedThreadStart(HandleClient));
+				clientThread.Start(clientSocket);
 
 			}
+		}
+
+		public void Stop()
+		{
+			this.listener.Stop();
 		}
 
 
@@ -71,7 +117,7 @@ namespace MTCG
 				Console.WriteLine(request);
 
 				// get response based on request
-				string response = GetResponse(request);
+				string response = HandleRequest(request);
 				byte[] responseBytes = Encoding.ASCII.GetBytes(response);
 				stream.Write(responseBytes, 0, responseBytes.Length);
 			}
@@ -81,24 +127,23 @@ namespace MTCG
 
 		}
 
-		static string GetResponse(string request)
+		static string HandleRequest(string request)
+		{
+			string route = GetRoute(request);
+
+			if (!HttpServer.routeTable.ContainsKey(route))
+				return "HTTP/1.1 404 Not Found\r\nContent-Type: text/plain\r\n\r\n404 Not Found";
+
+			return HttpServer.routeTable[route].GetResponse();
+		}
+
+		static string GetRoute(string request)
 		{
 			string[] lines = request.Split('\n');
 			string[] tokens = lines[0].Split(' ');
 			string method = tokens[0];
 			string path = tokens[1];
-
-			switch (method)
-			{
-				case "GET":
-					if (path == "/hello") return "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nHello, World!";
-					if (path == "/goodbye") return "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nGoodbye, World!";
-					return "HTTP/1.1 404 Not Found\r\nContent-Type: text/plain\r\n\r\n404 Not Found";
-
-				default:
-					return "HTTP/1.1 405 Method Not Allowed\r\nContent-Type: text/plain\r\n\r\n405 Method Not Allowed";
-			}
-
+			return method + " " + path;
 		}
 	}
 

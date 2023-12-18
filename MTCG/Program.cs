@@ -8,8 +8,21 @@ namespace MTCG
 	{
 		static void Main(string[] args)
 		{
-			HttpServer server = new HttpServer();
-			server.Start();
+			DBManager dbManager = new();
+			HttpServer server = new();
+
+			Console.WriteLine("DB setup start.");
+			dbManager.Setup();
+			Console.WriteLine("DB setup finished.");
+
+			try
+			{
+				server.Start();
+			}
+			finally
+			{
+				server.Stop();
+			}
 
 			var battleHandler = new BattleHandler();
 			var playerA = new Player();
