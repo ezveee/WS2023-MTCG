@@ -16,7 +16,7 @@ namespace MTCG
 		 * level -> gain exp based on how much you played
 		 * rewards for gaining a level
 		 */
-		private List<Card> _deck = new List<Card>();
+		private List<Card> _deck = new();
 
 		public List<Card> Deck { get { return _deck; } }
 	}

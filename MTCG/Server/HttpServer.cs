@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MTCG.Interfaces.IHttpRequest;
+using MTCG.Server.HttpRequests;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,8 +9,7 @@ using System.Net.Sockets;
 using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
-
-namespace MTCG
+namespace MTCG.Server
 {
 	internal class HttpServer
 	{
@@ -17,7 +18,7 @@ namespace MTCG
 
 		public HttpServer()
 		{
-			this.listener = new TcpListener(IPAddress.Loopback, Constants.HttpServerPort);
+			listener = new TcpListener(IPAddress.Loopback, Constants.HttpServerPort);
 			InitializRoutes();
 		}
 
@@ -26,51 +27,38 @@ namespace MTCG
 			// add keys and instances of classes to dictionary
 			routeTable["GET /hello"] = new Hello();
 			routeTable["GET /goodbye"] = new Goodbye();
-			routeTable["GET /users"] = new GetUsers();
-		}
+			// implementation still missing
+			routeTable["POST /users"] = new PostUser();
+			routeTable["GET /users"] = new GetUser(); // TODO: change cause it gets a specific username
 
-		interface IHttpRequest
-		{
-			// add to be implemented functions
-			// execution of request
-			string GetResponse();
-		}
+			// to be created/implemented HttpRequest classes
+			//routeTable["PUT /users"] = new PutUser(); // TODO: change cause it gets a specific username
+			//routeTable["POST /sessions"] = new PostSession();
+			//routeTable["POST /packages"] = new PostPackage();
+			//routeTable["POST /transactions"] = new PostTransaction();
+			//routeTable["GET /cards"] = new GetCards();
+			//routeTable["GET /deck"] = new GetDeck();
+			//routeTable["PUT /deck"] = new PutDeck();
+			//routeTable["GET /stats"] = new GetStats();
+			//routeTable["GET /scoreboard"] = new GetScoreboard();
+			//routeTable["POST /battles"] = new PostBattles();
+			//routeTable["GET /tradings"] = new GetTradings();
+			//routeTable["POST /tradings"] = new PostTrading();
+			//routeTable["DELETE /tradings"] = new DeleteTrading(); // TODO: change cause it gets a specific trade deal id
+			//routeTable["POST /tradings"] = new PostTrading(); // TODO: change cause it gets a specific trade deal id
 
-		// temp classes
-		class Hello : IHttpRequest
-		{
-			public string GetResponse()
-			{
-				return "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nHello, World!";
-			}
-		}
 
-		class Goodbye : IHttpRequest
-		{
-			public string GetResponse()
-			{
-				return "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nGoodbye, World!";
-			}
-		}
-
-		class GetUsers : IHttpRequest
-		{
-			public string GetResponse()
-			{
-				// get users
-				return "";
-			}
 		}
 
 		public void Start()
 		{
-			this.listener.Start();
+			listener.Start();
 			Console.WriteLine($"Server started on localhost:{Constants.HttpServerPort}");
 
 			while (true)
 			{
 				// accept client connection
-				var clientSocket = this.listener.AcceptTcpClient();
+				var clientSocket = listener.AcceptTcpClient();
 				Console.WriteLine("Client connected.");
 
 				// create and start client thread
@@ -82,7 +70,7 @@ namespace MTCG
 
 		public void Stop()
 		{
-			this.listener.Stop();
+			listener.Stop();
 		}
 
 
@@ -112,7 +100,7 @@ namespace MTCG
 
 			string request = requestBuilder.ToString();
 
-			if (!String.IsNullOrEmpty(request))
+			if (!string.IsNullOrEmpty(request))
 			{
 				Console.WriteLine(request);
 
@@ -131,10 +119,10 @@ namespace MTCG
 		{
 			string route = GetRoute(request);
 
-			if (!HttpServer.routeTable.ContainsKey(route))
+			if (!routeTable.ContainsKey(route))
 				return "HTTP/1.1 404 Not Found\r\nContent-Type: text/plain\r\n\r\n404 Not Found";
 
-			return HttpServer.routeTable[route].GetResponse();
+			return routeTable[route].GetResponse(request);
 		}
 
 		static string GetRoute(string request)
@@ -145,6 +133,17 @@ namespace MTCG
 			string path = tokens[1];
 			return method + " " + path;
 		}
+
+		/*
+		 * tokens[0]	tokens[1]
+		 *  GET			/users/{username}
+		 *  POST		/transactions/packages
+		 *  DELETE		/tradings/{tradingdealid}
+		 *  POST		/tradings/{tradingdealid}
+		 */
+
+
+
 	}
 
 }

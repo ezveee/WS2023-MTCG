@@ -1,6 +1,8 @@
 ﻿using MTCG.Cards;
 using MTCG.Cards.MonsterCards;
 using MTCG.Cards.SpellCards;
+using MTCG.Database;
+using MTCG.Server;
 
 namespace MTCG
 {
@@ -11,18 +13,24 @@ namespace MTCG
 			DBManager dbManager = new();
 			HttpServer server = new();
 
-			Console.WriteLine("DB setup start.");
-			dbManager.Setup();
-			Console.WriteLine("DB setup finished.");
-
 			try
 			{
-				server.Start();
+				Console.WriteLine("DB setup start.");
+				dbManager.Setup();
+				Console.WriteLine("DB setup finished.");
+				Console.WriteLine();
+
+				try
+				{
+					server.Start();
+				}
+				finally { server.Stop(); }
+
 			}
-			finally
-			{
-				server.Stop();
-			}
+			finally { dbManager.CloseConnection(); }
+
+
+			// not gonna be executed
 
 			var battleHandler = new BattleHandler();
 			var playerA = new Player();
