@@ -14,7 +14,8 @@ namespace MTCG.Interfaces.IHttpRequest
 		{
 			int bodyStartIndex = request.IndexOf("\r\n\r\n", StringComparison.Ordinal) + 4;
 			string jsonPayload = request[bodyStartIndex..].Trim(); // .. range operator instead of request.Substring(bodyStartIndex)
-			Console.WriteLine($"Received JSON payload:\n{jsonPayload}");
+
+			//Console.WriteLine($"\nReceived JSON payload:\n{jsonPayload}");
 
 			return jsonPayload;
 		}

@@ -15,6 +15,8 @@ namespace MTCG.Server
 	internal class HttpServer
 	{
 		private static HttpServer _instance;
+		private readonly TcpListener listener;
+		private static readonly Dictionary<string, IHttpRequest> routeTable = new();
 
 		private HttpServer()
 		{
@@ -30,16 +32,6 @@ namespace MTCG.Server
 				return _instance;
 			}
 		}
-
-
-		private readonly TcpListener listener;
-		private static readonly Dictionary<string, IHttpRequest> routeTable = new();
-
-		//public HttpServer()
-		//{
-		//	listener = new TcpListener(IPAddress.Loopback, Constants.HttpServerPort);
-		//	InitializRoutes();
-		//}
 
 		private static void InitializRoutes()
 		{
@@ -68,12 +60,13 @@ namespace MTCG.Server
 		public void Start()
 		{
 			listener.Start();
-			Console.WriteLine($"Server started on localhost:{Constants.HttpServerPort}");
+			Console.WriteLine($"Server started on localhost:{Constants.HttpServerPort}\n");
 
 			while (true)
 			{
 				// accept client connection
 				var clientSocket = listener.AcceptTcpClient();
+				Console.WriteLine("--------------------------------------------------");
 				Console.WriteLine("Client connected.");
 
 				// create and start client thread
@@ -87,7 +80,6 @@ namespace MTCG.Server
 		{
 			listener.Stop();
 		}
-
 
 		static void HandleClient(object obj)
 		{
@@ -127,7 +119,7 @@ namespace MTCG.Server
 
 			client.Close();
 			Console.WriteLine("Client disconnected.");
-
+			Console.WriteLine("--------------------------------------------------");
 		}
 
 		static string HandleRequest(string request)
