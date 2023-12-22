@@ -8,8 +8,15 @@ namespace MTCG.Interfaces.IHttpRequest
 {
 	interface IHttpRequest
 	{
-		// add to be implemented functions
-		// execution of request
 		string GetResponse(string request);
+
+		static string ExtractJsonPayload(string request)
+		{
+			int bodyStartIndex = request.IndexOf("\r\n\r\n", StringComparison.Ordinal) + 4;
+			string jsonPayload = request[bodyStartIndex..].Trim(); // .. range operator instead of request.Substring(bodyStartIndex)
+			Console.WriteLine($"Received JSON payload:\n{jsonPayload}");
+
+			return jsonPayload;
+		}
 	}
 }

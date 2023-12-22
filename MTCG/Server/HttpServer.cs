@@ -1,4 +1,5 @@
-﻿using MTCG.Interfaces.IHttpRequest;
+﻿using MTCG.Database;
+using MTCG.Interfaces.IHttpRequest;
 using MTCG.Server.HttpRequests;
 using System;
 using System.Collections.Generic;
@@ -13,14 +14,32 @@ namespace MTCG.Server
 {
 	internal class HttpServer
 	{
-		private readonly TcpListener listener;
-		private static readonly Dictionary<string, IHttpRequest> routeTable = new();
+		private static HttpServer _instance;
 
-		public HttpServer()
+		private HttpServer()
 		{
 			listener = new TcpListener(IPAddress.Loopback, Constants.HttpServerPort);
 			InitializRoutes();
 		}
+
+		public static HttpServer Instance
+		{
+			get
+			{
+				_instance ??= new HttpServer();
+				return _instance;
+			}
+		}
+
+
+		private readonly TcpListener listener;
+		private static readonly Dictionary<string, IHttpRequest> routeTable = new();
+
+		//public HttpServer()
+		//{
+		//	listener = new TcpListener(IPAddress.Loopback, Constants.HttpServerPort);
+		//	InitializRoutes();
+		//}
 
 		private static void InitializRoutes()
 		{
@@ -87,7 +106,7 @@ namespace MTCG.Server
 			NetworkStream stream = client.GetStream();
 
 			// get http request
-			StringBuilder requestBuilder = new StringBuilder();
+			StringBuilder requestBuilder = new();
 			byte[] buffer = new byte[1024];
 			int bytesRead;
 
@@ -117,6 +136,8 @@ namespace MTCG.Server
 
 		static string HandleRequest(string request)
 		{
+			//string jsonPayload = ExtractJsonPayload(request);
+
 			string route = GetRoute(request);
 
 			if (!routeTable.ContainsKey(route))
@@ -124,6 +145,15 @@ namespace MTCG.Server
 
 			return routeTable[route].GetResponse(request);
 		}
+
+		//static string ExtractJsonPayload(string request)
+		//{
+		//	int bodyStartIndex = request.IndexOf("\r\n\r\n", StringComparison.Ordinal) + 4;
+		//	string jsonPayload = request[bodyStartIndex..].Trim(); // .. range operator instead of request.Substring(bodyStartIndex)
+		//	Console.WriteLine($"Received JSON payload:\n{jsonPayload}");
+
+		//	return jsonPayload;
+		//}
 
 		static string GetRoute(string request)
 		{

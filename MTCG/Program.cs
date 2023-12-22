@@ -10,16 +10,11 @@ namespace MTCG
 	{
 		static void Main(string[] args)
 		{
-			DBManager dbManager = new();
-			HttpServer server = new();
+			DBManager dbManager = DBManager.Instance;
+			HttpServer server = HttpServer.Instance;
 
 			try
 			{
-				Console.WriteLine("DB setup start.");
-				dbManager.Setup();
-				Console.WriteLine("DB setup finished.");
-				Console.WriteLine();
-
 				try
 				{
 					server.Start();

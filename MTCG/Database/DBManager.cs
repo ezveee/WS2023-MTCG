@@ -10,6 +10,25 @@ namespace MTCG.Database
 {
 	internal class DBManager
 	{
+		private static DBManager _instance;
+
+		private DBManager()
+		{
+			Console.WriteLine("DB setup start.");
+			Setup();
+			Console.WriteLine("DB setup finished.");
+			Console.WriteLine();
+		}
+
+		public static DBManager Instance
+		{
+			get
+			{
+				_instance ??= new DBManager();
+				return _instance;
+			}
+		}
+
 		private static readonly string connectionString = "Host=localhost;Username=vee;Password=1234";
 		private readonly NpgsqlConnection connection = new(connectionString);
 
@@ -108,7 +127,7 @@ namespace MTCG.Database
 
 		};
 
-		public void Setup()
+		private void Setup()
 		{
 			connection.Open();
 
@@ -122,6 +141,11 @@ namespace MTCG.Database
 				InitTable(dbConnection, entry.Key, entry.Value.Item1, entry.Value.Item2);
 
 			dbConnection.Close();
+		}
+
+		public void OpenConnection()
+		{
+			connection.Open();
 		}
 
 		public void CloseConnection()
