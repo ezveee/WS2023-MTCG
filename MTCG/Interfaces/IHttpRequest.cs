@@ -19,5 +19,18 @@ namespace MTCG.Interfaces.IHttpRequest
 
 			return jsonPayload;
 		}
+
+		static string? ExtractPathAddOns(string request)
+		{
+			string[] lines = request.Split('\n');
+			string[] tokens = lines[0].Split(' ');
+			string fullPath = tokens[1];
+			string[] pathComponents = fullPath.Split('/');
+
+			if (pathComponents.Length < 3)
+				return null;
+
+			return pathComponents[2];
+		}
 	}
 }

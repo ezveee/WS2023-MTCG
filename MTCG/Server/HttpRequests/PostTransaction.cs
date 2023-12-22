@@ -11,7 +11,10 @@ namespace MTCG.Server.HttpRequests
 	{
 		public string GetResponse(string request)
 		{
-			return "";
+			if (IHttpRequest.ExtractPathAddOns(request) != "packages")
+				return "HTTP/1.1 404 Not Found\r\nContent-Type: text/plain\r\n\r\n404 Not Found";
+
+			return "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nPath /transactions/packages reached";
 		}
 	}
 }

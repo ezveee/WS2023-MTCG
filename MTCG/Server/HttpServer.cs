@@ -137,8 +137,10 @@ namespace MTCG.Server
 			string[] lines = request.Split('\n');
 			string[] tokens = lines[0].Split(' ');
 			string method = tokens[0];
-			string path = tokens[1];
-			return method + " " + path;
+			string fullPath = tokens[1];
+			string[] pathComponents = fullPath.Split('/');
+
+			return method + " /" + pathComponents[1];
 		}
 
 		/*
