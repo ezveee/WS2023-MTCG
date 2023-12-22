@@ -46,26 +46,22 @@ namespace MTCG.Server
 			// add keys and instances of classes to dictionary
 			routeTable["GET /hello"] = new Hello();
 			routeTable["GET /goodbye"] = new Goodbye();
-			// implementation still missing
 			routeTable["POST /users"] = new PostUser();
+			// implementation still missing
 			routeTable["GET /users"] = new GetUser(); // TODO: change cause it gets a specific username
-
-			// to be created/implemented HttpRequest classes
-			//routeTable["PUT /users"] = new PutUser(); // TODO: change cause it gets a specific username
-			//routeTable["POST /sessions"] = new PostSession();
-			//routeTable["POST /packages"] = new PostPackage();
-			//routeTable["POST /transactions"] = new PostTransaction();
-			//routeTable["GET /cards"] = new GetCards();
-			//routeTable["GET /deck"] = new GetDeck();
-			//routeTable["PUT /deck"] = new PutDeck();
-			//routeTable["GET /stats"] = new GetStats();
-			//routeTable["GET /scoreboard"] = new GetScoreboard();
-			//routeTable["POST /battles"] = new PostBattles();
-			//routeTable["GET /tradings"] = new GetTradings();
-			//routeTable["POST /tradings"] = new PostTrading();
-			//routeTable["DELETE /tradings"] = new DeleteTrading(); // TODO: change cause it gets a specific trade deal id
-			//routeTable["POST /tradings"] = new PostTrading(); // TODO: change cause it gets a specific trade deal id
-
+			routeTable["PUT /users"] = new PutUser(); // TODO: change cause it gets a specific username
+			routeTable["POST /sessions"] = new PostSession();
+			routeTable["POST /packages"] = new PostPackage();
+			routeTable["POST /transactions"] = new PostTransaction();
+			routeTable["GET /cards"] = new GetCards();
+			routeTable["GET /deck"] = new GetDeck();
+			routeTable["PUT /deck"] = new PutDeck();
+			routeTable["GET /stats"] = new GetStats();
+			routeTable["GET /scoreboard"] = new GetScoreboard();
+			routeTable["POST /battles"] = new PostBattle();
+			routeTable["GET /tradings"] = new GetTradings();
+			routeTable["POST /tradings"] = new PostTrading(); // TODO: change cause it gets a specific trade deal id
+			routeTable["DELETE /tradings"] = new DeleteTrading(); // TODO: change cause it gets a specific trade deal id
 
 		}
 
@@ -136,8 +132,6 @@ namespace MTCG.Server
 
 		static string HandleRequest(string request)
 		{
-			//string jsonPayload = ExtractJsonPayload(request);
-
 			string route = GetRoute(request);
 
 			if (!routeTable.ContainsKey(route))
@@ -145,15 +139,6 @@ namespace MTCG.Server
 
 			return routeTable[route].GetResponse(request);
 		}
-
-		//static string ExtractJsonPayload(string request)
-		//{
-		//	int bodyStartIndex = request.IndexOf("\r\n\r\n", StringComparison.Ordinal) + 4;
-		//	string jsonPayload = request[bodyStartIndex..].Trim(); // .. range operator instead of request.Substring(bodyStartIndex)
-		//	Console.WriteLine($"Received JSON payload:\n{jsonPayload}");
-
-		//	return jsonPayload;
-		//}
 
 		static string GetRoute(string request)
 		{

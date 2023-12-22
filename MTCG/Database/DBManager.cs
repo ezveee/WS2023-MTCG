@@ -43,7 +43,8 @@ namespace MTCG.Database
 						id SERIAL PRIMARY KEY,
 						username VARCHAR(50) UNIQUE,
 						password VARCHAR(255),
-						coins INTEGER
+						coins INTEGER,
+						elo INTEGER
 					);",
 
 					null
@@ -133,8 +134,8 @@ namespace MTCG.Database
 
 			// database already created
 			// establish db connection
-			using NpgsqlConnection dbConnection = new(connectionString + ";Database=mtcg");
-
+			//using NpgsqlConnection dbConnection = new(connectionString + ";Database=mtcg");
+			var dbConnection = GetDBConnection();
 			dbConnection.Open();
 
 			foreach (var entry in tableInitCommands)
@@ -143,9 +144,9 @@ namespace MTCG.Database
 			dbConnection.Close();
 		}
 
-		public void OpenConnection()
+		public static NpgsqlConnection GetDBConnection()
 		{
-			connection.Open();
+			return new NpgsqlConnection(connectionString + ";Database=mtcg");
 		}
 
 		public void CloseConnection()
