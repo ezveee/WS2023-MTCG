@@ -143,16 +143,6 @@ namespace MTCG.Server
 			return method + " /" + pathComponents[1];
 		}
 
-		/*
-		 * tokens[0]	tokens[1]
-		 *  GET			/users/{username}
-		 *  POST		/transactions/packages
-		 *  DELETE		/tradings/{tradingdealid}
-		 *  POST		/tradings/{tradingdealid}
-		 */
-
-
-
 	}
 
 }

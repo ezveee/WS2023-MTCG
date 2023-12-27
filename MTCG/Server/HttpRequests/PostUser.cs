@@ -20,7 +20,7 @@ namespace MTCG.Server.HttpRequests
 			if (jsonPayload == null)
 				return "";
 
-			User user = JsonConvert.DeserializeObject<User>(jsonPayload);
+			UserCredentials user = JsonConvert.DeserializeObject<UserCredentials>(jsonPayload);
 
 			if (!CreateDbUser(user))
 				return "HTTP/1.1 409 Conflict\r\nContent-Type: text/plain\r\n\r\nUser with same username already registered";
@@ -32,7 +32,7 @@ namespace MTCG.Server.HttpRequests
 		// TODO:	when trying to insert user with preexisting username, it doesn't create a new entry
 		//			but the id goes up. find problem and fix
 		//			possible solution: do query to check if exists if not -> insert
-		private static bool CreateDbUser(User user)
+		private static bool CreateDbUser(UserCredentials user)
 		{
 			try
 			{

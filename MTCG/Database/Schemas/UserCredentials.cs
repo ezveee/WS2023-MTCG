@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace MTCG.Database.Schemas
 {
-    internal class User
-    {
-        public string Username { get; set; }
-        public string Password { get; set; }
-    }
+	internal class UserCredentials
+	{
+		public string Username { get; set; }
+		public string Password { get; set; }
+	}
 }

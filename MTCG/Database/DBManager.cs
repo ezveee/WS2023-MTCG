@@ -16,8 +16,7 @@ namespace MTCG.Database
 		{
 			Console.WriteLine("DB setup start.");
 			Setup();
-			Console.WriteLine("DB setup finished.");
-			Console.WriteLine();
+			Console.WriteLine("DB setup finished.\n");
 		}
 
 		public static DBManager Instance
@@ -132,9 +131,6 @@ namespace MTCG.Database
 		{
 			connection.Open();
 
-			// database already created
-			// establish db connection
-			//using NpgsqlConnection dbConnection = new(connectionString + ";Database=mtcg");
 			var dbConnection = GetDBConnection();
 			dbConnection.Open();
 
@@ -154,6 +150,7 @@ namespace MTCG.Database
 			connection?.Close();
 		}
 
+		// initial table creation
 		static void InitTable(NpgsqlConnection connection, string tableName, string createStatement, string insertStatement)
 		{
 			bool tableExists = TableExists(connection, tableName);
