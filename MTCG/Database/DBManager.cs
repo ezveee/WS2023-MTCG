@@ -64,6 +64,20 @@ namespace MTCG.Database
 			},
 
 			{
+				"sessions",
+				(
+					@"CREATE TABLE IF NOT EXISTS sessions (
+						id SERIAL PRIMARY KEY,
+						username VARCHAR(50),
+						token varchar(100),
+						valid_until TIMESTAMP
+					);",
+
+					null
+				)
+			},
+
+			{
 				"cardtypes",
 				(
 					@"CREATE TABLE IF NOT EXISTS cardtypes (
