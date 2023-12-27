@@ -55,7 +55,7 @@ namespace MTCG.Database
 				(
 					@"CREATE TABLE IF NOT EXISTS packages (
 						id SERIAL PRIMARY KEY,
-						cards INTEGER[],
+						cards VARCHAR[],
 						CONSTRAINT checkPackageSize CHECK (cardinality(cards) = 5)
 					);",
 
@@ -71,6 +71,23 @@ namespace MTCG.Database
 						username VARCHAR(50),
 						token varchar(100),
 						valid_until TIMESTAMP
+					);",
+
+					null
+				)
+			},
+
+			{
+				"cards",
+				(
+					@"CREATE TABLE IF NOT EXISTS cards (
+						id VARCHAR(100) PRIMARY KEY,
+						name VARCHAR(50) UNIQUE,
+						cardtype_f INTEGER REFERENCES cardtypes(id),
+						element_f INTEGER REFERENCES elements(id),
+						damage FLOAT,
+						CHECK (cardtype_f IN (1, 2)),
+						CHECK (element_f BETWEEN 1 AND 3)
 					);",
 
 					null
@@ -107,38 +124,36 @@ namespace MTCG.Database
 			},
 
 			{
-				"cards",
+				"cardcategories",
 				(
-					@"CREATE TABLE IF NOT EXISTS cards (
+					@"CREATE TABLE IF NOT EXISTS cardcategories (
 						id SERIAL PRIMARY KEY,
 						name VARCHAR(50) UNIQUE,
 						cardtype_f INTEGER REFERENCES cardtypes(id),
 						element_f INTEGER REFERENCES elements(id),
-						damage FLOAT,
 						CHECK (cardtype_f IN (1, 2)),
 						CHECK (element_f BETWEEN 1 AND 3)
 					);",
 
-					@"INSERT INTO cards (name, cardtype_f, element_f, damage) VALUES
-					('FireGoblin', 1, 1, 25.0),
-					('WaterGoblin', 1, 2, 25.0),
-					('RegularGoblin', 1, 3, 25.0),
-					('FireTroll', 1, 1, 27.0),
-					('WaterTroll', 1, 2, 27.0),
-					('RegularTroll', 1, 3, 27.0),
-					('FireElf', 1, 1, 30.0),
-					('WaterElf', 1, 2, 30.0),
-					('RegularElf', 1, 3, 30.0),
-					('FireSpell', 2, 1, 25.0),
-					('WaterSpell', 2, 2, 25.0),
-					('RegularSpell', 2, 2, 25.0),
-					('Knight', 1, 3, 30.0),
-					('Dragon', 1, 1, 35.0),
-					('Ork', 1, 3, 28.5),
-					('Kraken', 1, 2, 35.0);"
+					@"INSERT INTO cardcategories (name, cardtype_f, element_f) VALUES
+					('FireGoblin', 1, 1),
+					('WaterGoblin', 1, 2),
+					('RegularGoblin', 1, 3),
+					('FireTroll', 1, 1),
+					('WaterTroll', 1, 2),
+					('RegularTroll', 1, 3),
+					('FireElf', 1, 1),
+					('WaterElf', 1, 2),
+					('RegularElf', 1, 3),
+					('FireSpell', 2, 1),
+					('WaterSpell', 2, 2),
+					('RegularSpell', 2, 2),
+					('Knight', 1, 3),
+					('Dragon', 1, 1),
+					('Ork', 1, 3),
+					('Kraken', 1, 2);"
 				)
 			}
-
 		};
 
 		private void Setup()
@@ -165,7 +180,7 @@ namespace MTCG.Database
 		}
 
 		// initial table creation
-		static void InitTable(NpgsqlConnection connection, string tableName, string createStatement, string insertStatement)
+		static void InitTable(NpgsqlConnection connection, string tableName, string createStatement, string? insertStatement)
 		{
 			bool tableExists = TableExists(connection, tableName);
 

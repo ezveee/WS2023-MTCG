@@ -17,16 +17,26 @@ namespace MTCG.Server.HttpRequests
 	{
 		public string GetResponse(string request)
 		{
-			string jsonPayload = IHttpRequest.ExtractJsonPayload(request);
+			string jsonPayload = HttpRequestUtility.ExtractJsonPayload(request);
 
 			if (jsonPayload == null)
-				return "";
+			{
+				return Text.Res_400;
+			}
 
-			UserCredentials user = JsonConvert.DeserializeObject<UserCredentials>(jsonPayload);
+			UserCredentials? user = JsonConvert.DeserializeObject<UserCredentials>(jsonPayload);
+
+			if (user == null)
+			{
+				return Text.Res_400;
+			}
 
 			if (!LoginDbUser(user))
-				return "HTTP/1.1 401 Unauthorized\r\nContent-Type: text/plain\r\n\r\nInvalid username/password provided";
+			{
+				return Text.Res_PostSession_401;
+			}
 
+			// TODO: add to resource file; find out how to add username variable
 			return $"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nAuthorization: Bearer {user.Username}-mtcgToken\r\n\r\nUser login successful";
 		}
 		private static bool LoginDbUser(UserCredentials user)

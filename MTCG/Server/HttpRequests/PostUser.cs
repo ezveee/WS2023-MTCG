@@ -15,18 +15,26 @@ namespace MTCG.Server.HttpRequests
 	{
 		public string GetResponse(string request)
 		{
-			string jsonPayload = IHttpRequest.ExtractJsonPayload(request);
+			string jsonPayload = HttpRequestUtility.ExtractJsonPayload(request);
 
 			if (jsonPayload == null)
-				return "";
+			{
+				return Text.Res_400;
+			}
 
-			UserCredentials user = JsonConvert.DeserializeObject<UserCredentials>(jsonPayload);
+			UserCredentials? user = JsonConvert.DeserializeObject<UserCredentials>(jsonPayload);
+
+			if (user == null)
+			{
+				return Text.Res_400;
+			}
 
 			if (!CreateDbUser(user))
-				return "HTTP/1.1 409 Conflict\r\nContent-Type: text/plain\r\n\r\nUser with same username already registered";
+			{
+				return Text.Res_PostUser_409;
+			}
 
-			return "HTTP/1.1 201 Created\r\nContent-Type: text/plain\r\n\r\nUser successfully created";
-
+			return Text.Res_PostUser_201;
 		}
 
 		// TODO:	when trying to insert user with preexisting username, it doesn't create a new entry
@@ -47,9 +55,9 @@ namespace MTCG.Server.HttpRequests
 			catch (PostgresException ex)
 			{
 				if (ex.SqlState == "23505") // == unique_violation (https://www.postgresql.org/docs/current/errcodes-appendix.html)
+				{
 					return false;
-
-				//Console.WriteLine($"Error: {ex.Message}");
+				}
 			}
 
 			return true;
