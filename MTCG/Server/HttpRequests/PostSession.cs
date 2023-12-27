@@ -23,27 +23,22 @@ namespace MTCG.Server.HttpRequests
 			UserCredentials user = JsonConvert.DeserializeObject<UserCredentials>(jsonPayload);
 
 			if (!LoginDbUser(user))
-				return "HTTP/1.1 409 Conflict\r\nContent-Type: text/plain\r\n\r\nUser with same username already registered";
+				return "HTTP/1.1 401 Unauthorized\r\nContent-Type: text/plain\r\n\r\nInvalid username/password provided";
 
-			return "HTTP/1.1 201 Created\r\nContent-Type: text/plain\r\n\r\nUser successfully created";
+			return $"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nAuthorization: Bearer {user.Username}-mtcgToken\r\n\r\nUser login successful";
 		}
 		private static bool LoginDbUser(UserCredentials user)
 		{
-			try
-			{
-				var dbConnection = DBManager.GetDBConnection();
-				dbConnection.Open();
+			var dbConnection = DBManager.GetDBConnection();
+			dbConnection.Open();
 
-				using NpgsqlCommand command = new($@"INSERT INTO users (username, password, coins, elo) VALUES ('{user.Username}', '{user.Password}', 20, 100);", dbConnection);
-				command.ExecuteNonQuery();
+			using NpgsqlCommand command = new($@"SELECT COUNT(*) FROM users WHERE username = '{user.Username}' AND password = '{user.Password}';", dbConnection);
+			int count = Convert.ToInt32(command.ExecuteScalar());
 
-				dbConnection.Close();
-			}
-			catch (PostgresException ex)
-			{
-				if (ex.SqlState == "23505") // == unique_violation (https://www.postgresql.org/docs/current/errcodes-appendix.html)
-					return false;
-			}
+			dbConnection.Close();
+
+			if (count <= 0)
+				return false;
 
 			return true;
 		}
