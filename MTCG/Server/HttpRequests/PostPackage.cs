@@ -23,14 +23,14 @@ namespace MTCG.Server.HttpRequests
 
 			if (jsonPayload == null)
 			{
-				return Text.Res_400;
+				return Text.Res_400_BadRequest;
 			}
 
 			List<Database.Schemas.Card>? package = JsonConvert.DeserializeObject<List<Database.Schemas.Card>>(jsonPayload);
 
 			if (package == null || package.Count != 5)
 			{
-				return Text.Res_400;
+				return Text.Res_400_BadRequest;
 			}
 
 			string response;
@@ -40,7 +40,7 @@ namespace MTCG.Server.HttpRequests
 			}
 			catch (InvalidOperationException)
 			{
-				return Text.Res_PostPackage_401;
+				return Text.Res_401_Unauthorized;
 			}
 
 			return response;
@@ -66,7 +66,7 @@ namespace MTCG.Server.HttpRequests
 			if (!HttpRequestUtility.IsTokenValid(authToken))
 			{
 				dbConnection.Close();
-				return Text.Res_PostPackage_401;
+				return Text.Res_401_Unauthorized;
 			}
 
 			using var transaction = dbConnection.BeginTransaction();

@@ -172,7 +172,7 @@ namespace MTCG.Database
 			},
 
 			{
-				"stack",
+				"stacks",
 				(
 					@"CREATE TABLE IF NOT EXISTS stacks (
 						id SERIAL PRIMARY KEY,

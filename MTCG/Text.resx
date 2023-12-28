@@ -117,19 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Res_400" xml:space="preserve">
+  <data name="Res_400_BadRequest" xml:space="preserve">
     <value>HTTP/1.1 400 Bad Request
 Content-Type: text/plain
 
 Request could not be processed</value>
   </data>
-  <data name="Res_401_SessionExpired" xml:space="preserve">
+  <data name="Res_401_Unauthorized" xml:space="preserve">
     <value>HTTP/1.1 401 Unauthorized
 Content-Type: text/plain
 
-Login session expired</value>
+Access token is missing or invalid</value>
   </data>
-  <data name="Res_404" xml:space="preserve">
+  <data name="Res_404_NotFound" xml:space="preserve">
     <value>HTTP/1.1 404 Not Found
 Content-Type: text/plain
 
@@ -140,12 +140,6 @@ Content-Type: text/plain
 Content-Type: text/plain
 
 Package and cards successfully created</value>
-  </data>
-  <data name="Res_PostPackage_401" xml:space="preserve">
-    <value>HTTP/1.1 401 Unauthorized
-Content-Type: text/plain
-
-Access token is missing or invalid</value>
   </data>
   <data name="Res_PostPackage_403" xml:space="preserve">
     <value>HTTP/1.1 403 Forbidden
@@ -170,6 +164,24 @@ User login successful</value>
 Content-Type: text/plain
 
 Invalid username/password provided</value>
+  </data>
+  <data name="Res_PostTransaction_200" xml:space="preserve">
+    <value>HTTP/1.1 200 OK
+Content-Type: text/plain
+
+A package has been successfully bought</value>
+  </data>
+  <data name="Res_PostTransaction_403" xml:space="preserve">
+    <value>HTTP/1.1 403 Forbidden
+Content-Type: text/plain
+
+Not enough money for buying a card package</value>
+  </data>
+  <data name="Res_PostTransaction_404" xml:space="preserve">
+    <value>HTTP/1.1 404 Not Found
+Content-Type: text/plain
+
+No card package available for buying</value>
   </data>
   <data name="Res_PostUser_201" xml:space="preserve">
     <value>HTTP/1.1 201 Created

@@ -66,9 +66,9 @@ namespace MTCG {
         ///
         ///Request could not be processed.
         /// </summary>
-        internal static string Res_400 {
+        internal static string Res_400_BadRequest {
             get {
-                return ResourceManager.GetString("Res_400", resourceCulture);
+                return ResourceManager.GetString("Res_400_BadRequest", resourceCulture);
             }
         }
         
@@ -76,11 +76,11 @@ namespace MTCG {
         ///   Looks up a localized string similar to HTTP/1.1 401 Unauthorized
         ///Content-Type: text/plain
         ///
-        ///Login session expired.
+        ///Access token is missing or invalid.
         /// </summary>
-        internal static string Res_401_SessionExpired {
+        internal static string Res_401_Unauthorized {
             get {
-                return ResourceManager.GetString("Res_401_SessionExpired", resourceCulture);
+                return ResourceManager.GetString("Res_401_Unauthorized", resourceCulture);
             }
         }
         
@@ -90,9 +90,9 @@ namespace MTCG {
         ///
         ///404 Not Found.
         /// </summary>
-        internal static string Res_404 {
+        internal static string Res_404_NotFound {
             get {
-                return ResourceManager.GetString("Res_404", resourceCulture);
+                return ResourceManager.GetString("Res_404_NotFound", resourceCulture);
             }
         }
         
@@ -105,18 +105,6 @@ namespace MTCG {
         internal static string Res_PostPackage_201 {
             get {
                 return ResourceManager.GetString("Res_PostPackage_201", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP/1.1 401 Unauthorized
-        ///Content-Type: text/plain
-        ///
-        ///Access token is missing or invalid.
-        /// </summary>
-        internal static string Res_PostPackage_401 {
-            get {
-                return ResourceManager.GetString("Res_PostPackage_401", resourceCulture);
             }
         }
         
@@ -165,6 +153,42 @@ namespace MTCG {
         internal static string Res_PostSession_401 {
             get {
                 return ResourceManager.GetString("Res_PostSession_401", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP/1.1 200 OK
+        ///Content-Type: text/plain
+        ///
+        ///A package has been successfully bought.
+        /// </summary>
+        internal static string Res_PostTransaction_200 {
+            get {
+                return ResourceManager.GetString("Res_PostTransaction_200", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP/1.1 403 Forbidden
+        ///Content-Type: text/plain
+        ///
+        ///Not enough money for buying a card package.
+        /// </summary>
+        internal static string Res_PostTransaction_403 {
+            get {
+                return ResourceManager.GetString("Res_PostTransaction_403", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP/1.1 404 Not Found
+        ///Content-Type: text/plain
+        ///
+        ///No card package available for buying.
+        /// </summary>
+        internal static string Res_PostTransaction_404 {
+            get {
+                return ResourceManager.GetString("Res_PostTransaction_404", resourceCulture);
             }
         }
         

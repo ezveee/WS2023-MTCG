@@ -21,14 +21,14 @@ namespace MTCG.Server.HttpRequests
 
 			if (jsonPayload == null)
 			{
-				return Text.Res_400;
+				return Text.Res_400_BadRequest;
 			}
 
 			UserCredentials? user = JsonConvert.DeserializeObject<UserCredentials>(jsonPayload);
 
 			if (user == null)
 			{
-				return Text.Res_400;
+				return Text.Res_400_BadRequest;
 			}
 
 			if (!LoginDbUser(user))

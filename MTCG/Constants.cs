@@ -14,6 +14,8 @@ namespace MTCG
 		// login
 		public const int SessionTimeoutInMinutes = 5000;
 
+		public const int PackageCost = 5;
+
 		// battle logic
 		public const float EffectiveMultiplier = 2f;
 		public const float NotEffectiveMultiplier = .5f;
