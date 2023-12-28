@@ -11,6 +11,8 @@ namespace MTCG
 		// http server
 		public const int HttpServerPort = 10001;
 
+		// login
+		public const int SessionTimeoutInMinutes = 5000;
 
 		// battle logic
 		public const float EffectiveMultiplier = 2f;

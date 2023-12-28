@@ -129,6 +129,12 @@ Content-Type: text/plain
 
 Login session expired</value>
   </data>
+  <data name="Res_404" xml:space="preserve">
+    <value>HTTP/1.1 404 Not Found
+Content-Type: text/plain
+
+404 Not Found</value>
+  </data>
   <data name="Res_PostPackage_201" xml:space="preserve">
     <value>HTTP/1.1 201 Created
 Content-Type: text/plain

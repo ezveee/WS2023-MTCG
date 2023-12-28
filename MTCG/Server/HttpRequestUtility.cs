@@ -1,36 +1,18 @@
-﻿using MTCG.Database;
+﻿using MTCG.Cards;
+using MTCG.Database;
 using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace MTCG.Server
 {
 	public static class HttpRequestUtility
 	{
-		public static readonly Dictionary<string, (int, int)> cardCategories = new()
-		{
-			{ "FireGoblin", ( 1, 1 ) },
-			{ "WaterGoblin", ( 1, 2 ) },
-			{ "RegularGoblin", ( 1, 3 ) },
-			{ "FireTroll", ( 1, 1 ) },
-			{ "WaterTroll", ( 1, 2 ) },
-			{ "RegularTroll", ( 1, 3 ) },
-			{ "FireElf", ( 1, 1 ) },
-			{ "WaterElf", ( 1, 2 ) },
-			{ "RegularElf", ( 1, 3 ) },
-			{ "FireSpell", ( 2, 1 ) },
-			{ "WaterSpell", ( 2, 2 ) },
-			{ "RegularSpell", ( 2, 2 ) },
-			{ "Knight", ( 1, 3 ) },
-			{ "Dragon", ( 1, 1 ) },
-			{ "Ork", ( 1, 3 ) },
-			{ "Kraken", ( 1, 2 ) }
-		};
-
-
 		public static string ExtractJsonPayload(string request)
 		{
 			int bodyStartIndex = request.IndexOf("\r\n\r\n", StringComparison.Ordinal) + 4;
@@ -98,6 +80,16 @@ namespace MTCG.Server
 
 			dbConnection.Close();
 			return true;
+		}
+
+		public static string RetrieveUsernameFromToken(string authToken)
+		{
+			var dbConnection = DBManager.GetDBConnection();
+			dbConnection.Open();
+
+			using NpgsqlCommand command = new($@"SELECT username FROM sessions WHERE token = '{authToken}';", dbConnection);
+
+			return (string)command.ExecuteScalar();
 		}
 	}
 }

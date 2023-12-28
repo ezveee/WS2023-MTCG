@@ -70,7 +70,7 @@ namespace MTCG.Server.HttpRequests
 
 				insertStatement.Parameters.AddWithValue("username", user.Username);
 				insertStatement.Parameters.AddWithValue("token", $"{user.Username}-mtcgToken");
-				insertStatement.Parameters.AddWithValue("validUntil", DateTime.Now.AddMinutes(5));
+				insertStatement.Parameters.AddWithValue("validUntil", DateTime.Now.AddMinutes(Constants.SessionTimeoutInMinutes));
 
 				insertStatement.ExecuteNonQuery();
 				return;
@@ -78,7 +78,7 @@ namespace MTCG.Server.HttpRequests
 
 			using NpgsqlCommand updateStatement = new($@"UPDATE sessions SET valid_until = @validUntil WHERE username = @username;", dbConnection);
 
-			updateStatement.Parameters.AddWithValue("validUntil", DateTime.Now.AddMinutes(5));
+			updateStatement.Parameters.AddWithValue("validUntil", DateTime.Now.AddMinutes(Constants.SessionTimeoutInMinutes));
 			updateStatement.Parameters.AddWithValue("username", user.Username);
 
 			updateStatement.ExecuteNonQuery();

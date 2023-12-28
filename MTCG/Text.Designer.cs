@@ -85,6 +85,18 @@ namespace MTCG {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to HTTP/1.1 404 Not Found
+        ///Content-Type: text/plain
+        ///
+        ///404 Not Found.
+        /// </summary>
+        internal static string Res_404 {
+            get {
+                return ResourceManager.GetString("Res_404", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HTTP/1.1 201 Created
         ///Content-Type: text/plain
         ///

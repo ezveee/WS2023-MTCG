@@ -36,14 +36,12 @@ namespace MTCG.Server
 		private static void InitializRoutes()
 		{
 			// add keys and instances of classes to dictionary
-			routeTable["GET /hello"] = new Hello();
-			routeTable["GET /goodbye"] = new Goodbye();
 			routeTable["POST /users"] = new PostUser();
+			routeTable["POST /sessions"] = new PostSession();
+			routeTable["POST /packages"] = new PostPackage();
 			// implementation still missing
 			routeTable["GET /users"] = new GetUser(); // TODO: change cause it gets a specific username
 			routeTable["PUT /users"] = new PutUser(); // TODO: change cause it gets a specific username
-			routeTable["POST /sessions"] = new PostSession();
-			routeTable["POST /packages"] = new PostPackage();
 			routeTable["POST /transactions"] = new PostTransaction();
 			routeTable["GET /cards"] = new GetCards();
 			routeTable["GET /deck"] = new GetDeck();

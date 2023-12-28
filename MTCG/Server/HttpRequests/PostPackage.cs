@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 using System.Xml;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -32,7 +33,17 @@ namespace MTCG.Server.HttpRequests
 				return Text.Res_400;
 			}
 
-			return CreatePackage(package, HttpRequestUtility.ExtractBearerToken(request));
+			string response;
+			try
+			{
+				response = CreatePackage(package, HttpRequestUtility.ExtractBearerToken(request));
+			}
+			catch (InvalidOperationException)
+			{
+				return Text.Res_PostPackage_401;
+			}
+
+			return response;
 		}
 
 		private static string CreatePackage(List<Database.Schemas.Card> package, string authToken)
@@ -52,20 +63,45 @@ namespace MTCG.Server.HttpRequests
 				return Text.Res_PostPackage_403;
 			}
 
-			// TODO: make it so that chekcing if token exists is seperate from ExtractBearerToken method
 			if (!HttpRequestUtility.IsTokenValid(authToken))
 			{
 				dbConnection.Close();
 				return Text.Res_PostPackage_401;
 			}
 
-			using NpgsqlCommand command = new(@"INSERT INTO packages (cards) VALUES (@ids);", dbConnection);
+			using var transaction = dbConnection.BeginTransaction();
 
-			command.Parameters.AddWithValue("ids", new[] { package[0].Id, package[1].Id, package[2].Id, package[3].Id, package[4].Id });
+			try
+			{
+				using (NpgsqlCommand command = new())
+				{
+					command.Connection = dbConnection;
+					command.Transaction = transaction;
 
-			command.ExecuteNonQuery();
+					command.CommandText = @"SELECT nextval('packageids')";
+					int packageId = Convert.ToInt32(command.ExecuteScalar());
 
-			InsertIntoCardsTable(package, dbConnection);
+					command.CommandText = @"INSERT INTO packages (id, cardid) VALUES (@id, @cardid)";
+
+					foreach (Database.Schemas.Card card in package)
+					{
+						command.Parameters.Clear();
+						command.Parameters.AddWithValue("id", packageId);
+						command.Parameters.AddWithValue("cardid", card.Id);
+						command.ExecuteNonQuery();
+					}
+
+					InsertIntoCardsTable(package, command);
+				}
+
+				transaction.Commit();
+				Console.WriteLine("Transaction committed successfully");
+			}
+			catch (Exception ex)
+			{
+				transaction.Rollback();
+				Console.WriteLine("Transaction rolled back due to exception: " + ex.Message);
+			}
 
 			dbConnection.Close();
 			return Text.Res_PostPackage_201;
@@ -104,16 +140,17 @@ namespace MTCG.Server.HttpRequests
 			return true;
 		}
 
-		private static void InsertIntoCardsTable(List<Database.Schemas.Card> package, NpgsqlConnection dbConnection)
+		private static void InsertIntoCardsTable(List<Database.Schemas.Card> package, NpgsqlCommand command)
 		{
 			foreach (var card in package)
 			{
-				using NpgsqlCommand command = new($@"INSERT INTO cards (id, name, cardtype_f, element_f, damage) VALUES (@id, @name, @cardtype, @element, @damage);", dbConnection);
+				command.CommandText = $@"INSERT INTO cards (id, name, cardtype_f, element_f, damage) VALUES (@id, @name, @cardtype, @element, @damage);";
 
+				command.Parameters.Clear();
 				command.Parameters.AddWithValue("id", card.Id);
 				command.Parameters.AddWithValue("name", card.Name);
-				command.Parameters.AddWithValue("cardtype", HttpRequestUtility.cardCategories[card.Name].Item1);
-				command.Parameters.AddWithValue("element", HttpRequestUtility.cardCategories[card.Name].Item2);
+				command.Parameters.AddWithValue("cardtype", (int)CardUtility.GetCardTypeByName(card.Name));
+				command.Parameters.AddWithValue("element", (int)CardUtility.GetElementTypeByName(card.Name));
 				command.Parameters.AddWithValue("damage", card.Damage);
 
 				command.ExecuteNonQuery();
