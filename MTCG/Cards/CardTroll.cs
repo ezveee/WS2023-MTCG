@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MTCG.Cards.SpellCards
+namespace MTCG.Cards
 {
-	public enum SpellEffect
+	internal class CardTroll : Card
 	{
-		Effective,
-		NotEffective,
-		NoEffect
+		// NYI
 	}
 }

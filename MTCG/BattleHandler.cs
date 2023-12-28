@@ -1,11 +1,4 @@
 ﻿using MTCG.Cards;
-using MTCG.Cards.MonsterCards;
-using MTCG.Cards.SpellCards;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MTCG
 {
@@ -13,8 +6,8 @@ namespace MTCG
 	{
 		public static SpellEffect CheckElementEffectiveness(Card cardA, Card cardB)
 		{
-			ElementType ownType = cardA.ElementType;
-			ElementType opposingType = cardB.ElementType;
+			ElementType ownType = cardA.Element;
+			ElementType opposingType = cardB.Element;
 
 			if (ownType == opposingType) { return SpellEffect.NoEffect; }
 
@@ -31,8 +24,8 @@ namespace MTCG
 
 		public static CardSpecialty CheckSpecialty(Card cardA, Card cardB)
 		{
-			CardType ownType = cardA.CardType;
-			CardType opposingType = cardB.CardType;
+			CardType ownType = cardA.Type;
+			CardType opposingType = cardB.Type;
 
 			switch (ownType)
 			{
@@ -40,11 +33,11 @@ namespace MTCG
 				case CardType.Ork when opposingType == CardType.Wizard:
 				case CardType.Spell when opposingType == CardType.Kraken:
 				case CardType.Dragon
-					when (opposingType == CardType.Elf && cardB.ElementType == ElementType.Fire):
+					when (opposingType == CardType.Elf && cardB.Element == ElementType.Fire):
 					return CardSpecialty.CantAttack;
 
 				case CardType.Knight
-					when (opposingType == CardType.Spell && cardB.ElementType == ElementType.Water):
+					when (opposingType == CardType.Spell && cardB.Element == ElementType.Water):
 					return CardSpecialty.Dies;
 			}
 
@@ -59,7 +52,7 @@ namespace MTCG
 
 		public static bool IsPureMonsterFight(Card cardA, Card cardB)
 		{
-			if (cardA.CardType == CardType.Spell || cardB.CardType == CardType.Spell)
+			if (cardA.Type == CardType.Spell || cardB.Type == CardType.Spell)
 				return false;
 			return true;
 		}
@@ -89,14 +82,14 @@ namespace MTCG
 				switch (effect)
 				{
 					case SpellEffect.Effective:
-						return cardA.Attack * Constants.EffectiveMultiplier;
+						return cardA.Damage * Constants.EffectiveMultiplier;
 					case SpellEffect.NotEffective:
-						return cardA.Attack * Constants.NotEffectiveMultiplier;
+						return cardA.Damage * Constants.NotEffectiveMultiplier;
 				}
 			}
 
 			// pure monster fight or no effect
-			return cardA.Attack;
+			return cardA.Damage;
 		}
 
 		public void Battle(Player playerA, Player playerB)

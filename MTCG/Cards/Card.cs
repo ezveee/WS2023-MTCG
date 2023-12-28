@@ -1,29 +1,65 @@
-﻿using MTCG.Cards;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MTCG.Interfaces.ICard;
+using System.Collections.Immutable;
 
-namespace MTCG
+namespace MTCG.Cards
 {
-	internal abstract class Card
+	internal abstract class Card : ICard
 	{
-		private CardType _cardType;
-		private ElementType _elementType;
-		private string _name;
-		private int _attack;
-
-		protected Card(ElementType elementType, int attack)
+		private static readonly ImmutableDictionary<string, (Type ObjectType, CardType CardType, ElementType ElementType)> cardCategories =
+			new Dictionary<string, (Type ObjectType, CardType CardType, ElementType ElementType)>()
 		{
-			_elementType = elementType;
-			_attack = attack;
+			{ "FireSpell", ( typeof(CardSpell), CardType.Spell, ElementType.Fire ) },
+			{ "WaterSpell", ( typeof(CardSpell), CardType.Spell, ElementType.Water ) },
+			{ "RegularSpell", ( typeof(CardSpell), CardType.Spell, ElementType.Regular ) },
+			{ "FireGoblin", ( typeof(CardGoblin), CardType.Goblin, ElementType.Fire ) },
+			{ "WaterGoblin", ( typeof(CardGoblin), CardType.Goblin, ElementType.Water ) },
+			{ "RegularGoblin", ( typeof(CardGoblin), CardType.Goblin, ElementType.Regular ) },
+			{ "Dragon", ( typeof(CardDragon), CardType.Dragon, ElementType.Fire ) },
+			{ "Wizard", ( typeof(CardWizard), CardType.Wizard, ElementType.Regular ) },
+			{ "Ork", ( typeof(CardOrk), CardType.Ork, ElementType.Regular ) },
+			{ "Knight", ( typeof(CardKnight), CardType.Knight, ElementType.Regular ) },
+			{ "Kraken", ( typeof(CardKraken), CardType.Kraken, ElementType.Water ) },
+			{ "FireElf", ( typeof(CardElf), CardType.Elf, ElementType.Fire ) },
+			{ "WaterElf", ( typeof(CardElf), CardType.Elf, ElementType.Water ) },
+			{ "RegularElf", ( typeof(CardElf), CardType.Elf, ElementType.Regular ) },
+			{ "FireTroll", ( typeof(CardTroll), CardType.Troll, ElementType.Fire ) },
+			{ "WaterTroll", ( typeof(CardTroll), CardType.Troll, ElementType.Water ) },
+			{ "RegularTroll", ( typeof(CardTroll), CardType.Troll, ElementType.Regular ) }
+		}.ToImmutableDictionary();
+
+		public Guid Id { get; private set; }
+
+		public string Name { get; private set; } = string.Empty;
+
+		public int Damage { get; private set; }
+
+		public CardType Type { get; private set; }
+
+		public ElementType Element { get; private set; }
+
+		public virtual int GetDamageAgainst(ICard card)
+		{
+			return Damage;
 		}
 
-		public CardType CardType { get; set; }
-		public ElementType ElementType { get { return _elementType; } }
-		public string Name { get; set; }
-		public int Attack { get { return _attack; } }
+		public static ICard? CreateInstance(Guid id, string name, int damage)
+		{
+			Type cardType = cardCategories[name].ObjectType;
+			if (Activator.CreateInstance(cardType) is not Card card)
+			{
+				return null;
+			}
+			card.Id = id;
+			card.Name = name;
+			card.Damage = damage;
+			card.Type = cardCategories[name].CardType;
+			card.Element = cardCategories[name].ElementType;
 
+			return card;
+		}
+
+		public static CardType GetCardTypeByName(string name) => cardCategories[name].CardType;
+
+		public static ElementType GetElementTypeByName(string name) => cardCategories[name].ElementType;
 	}
 }

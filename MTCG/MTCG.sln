@@ -3,7 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTCG", "MTCG.csproj", "{8914A95C-33B3-43C8-B864-5046B45A47FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MTCG", "MTCG.csproj", "{8914A95C-33B3-43C8-B864-5046B45A47FD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{26CBAB1E-B616-4213-8470-A591C954B6F4}"
+	ProjectSection(SolutionItems) = preProject
+		..\docs\MonsterTradingCards.exercise.curl.bat = ..\docs\MonsterTradingCards.exercise.curl.bat
+		..\docs\MonsterTradingCards_exercise.pdf = ..\docs\MonsterTradingCards_exercise.pdf
+		..\docs\mtcg-api.yaml = ..\docs\mtcg-api.yaml
+		..\docs\MTCG_workLog.xlsx = ..\docs\MTCG_workLog.xlsx
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

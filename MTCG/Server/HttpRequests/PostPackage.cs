@@ -149,8 +149,8 @@ namespace MTCG.Server.HttpRequests
 				command.Parameters.Clear();
 				command.Parameters.AddWithValue("id", card.Id);
 				command.Parameters.AddWithValue("name", card.Name);
-				command.Parameters.AddWithValue("cardtype", (int)CardUtility.GetCardTypeByName(card.Name));
-				command.Parameters.AddWithValue("element", (int)CardUtility.GetElementTypeByName(card.Name));
+				command.Parameters.AddWithValue("cardtype", (int)Cards.Card.GetCardTypeByName(card.Name));
+				command.Parameters.AddWithValue("element", (int)Cards.Card.GetElementTypeByName(card.Name));
 				command.Parameters.AddWithValue("damage", card.Damage);
 
 				command.ExecuteNonQuery();
