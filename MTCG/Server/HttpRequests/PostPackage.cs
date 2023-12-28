@@ -144,7 +144,7 @@ namespace MTCG.Server.HttpRequests
 		{
 			foreach (var card in package)
 			{
-				command.CommandText = $@"INSERT INTO cards (id, name, cardtype_f, element_f, damage) VALUES (@id, @name, @cardtype, @element, @damage);";
+				command.CommandText = $@"INSERT INTO cards (id, name, cardtype, element, damage) VALUES (@id, @name, @cardtype, @element, @damage);";
 
 				command.Parameters.Clear();
 				command.Parameters.AddWithValue("id", card.Id);

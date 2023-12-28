@@ -77,13 +77,13 @@ namespace MTCG.Database
 					@"CREATE TABLE IF NOT EXISTS cardcategories (
 						id SERIAL PRIMARY KEY,
 						name VARCHAR(50) UNIQUE,
-						cardtype_f INTEGER REFERENCES cardtypes(id),
-						element_f INTEGER REFERENCES elements(id),
-						CHECK (cardtype_f BETWEEN 1 AND 9),
-						CHECK (element_f BETWEEN 1 AND 3)
+						cardtype INTEGER REFERENCES cardtypes(id),
+						element INTEGER REFERENCES elements(id),
+						CHECK (cardtype BETWEEN 1 AND 9),
+						CHECK (element BETWEEN 1 AND 3)
 					);",
 
-					@"INSERT INTO cardcategories (name, cardtype_f, element_f) VALUES
+					@"INSERT INTO cardcategories (name, cardtype, element) VALUES
 					('FireSpell', 1, 1),
 					('WaterSpell', 1, 2),
 					('RegularSpell', 1, 2),
@@ -159,12 +159,12 @@ namespace MTCG.Database
 				(
 					@"CREATE TABLE IF NOT EXISTS cards (
 						id uuid PRIMARY KEY,
-						name VARCHAR(50) UNIQUE,
-						cardtype_f INTEGER REFERENCES cardtypes(id),
-						element_f INTEGER REFERENCES elements(id),
+						name VARCHAR(50),
+						cardtype INTEGER REFERENCES cardtypes(id),
+						element INTEGER REFERENCES elements(id),
 						damage FLOAT,
-						CHECK (cardtype_f BETWEEN 1 AND 9),
-						CHECK (element_f BETWEEN 1 AND 3)
+						CHECK (cardtype BETWEEN 1 AND 9),
+						CHECK (element BETWEEN 1 AND 3)
 					);",
 
 					null

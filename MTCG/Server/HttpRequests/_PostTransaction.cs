@@ -34,14 +34,13 @@ namespace MTCG.Server.HttpRequests
 
 		private static string AquirePackage(string authToken)
 		{
-			var dbConnection = DBManager.GetDBConnection();
-			dbConnection.Open();
-
 			if (!HttpRequestUtility.IsTokenValid(authToken))
 			{
-				dbConnection.Close();
 				return Text.Res_401_Unauthorized;
 			}
+
+			var dbConnection = DBManager.GetDBConnection();
+			dbConnection.Open();
 
 			string username = HttpRequestUtility.RetrieveUsernameFromToken(authToken);
 			using (NpgsqlCommand command = new($@"SELECT coins FROM users WHERE username = @user;", dbConnection))
