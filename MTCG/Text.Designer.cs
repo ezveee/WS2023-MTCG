@@ -97,6 +97,31 @@ namespace MTCG {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to HTTP/1.1 200 OK
+        ///Content-Type: text/plain
+        ///
+        ///The user has cards, the response contains these:
+        ///{0}.
+        /// </summary>
+        internal static string Res_GetCards_200 {
+            get {
+                return ResourceManager.GetString("Res_GetCards_200", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP/1.1 204 No Content
+        ///Content-Type: text/plain
+        ///
+        ///The request was fine, but the user doesn&apos;t have any cards.
+        /// </summary>
+        internal static string Res_GetCards_204 {
+            get {
+                return ResourceManager.GetString("Res_GetCards_204", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HTTP/1.1 201 Created
         ///Content-Type: text/plain
         ///

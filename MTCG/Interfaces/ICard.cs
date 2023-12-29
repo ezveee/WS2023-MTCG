@@ -13,12 +13,12 @@ namespace MTCG.Interfaces.ICard
 
 		public string Name { get; }
 
-		public int Damage { get; }
+		public float Damage { get; }
 
 		public CardType Type { get; }
 
 		public ElementType Element { get; }
 
-		int GetDamageAgainst(ICard card);
+		float GetDamageAgainst(ICard card);
 	}
 }

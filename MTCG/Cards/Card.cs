@@ -31,18 +31,18 @@ namespace MTCG.Cards
 
 		public string Name { get; private set; } = string.Empty;
 
-		public int Damage { get; private set; }
+		public float Damage { get; private set; }
 
 		public CardType Type { get; private set; }
 
 		public ElementType Element { get; private set; }
 
-		public virtual int GetDamageAgainst(ICard card)
+		public virtual float GetDamageAgainst(ICard card)
 		{
 			return Damage;
 		}
 
-		public static ICard? CreateInstance(Guid id, string name, int damage)
+		public static ICard? CreateInstance(Guid id, string name, float damage)
 		{
 			Type cardType = cardCategories[name].ObjectType;
 			if (Activator.CreateInstance(cardType) is not Card card)

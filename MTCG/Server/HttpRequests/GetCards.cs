@@ -1,11 +1,8 @@
-﻿using MTCG.Database;
+﻿using MTCG.Cards;
+using MTCG.Database;
 using MTCG.Interfaces.IHttpRequest;
+using Newtonsoft.Json;
 using Npgsql;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MTCG.Server.HttpRequests
 {
@@ -37,12 +34,11 @@ namespace MTCG.Server.HttpRequests
 			dbConnection.Open();
 
 			string username = HttpRequestUtility.RetrieveUsernameFromToken(authToken);
+			List<Card> cardList = new List<Card>();
+
 			using (NpgsqlCommand command = new(
-				@"SELECT users.id,
-					cards.id,
+				@"SELECT cards.id,
 					cards.name,
-					cards.cardtype,
-					cards.element,
 					cards.damage
 				FROM stacks
 				JOIN users ON stacks.userid = users.id
@@ -51,17 +47,29 @@ namespace MTCG.Server.HttpRequests
 			{
 				command.Parameters.AddWithValue("user", username);
 
-				int coins = Convert.ToInt32(command.ExecuteScalar());
-
-				if (coins < Constants.PackageCost)
+				using (NpgsqlDataReader reader = command.ExecuteReader())
 				{
-					return Text.Res_PostTransaction_403;
+					while (reader.Read())
+					{
+						Card card = (Card)Card.CreateInstance(reader.GetGuid(0), reader.GetString(1), (float)reader.GetDouble(2));
+
+						if (card is null)
+						{
+							continue;
+						}
+
+						cardList.Add(card);
+					}
+				}
+
+				if (cardList.Count <= 0)
+				{
+					return Text.Res_GetCards_204;
 				}
 			}
 
-			// DROP TABLE users; DROP TABLE sessions; DROP TABLE stacks; DROP TABLE packages; DROP TABLE cards; DROP TABLE cardcategories; DROP TABLE cardtypes; DROP TABLE elements;
-
-			return String.Empty;
+			string cardsJson = JsonConvert.SerializeObject(cardList, Formatting.Indented);
+			return String.Format(Text.Res_GetCards_200, cardsJson);
 		}
 	}
 }

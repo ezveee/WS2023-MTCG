@@ -135,6 +135,19 @@ Content-Type: text/plain
 
 404 Not Found</value>
   </data>
+  <data name="Res_GetCards_200" xml:space="preserve">
+    <value>HTTP/1.1 200 OK
+Content-Type: text/plain
+
+The user has cards, the response contains these:
+{0}</value>
+  </data>
+  <data name="Res_GetCards_204" xml:space="preserve">
+    <value>HTTP/1.1 204 No Content
+Content-Type: text/plain
+
+The request was fine, but the user doesn't have any cards</value>
+  </data>
   <data name="Res_PostPackage_201" xml:space="preserve">
     <value>HTTP/1.1 201 Created
 Content-Type: text/plain
