@@ -2,7 +2,7 @@
 
 namespace MTCG
 {
-	internal class BattleHandler
+	public class BattleHandler
 	{
 		public static SpellEffect CheckElementEffectiveness(Card cardA, Card cardB)
 		{

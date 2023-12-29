@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 namespace MTCG.Server.HttpRequests
 {
-	internal class DeleteTrading : IHttpRequest
+	public class DeleteTrading : IHttpRequest
 	{
 		public string GetResponse(string request)
 		{

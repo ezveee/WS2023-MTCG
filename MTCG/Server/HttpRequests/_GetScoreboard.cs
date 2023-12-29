@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MTCG.Server.HttpRequests
 {
-	internal class GetScoreboard : IHttpRequest
+	public class GetScoreboard : IHttpRequest
 	{
 		public string GetResponse(string request)
 		{

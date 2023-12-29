@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MTCG.Database.Schemas
 {
-	internal class TradingDeal
+	public class TradingDeal
 	{
 		public string Id { get; set; }
 		public string CardToTrade { get; set; }

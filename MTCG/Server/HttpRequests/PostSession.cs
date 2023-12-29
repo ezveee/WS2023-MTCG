@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace MTCG.Server.HttpRequests
 {
-	internal class PostSession : IHttpRequest
+	public class PostSession : IHttpRequest
 	{
 		public string GetResponse(string request)
 		{

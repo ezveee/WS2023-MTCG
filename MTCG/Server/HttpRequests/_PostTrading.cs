@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MTCG.Server.HttpRequests
 {
-	internal class PostTrading : IHttpRequest
+	public class PostTrading : IHttpRequest
 	{
 		public string GetResponse(string request)
 		{

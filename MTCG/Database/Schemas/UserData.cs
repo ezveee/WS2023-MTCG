@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MTCG.Database.Schemas
 {
-	internal class UserData
+	public class UserData
 	{
 		public string Name { get; set; }
 		public string Bio { get; set; }

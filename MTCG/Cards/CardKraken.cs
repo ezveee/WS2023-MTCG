@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MTCG.Cards
 {
-	internal class CardKraken : Card
+	public class CardKraken : Card
 	{
 		// NYI
 	}

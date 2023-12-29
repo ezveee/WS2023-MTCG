@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MTCG.Cards
 {
-	internal class CardElf : Card
+	public class CardElf : Card
 	{
 		// NYI
 	}

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MTCG.Database.Schemas
 {
-	internal class UserStats
+	public class UserStats
 	{
 		public string Name { get; set; }
 		public int Elo { get; set; }

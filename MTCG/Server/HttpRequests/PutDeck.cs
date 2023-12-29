@@ -7,7 +7,7 @@ using Npgsql;
 
 namespace MTCG.Server.HttpRequests
 {
-	internal class PutDeck : IHttpRequest
+	public class PutDeck : IHttpRequest
 	{
 		public string GetResponse(string request)
 		{

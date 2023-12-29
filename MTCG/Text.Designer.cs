@@ -22,21 +22,21 @@ namespace MTCG {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Text {
+    public class Text {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Text() {
+        public Text() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MTCG.Text", typeof(Text).Assembly);
@@ -51,7 +51,7 @@ namespace MTCG {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -66,7 +66,7 @@ namespace MTCG {
         ///
         ///Request could not be processed.
         /// </summary>
-        internal static string Res_400_BadRequest {
+        public static string Res_400_BadRequest {
             get {
                 return ResourceManager.GetString("Res_400_BadRequest", resourceCulture);
             }
@@ -78,7 +78,7 @@ namespace MTCG {
         ///
         ///Access token is missing or invalid.
         /// </summary>
-        internal static string Res_401_Unauthorized {
+        public static string Res_401_Unauthorized {
             get {
                 return ResourceManager.GetString("Res_401_Unauthorized", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace MTCG {
         ///
         ///404 Not Found.
         /// </summary>
-        internal static string Res_404_NotFound {
+        public static string Res_404_NotFound {
             get {
                 return ResourceManager.GetString("Res_404_NotFound", resourceCulture);
             }
@@ -102,7 +102,7 @@ namespace MTCG {
         ///
         ///The server has encountered a situation it does not know how to handle.
         /// </summary>
-        internal static string Res_500_ServerError {
+        public static string Res_500_ServerError {
             get {
                 return ResourceManager.GetString("Res_500_ServerError", resourceCulture);
             }
@@ -116,7 +116,7 @@ namespace MTCG {
         ///
         ///{1}.
         /// </summary>
-        internal static string Res_GetDeck_200 {
+        public static string Res_GetDeck_200 {
             get {
                 return ResourceManager.GetString("Res_GetDeck_200", resourceCulture);
             }
@@ -128,7 +128,7 @@ namespace MTCG {
         ///
         ///The request was fine, but the deck doesn&apos;t have any cards.
         /// </summary>
-        internal static string Res_GetDeck_204 {
+        public static string Res_GetDeck_204 {
             get {
                 return ResourceManager.GetString("Res_GetDeck_204", resourceCulture);
             }
@@ -140,7 +140,7 @@ namespace MTCG {
         ///
         ///{0}.
         /// </summary>
-        internal static string Res_GetStack_200 {
+        public static string Res_GetStack_200 {
             get {
                 return ResourceManager.GetString("Res_GetStack_200", resourceCulture);
             }
@@ -152,7 +152,7 @@ namespace MTCG {
         ///
         ///The request was fine, but the user doesn&apos;t have any cards.
         /// </summary>
-        internal static string Res_GetStack_204 {
+        public static string Res_GetStack_204 {
             get {
                 return ResourceManager.GetString("Res_GetStack_204", resourceCulture);
             }
@@ -164,7 +164,7 @@ namespace MTCG {
         ///
         ///Package and cards successfully created.
         /// </summary>
-        internal static string Res_PostPackage_201 {
+        public static string Res_PostPackage_201 {
             get {
                 return ResourceManager.GetString("Res_PostPackage_201", resourceCulture);
             }
@@ -176,7 +176,7 @@ namespace MTCG {
         ///
         ///Provided user is not &quot;admin&quot;.
         /// </summary>
-        internal static string Res_PostPackage_403 {
+        public static string Res_PostPackage_403 {
             get {
                 return ResourceManager.GetString("Res_PostPackage_403", resourceCulture);
             }
@@ -188,7 +188,7 @@ namespace MTCG {
         ///
         ///At least one card in the packages already exists.
         /// </summary>
-        internal static string Res_PostPackage_409 {
+        public static string Res_PostPackage_409 {
             get {
                 return ResourceManager.GetString("Res_PostPackage_409", resourceCulture);
             }
@@ -201,7 +201,7 @@ namespace MTCG {
         ///
         ///User login successful.
         /// </summary>
-        internal static string Res_PostSession_200 {
+        public static string Res_PostSession_200 {
             get {
                 return ResourceManager.GetString("Res_PostSession_200", resourceCulture);
             }
@@ -213,7 +213,7 @@ namespace MTCG {
         ///
         ///Invalid username/password provided.
         /// </summary>
-        internal static string Res_PostSession_401 {
+        public static string Res_PostSession_401 {
             get {
                 return ResourceManager.GetString("Res_PostSession_401", resourceCulture);
             }
@@ -227,7 +227,7 @@ namespace MTCG {
         ///
         ///{0}.
         /// </summary>
-        internal static string Res_PostTransaction_200 {
+        public static string Res_PostTransaction_200 {
             get {
                 return ResourceManager.GetString("Res_PostTransaction_200", resourceCulture);
             }
@@ -239,7 +239,7 @@ namespace MTCG {
         ///
         ///Not enough money for buying a card package.
         /// </summary>
-        internal static string Res_PostTransaction_403 {
+        public static string Res_PostTransaction_403 {
             get {
                 return ResourceManager.GetString("Res_PostTransaction_403", resourceCulture);
             }
@@ -251,7 +251,7 @@ namespace MTCG {
         ///
         ///No card package available for buying.
         /// </summary>
-        internal static string Res_PostTransaction_404 {
+        public static string Res_PostTransaction_404 {
             get {
                 return ResourceManager.GetString("Res_PostTransaction_404", resourceCulture);
             }
@@ -263,7 +263,7 @@ namespace MTCG {
         ///
         ///User successfully created.
         /// </summary>
-        internal static string Res_PostUser_201 {
+        public static string Res_PostUser_201 {
             get {
                 return ResourceManager.GetString("Res_PostUser_201", resourceCulture);
             }
@@ -275,7 +275,7 @@ namespace MTCG {
         ///
         ///User with same username already registered.
         /// </summary>
-        internal static string Res_PostUser_409 {
+        public static string Res_PostUser_409 {
             get {
                 return ResourceManager.GetString("Res_PostUser_409", resourceCulture);
             }
@@ -287,7 +287,7 @@ namespace MTCG {
         ///
         ///The deck has been successfully configured.
         /// </summary>
-        internal static string Res_PutDeck_200 {
+        public static string Res_PutDeck_200 {
             get {
                 return ResourceManager.GetString("Res_PutDeck_200", resourceCulture);
             }
@@ -299,7 +299,7 @@ namespace MTCG {
         ///
         ///The provided deck did not include the required amount of cards.
         /// </summary>
-        internal static string Res_PutDeck_400 {
+        public static string Res_PutDeck_400 {
             get {
                 return ResourceManager.GetString("Res_PutDeck_400", resourceCulture);
             }
@@ -311,7 +311,7 @@ namespace MTCG {
         ///
         ///At least one of the provided cards does not belong to the user or is not available..
         /// </summary>
-        internal static string Res_PutDeck_403 {
+        public static string Res_PutDeck_403 {
             get {
                 return ResourceManager.GetString("Res_PutDeck_403", resourceCulture);
             }

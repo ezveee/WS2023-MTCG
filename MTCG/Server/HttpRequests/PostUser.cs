@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MTCG.Server.HttpRequests
 {
-	internal class PostUser : IHttpRequest
+	public class PostUser : IHttpRequest
 	{
 		public string GetResponse(string request)
 		{

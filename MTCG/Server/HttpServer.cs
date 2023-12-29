@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 namespace MTCG.Server
 {
-	internal class HttpServer
+	public class HttpServer
 	{
 		private static HttpServer _instance;
 		private readonly TcpListener listener;

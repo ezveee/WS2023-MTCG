@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MTCG.Database
 {
-	internal class DBManager
+	public class DBManager
 	{
 		private static DBManager _instance;
 

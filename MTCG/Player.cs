@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MTCG
 {
-	internal sealed class Player
+	public sealed class Player
 	{
 		private string _username;
 		private float _elo;

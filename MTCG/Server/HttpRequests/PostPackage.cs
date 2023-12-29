@@ -15,7 +15,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace MTCG.Server.HttpRequests
 {
-	internal class PostPackage : IHttpRequest
+	public class PostPackage : IHttpRequest
 	{
 		public string GetResponse(string request)
 		{
