@@ -221,9 +221,11 @@ namespace MTCG {
         
         /// <summary>
         ///   Looks up a localized string similar to HTTP/1.1 200 OK
-        ///Content-Type: text/plain
+        ///Content-Type: application/json
         ///
-        ///A package has been successfully bought.
+        ///A package has been successfully bought
+        ///
+        ///{0}.
         /// </summary>
         internal static string Res_PostTransaction_200 {
             get {

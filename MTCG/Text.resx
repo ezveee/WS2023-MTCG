@@ -200,9 +200,11 @@ Invalid username/password provided</value>
   </data>
   <data name="Res_PostTransaction_200" xml:space="preserve">
     <value>HTTP/1.1 200 OK
-Content-Type: text/plain
+Content-Type: application/json
 
-A package has been successfully bought</value>
+A package has been successfully bought
+
+{0}</value>
   </data>
   <data name="Res_PostTransaction_403" xml:space="preserve">
     <value>HTTP/1.1 403 Forbidden

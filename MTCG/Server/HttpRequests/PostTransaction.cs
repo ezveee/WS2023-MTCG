@@ -1,4 +1,5 @@
-﻿using MTCG.Database;
+﻿using MTCG.Cards;
+using MTCG.Database;
 using MTCG.Interfaces.IHttpRequest;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -66,6 +67,7 @@ namespace MTCG.Server.HttpRequests
 			}
 
 			using var transaction = dbConnection.BeginTransaction();
+			List<Card> cardList = new();
 
 			try
 			{
@@ -80,6 +82,28 @@ namespace MTCG.Server.HttpRequests
 					command.CommandText = "SELECT id FROM users WHERE username = @username";
 					command.Parameters.AddWithValue("username", username);
 					int userId = (int)command.ExecuteScalar();
+
+					command.CommandText = @"SELECT cards.id, cards.name, cards.damage
+						FROM packages
+						JOIN cards ON packages.cardid = cards.id
+						WHERE packages.id = @id;";
+					command.Parameters.Clear();
+					command.Parameters.AddWithValue("id", packageID);
+
+					using (NpgsqlDataReader reader = command.ExecuteReader())
+					{
+						while (reader.Read())
+						{
+							Card card = (Card)Card.CreateInstance(reader.GetGuid(0), reader.GetString(1), (float)reader.GetDouble(2));
+
+							if (card is null)
+							{
+								continue;
+							}
+
+							cardList.Add(card);
+						}
+					}
 
 					command.CommandText = "INSERT INTO stacks (userid, cardid) SELECT @userId, cardid FROM packages WHERE id = @packageId";
 					command.Parameters.Clear();
@@ -110,8 +134,9 @@ namespace MTCG.Server.HttpRequests
 			}
 
 			dbConnection.Close();
-			return Text.Res_PostTransaction_200;
 
+			string cardsJson = JsonConvert.SerializeObject(cardList, Formatting.Indented);
+			return String.Format(Text.Res_PostTransaction_200, cardsJson);
 		}
 	}
 }
