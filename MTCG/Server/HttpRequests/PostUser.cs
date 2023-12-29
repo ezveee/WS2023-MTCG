@@ -47,7 +47,7 @@ namespace MTCG.Server.HttpRequests
 				var dbConnection = DBManager.GetDBConnection();
 				dbConnection.Open();
 
-				using NpgsqlCommand command = new($@"INSERT INTO users (username, password, coins, elo) VALUES ('{user.Username}', '{user.Password}', 20, 100);", dbConnection);
+				using NpgsqlCommand command = new($@"INSERT INTO users (username, password, coins, elo, wins, losses) VALUES ('{user.Username}', '{user.Password}', 20, 100, 0, 0);", dbConnection);
 				command.ExecuteNonQuery();
 
 				dbConnection.Close();

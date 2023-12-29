@@ -97,12 +97,22 @@ namespace MTCG {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to HTTP/1.1 500 Internal Server Error
+        ///Content-Type: text/plain
+        ///
+        ///The server has encountered a situation it does not know how to handle.
+        /// </summary>
+        internal static string Res_500_ServerError {
+            get {
+                return ResourceManager.GetString("Res_500_ServerError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HTTP/1.1 200 OK
         ///Content-Type: application/json
         ///
         ///{0}
-        ///
-        ///Content-Type: text/plain
         ///
         ///{1}.
         /// </summary>
@@ -187,6 +197,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to HTTP/1.1 200 OK
         ///Content-Type: text/plain
+        ///Authorization: Bearer {0}-mtcgToken
         ///
         ///User login successful.
         /// </summary>
@@ -265,6 +276,18 @@ namespace MTCG {
         internal static string Res_PostUser_409 {
             get {
                 return ResourceManager.GetString("Res_PostUser_409", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP/1.1 200 OK
+        ///Content-Type: text/plain
+        ///
+        ///The deck has been successfully configured.
+        /// </summary>
+        internal static string Res_PutDeck_200 {
+            get {
+                return ResourceManager.GetString("Res_PutDeck_200", resourceCulture);
             }
         }
         

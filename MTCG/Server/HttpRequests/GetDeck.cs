@@ -36,7 +36,7 @@ namespace MTCG.Server.HttpRequests
 			string username = HttpRequestUtility.RetrieveUsernameFromToken(authToken);
 
 			// TODO: see if description is even necessary
-			string description;
+			string? description;
 			using (NpgsqlCommand command = new(
 				@"SELECT description FROM decks
 				JOIN users ON decks.userid = users.id
@@ -44,7 +44,8 @@ namespace MTCG.Server.HttpRequests
 			{
 				command.Parameters.AddWithValue("user", username);
 
-				description = (string)command.ExecuteScalar();
+				object? obj = command.ExecuteScalar();
+				description = (obj is null) ? string.Empty : obj.ToString();
 			}
 
 			List<Card> cardList = HttpRequestUtility.RetrieveUserCards(username, "decks", dbConnection);

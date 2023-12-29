@@ -37,7 +37,7 @@ namespace MTCG.Server.HttpRequests
 			}
 
 			// TODO: add to resource file; find out how to add username variable
-			return $"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nAuthorization: Bearer {user.Username}-mtcgToken\r\n\r\nUser login successful";
+			return String.Format(Text.Res_PostSession_200, user.Username);
 		}
 		private static bool LoginDbUser(UserCredentials user)
 		{

@@ -121,7 +121,9 @@ namespace MTCG.Database
 						username VARCHAR(50) UNIQUE,
 						password VARCHAR(255),
 						coins INTEGER,
-						elo INTEGER
+						elo INTEGER,
+						wins INTEGER,
+						losses INTEGER
 					);",
 
 					null

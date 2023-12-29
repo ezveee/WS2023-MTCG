@@ -106,6 +106,7 @@ namespace MTCG.Server.HttpRequests
 			{
 				transaction.Rollback();
 				Console.WriteLine("Transaction rolled back due to exception: " + ex.Message);
+				return Text.Res_500_ServerError;
 			}
 
 			dbConnection.Close();

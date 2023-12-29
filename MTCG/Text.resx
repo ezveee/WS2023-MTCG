@@ -135,13 +135,17 @@ Content-Type: text/plain
 
 404 Not Found</value>
   </data>
+  <data name="Res_500_ServerError" xml:space="preserve">
+    <value>HTTP/1.1 500 Internal Server Error
+Content-Type: text/plain
+
+The server has encountered a situation it does not know how to handle</value>
+  </data>
   <data name="Res_GetDeck_200" xml:space="preserve">
     <value>HTTP/1.1 200 OK
 Content-Type: application/json
 
 {0}
-
-Content-Type: text/plain
 
 {1}</value>
   </data>
@@ -184,6 +188,7 @@ At least one card in the packages already exists</value>
   <data name="Res_PostSession_200" xml:space="preserve">
     <value>HTTP/1.1 200 OK
 Content-Type: text/plain
+Authorization: Bearer {0}-mtcgToken
 
 User login successful</value>
   </data>
@@ -222,6 +227,12 @@ User successfully created</value>
 Content-Type: text/plain
 
 User with same username already registered</value>
+  </data>
+  <data name="Res_PutDeck_200" xml:space="preserve">
+    <value>HTTP/1.1 200 OK
+Content-Type: text/plain
+
+The deck has been successfully configured</value>
   </data>
   <data name="Res_PutDeck_400" xml:space="preserve">
     <value>HTTP/1.1 400 Bad Request
