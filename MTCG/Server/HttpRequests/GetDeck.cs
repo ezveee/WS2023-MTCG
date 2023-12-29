@@ -6,14 +6,14 @@ using Npgsql;
 
 namespace MTCG.Server.HttpRequests
 {
-	internal class GetCards : IHttpRequest
+	internal class GetDeck : IHttpRequest
 	{
 		public string GetResponse(string request)
 		{
 			string response;
 			try
 			{
-				response = RetrieveCards(HttpRequestUtility.ExtractBearerToken(request));
+				response = RetrieveDeck(HttpRequestUtility.ExtractBearerToken(request));
 			}
 			catch (InvalidOperationException)
 			{
@@ -23,7 +23,7 @@ namespace MTCG.Server.HttpRequests
 			return response;
 		}
 
-		private static string RetrieveCards(string authToken)
+		private static string RetrieveDeck(string authToken)
 		{
 			if (!HttpRequestUtility.IsTokenValid(authToken))
 			{
@@ -34,42 +34,30 @@ namespace MTCG.Server.HttpRequests
 			dbConnection.Open();
 
 			string username = HttpRequestUtility.RetrieveUsernameFromToken(authToken);
-			List<Card> cardList = new List<Card>();
 
+			// TODO: see if description is even necessary
+			string description;
 			using (NpgsqlCommand command = new(
-				@"SELECT cards.id,
-					cards.name,
-					cards.damage
-				FROM stacks
-				JOIN users ON stacks.userid = users.id
-				JOIN cards ON stacks.cardid = cards.id
+				@"SELECT description FROM decks
+				JOIN users ON decks.userid = users.id
 				WHERE users.username = @user;", dbConnection))
 			{
 				command.Parameters.AddWithValue("user", username);
 
-				using (NpgsqlDataReader reader = command.ExecuteReader())
-				{
-					while (reader.Read())
-					{
-						Card card = (Card)Card.CreateInstance(reader.GetGuid(0), reader.GetString(1), (float)reader.GetDouble(2));
+				description = (string)command.ExecuteScalar();
+			}
 
-						if (card is null)
-						{
-							continue;
-						}
+			List<Card> cardList = HttpRequestUtility.RetrieveUserCards(username, "decks", dbConnection);
 
-						cardList.Add(card);
-					}
-				}
-
-				if (cardList.Count <= 0)
-				{
-					return Text.Res_GetCards_204;
-				}
+			if (cardList.Count <= 0)
+			{
+				// TODO: check why 204 didn't work
+				// temporarily used 404
+				return Text.Res_GetDeck_204;
 			}
 
 			string cardsJson = JsonConvert.SerializeObject(cardList, Formatting.Indented);
-			return String.Format(Text.Res_GetCards_200, cardsJson);
+			return String.Format(Text.Res_GetDeck_200, cardsJson, description);
 		}
 	}
 }

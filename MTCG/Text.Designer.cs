@@ -98,26 +98,53 @@ namespace MTCG {
         
         /// <summary>
         ///   Looks up a localized string similar to HTTP/1.1 200 OK
+        ///Content-Type: application/json
+        ///
+        ///{0}
+        ///
         ///Content-Type: text/plain
         ///
-        ///The user has cards, the response contains these:
-        ///{0}.
+        ///{1}.
         /// </summary>
-        internal static string Res_GetCards_200 {
+        internal static string Res_GetDeck_200 {
             get {
-                return ResourceManager.GetString("Res_GetCards_200", resourceCulture);
+                return ResourceManager.GetString("Res_GetDeck_200", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HTTP/1.1 204 No Content
+        ///   Looks up a localized string similar to HTTP/1.1 404 No Content
+        ///Content-Type: text/plain
+        ///
+        ///The request was fine, but the deck doesn&apos;t have any cards.
+        /// </summary>
+        internal static string Res_GetDeck_204 {
+            get {
+                return ResourceManager.GetString("Res_GetDeck_204", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP/1.1 200 OK
+        ///Content-Type: application/json
+        ///
+        ///{0}.
+        /// </summary>
+        internal static string Res_GetStack_200 {
+            get {
+                return ResourceManager.GetString("Res_GetStack_200", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP/1.1 404 No Content
         ///Content-Type: text/plain
         ///
         ///The request was fine, but the user doesn&apos;t have any cards.
         /// </summary>
-        internal static string Res_GetCards_204 {
+        internal static string Res_GetStack_204 {
             get {
-                return ResourceManager.GetString("Res_GetCards_204", resourceCulture);
+                return ResourceManager.GetString("Res_GetStack_204", resourceCulture);
             }
         }
         
@@ -238,6 +265,30 @@ namespace MTCG {
         internal static string Res_PostUser_409 {
             get {
                 return ResourceManager.GetString("Res_PostUser_409", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP/1.1 400 Bad Request
+        ///Content-Type: text/plain
+        ///
+        ///The provided deck did not include the required amount of cards.
+        /// </summary>
+        internal static string Res_PutDeck_400 {
+            get {
+                return ResourceManager.GetString("Res_PutDeck_400", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP/1.1 403 Forbidden
+        ///Content-Type: text/plain
+        ///
+        ///At least one of the provided cards does not belong to the user or is not available..
+        /// </summary>
+        internal static string Res_PutDeck_403 {
+            get {
+                return ResourceManager.GetString("Res_PutDeck_403", resourceCulture);
             }
         }
     }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MTCG.Interfaces.ICard
 {
-	internal interface ICard
+	public interface ICard
 	{
 		public Guid Id { get; }
 

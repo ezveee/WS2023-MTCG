@@ -3,7 +3,7 @@ using System.Collections.Immutable;
 
 namespace MTCG.Cards
 {
-	internal abstract class Card : ICard
+	public abstract class Card : ICard
 	{
 		private static readonly ImmutableDictionary<string, (Type ObjectType, CardType CardType, ElementType ElementType)> cardCategories =
 			new Dictionary<string, (Type ObjectType, CardType CardType, ElementType ElementType)>()

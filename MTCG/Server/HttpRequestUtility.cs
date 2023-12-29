@@ -4,6 +4,7 @@ using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -90,6 +91,36 @@ namespace MTCG.Server
 			using NpgsqlCommand command = new($@"SELECT username FROM sessions WHERE token = '{authToken}';", dbConnection);
 
 			return (string)command.ExecuteScalar();
+		}
+
+		public static List<Card> RetrieveUserCards(string userName, string tableName, NpgsqlConnection dbConnection)
+		{
+			List<Card> cardList = new();
+
+			using NpgsqlCommand command = new(
+				@$"SELECT cards.id, cards.name, cards.damage
+					FROM {tableName}
+					JOIN users ON {tableName}.userid = users.id
+					JOIN cards ON {tableName}.cardid = cards.id
+					WHERE users.username = @user;", dbConnection);
+
+			command.Parameters.AddWithValue("user", userName);
+
+			using NpgsqlDataReader reader = command.ExecuteReader();
+
+			while (reader.Read())
+			{
+				Card card = (Card)Card.CreateInstance(reader.GetGuid(0), reader.GetString(1), (float)reader.GetDouble(2));
+
+				if (card is null)
+				{
+					continue;
+				}
+
+				cardList.Add(card);
+			}
+
+			return cardList;
 		}
 	}
 }

@@ -135,15 +135,30 @@ Content-Type: text/plain
 
 404 Not Found</value>
   </data>
-  <data name="Res_GetCards_200" xml:space="preserve">
+  <data name="Res_GetDeck_200" xml:space="preserve">
     <value>HTTP/1.1 200 OK
+Content-Type: application/json
+
+{0}
+
 Content-Type: text/plain
 
-The user has cards, the response contains these:
+{1}</value>
+  </data>
+  <data name="Res_GetDeck_204" xml:space="preserve">
+    <value>HTTP/1.1 404 No Content
+Content-Type: text/plain
+
+The request was fine, but the deck doesn't have any cards</value>
+  </data>
+  <data name="Res_GetStack_200" xml:space="preserve">
+    <value>HTTP/1.1 200 OK
+Content-Type: application/json
+
 {0}</value>
   </data>
-  <data name="Res_GetCards_204" xml:space="preserve">
-    <value>HTTP/1.1 204 No Content
+  <data name="Res_GetStack_204" xml:space="preserve">
+    <value>HTTP/1.1 404 No Content
 Content-Type: text/plain
 
 The request was fine, but the user doesn't have any cards</value>
@@ -207,5 +222,17 @@ User successfully created</value>
 Content-Type: text/plain
 
 User with same username already registered</value>
+  </data>
+  <data name="Res_PutDeck_400" xml:space="preserve">
+    <value>HTTP/1.1 400 Bad Request
+Content-Type: text/plain
+
+The provided deck did not include the required amount of cards</value>
+  </data>
+  <data name="Res_PutDeck_403" xml:space="preserve">
+    <value>HTTP/1.1 403 Forbidden
+Content-Type: text/plain
+
+At least one of the provided cards does not belong to the user or is not available.</value>
   </data>
 </root>

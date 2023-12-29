@@ -43,7 +43,7 @@ namespace MTCG.Server
 			routeTable["GET /users"] = new GetUser(); // TODO: change cause it gets a specific username
 			routeTable["PUT /users"] = new PutUser(); // TODO: change cause it gets a specific username
 			routeTable["POST /transactions"] = new PostTransaction();
-			routeTable["GET /cards"] = new GetCards();
+			routeTable["GET /cards"] = new GetStack();
 			routeTable["GET /deck"] = new GetDeck();
 			routeTable["PUT /deck"] = new PutDeck();
 			routeTable["GET /stats"] = new GetStats();

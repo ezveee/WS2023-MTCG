@@ -182,6 +182,20 @@ namespace MTCG.Database
 
 					null
 				)
+			},
+
+			{
+				"decks",
+				(
+					@"CREATE TABLE IF NOT EXISTS decks (
+						id SERIAL PRIMARY KEY,
+						userid INTEGER,
+						cardid uuid UNIQUE,
+						description VARCHAR(200)
+					);",
+
+					null
+				)
 			}
 		};
 
