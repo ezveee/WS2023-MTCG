@@ -167,6 +167,20 @@ Content-Type: text/plain
 
 The request was fine, but the user doesn't have any cards</value>
   </data>
+  <data name="Res_GetUser_200" xml:space="preserve">
+    <value>HTTP/1.1 200 OK
+Content-Type: application/json
+
+Data successfully retrieved
+
+{0}</value>
+  </data>
+  <data name="Res_GetUser_404" xml:space="preserve">
+    <value>HTTP/1.1 404 Not Found
+Content-Type: text/plain
+
+User not found.</value>
+  </data>
   <data name="Res_PostPackage_201" xml:space="preserve">
     <value>HTTP/1.1 201 Created
 Content-Type: text/plain

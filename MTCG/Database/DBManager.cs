@@ -123,7 +123,9 @@ namespace MTCG.Database
 						coins INTEGER,
 						elo INTEGER,
 						wins INTEGER,
-						losses INTEGER
+						losses INTEGER,
+						image VARCHAR(50),
+						bio VARCHAR(255)
 					);",
 
 					null

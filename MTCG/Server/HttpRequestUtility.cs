@@ -122,5 +122,24 @@ namespace MTCG.Server
 
 			return cardList;
 		}
+		public static bool IsUserAccessValid(string request)
+		{
+			string authToken;
+			try
+			{
+				authToken = ExtractBearerToken(request);
+			}
+			catch (InvalidOperationException)
+			{
+				return false;
+			}
+
+			if (!IsTokenValid(authToken))
+			{
+				return false;
+			}
+
+			return true;
+		}
 	}
 }
