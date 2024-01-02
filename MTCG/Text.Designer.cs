@@ -61,6 +61,18 @@ namespace MTCG {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to HTTP/1.1 200 OK
+        ///Content-Type: application/json
+        ///
+        ///{0}.
+        /// </summary>
+        internal static string Res_200_WithContent {
+            get {
+                return ResourceManager.GetString("Res_200_WithContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HTTP/1.1 204 No Content
         ///
         ///.

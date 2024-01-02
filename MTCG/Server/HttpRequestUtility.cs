@@ -67,7 +67,7 @@ namespace MTCG.Server
 
 		public static bool IsTokenValid(string authToken)
 		{
-			var dbConnection = DBManager.GetDBConnection();
+			var dbConnection = DBManager.GetDbConnection();
 			dbConnection.Open();
 
 			using NpgsqlCommand command = new($@"SELECT valid_until FROM sessions WHERE token = '{authToken}';", dbConnection);
@@ -85,7 +85,7 @@ namespace MTCG.Server
 
 		public static string RetrieveUsernameFromToken(string authToken)
 		{
-			var dbConnection = DBManager.GetDBConnection();
+			var dbConnection = DBManager.GetDbConnection();
 			dbConnection.Open();
 
 			using NpgsqlCommand command = new($@"SELECT username FROM sessions WHERE token = '{authToken}';", dbConnection);

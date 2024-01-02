@@ -37,7 +37,7 @@ namespace MTCG.Server.HttpRequests
 
 		private static string RetrieveUserData(string user)
 		{
-			var dbConnection = DBManager.GetDBConnection();
+			var dbConnection = DBManager.GetDbConnection();
 			dbConnection.Open();
 
 			NpgsqlCommand command = new("SELECT name, bio, image FROM userdata INNER JOIN users ON users.id = userdata.userid WHERE users.username = @username;", dbConnection);
@@ -64,7 +64,7 @@ namespace MTCG.Server.HttpRequests
 		// TODO: db layer?
 		private static bool DoesUserExist(string username)
 		{
-			var dbConnection = DBManager.GetDBConnection();
+			var dbConnection = DBManager.GetDbConnection();
 			dbConnection.Open();
 
 			using NpgsqlCommand command = new("SELECT COUNT(*) FROM users WHERE username = @username", dbConnection);

@@ -50,7 +50,7 @@ namespace MTCG.Server.HttpRequests
 
 		private static string InsertUserData(string username, UserData userData)
 		{
-			var dbConnection = DBManager.GetDBConnection();
+			var dbConnection = DBManager.GetDbConnection();
 			dbConnection.Open();
 
 			NpgsqlCommand command = new("UPDATE userdata SET name = @name, bio = @bio, image = @image FROM users WHERE userdata.userid = users.id AND users.username = @username;", dbConnection);
@@ -69,7 +69,7 @@ namespace MTCG.Server.HttpRequests
 		// TODO: db layer?
 		private static bool DoesUserExist(string username)
 		{
-			var dbConnection = DBManager.GetDBConnection();
+			var dbConnection = DBManager.GetDbConnection();
 			dbConnection.Open();
 
 			using NpgsqlCommand command = new("SELECT COUNT(*) FROM users WHERE username = @username", dbConnection);

@@ -41,7 +41,7 @@ namespace MTCG.Server.HttpRequests
 		}
 		private static bool LoginDbUser(UserCredentials user)
 		{
-			var dbConnection = DBManager.GetDBConnection();
+			var dbConnection = DBManager.GetDbConnection();
 			dbConnection.Open();
 
 			using NpgsqlCommand command = new($@"SELECT COUNT(*) FROM users WHERE username = '{user.Username}' AND password = '{user.Password}';", dbConnection);

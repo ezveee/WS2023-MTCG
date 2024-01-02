@@ -42,7 +42,7 @@ namespace MTCG.Server.HttpRequests
 		//			possible solution: do query to check if exists if not -> insert
 		private static bool CreateDbUser(UserCredentials user)
 		{
-			var dbConnection = DBManager.GetDBConnection();
+			var dbConnection = DBManager.GetDbConnection();
 			dbConnection.Open();
 
 			using NpgsqlCommand command = new();

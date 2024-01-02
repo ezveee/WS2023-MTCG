@@ -50,7 +50,7 @@ namespace MTCG.Server.HttpRequests
 				return Text.Res_401_Unauthorized;
 			}
 
-			var dbConnection = DBManager.GetDBConnection();
+			var dbConnection = DBManager.GetDbConnection();
 			dbConnection.Open();
 
 			string username = HttpRequestUtility.RetrieveUsernameFromToken(authToken);

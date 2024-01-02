@@ -230,7 +230,7 @@ namespace MTCG.Database
 		{
 			connection.Open();
 
-			var dbConnection = GetDBConnection();
+			var dbConnection = GetDbConnection();
 			dbConnection.Open();
 
 			foreach (var entry in dbObjectInitCommands)
@@ -239,7 +239,7 @@ namespace MTCG.Database
 			dbConnection.Close();
 		}
 
-		public static NpgsqlConnection GetDBConnection()
+		public static NpgsqlConnection GetDbConnection()
 		{
 			return new NpgsqlConnection(connectionString + "; Database=mtcg");
 		}

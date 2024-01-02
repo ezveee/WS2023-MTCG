@@ -48,7 +48,7 @@ namespace MTCG.Server.HttpRequests
 
 		private static string CreatePackage(List<Database.Schemas.Card> package, string authToken)
 		{
-			var dbConnection = DBManager.GetDBConnection();
+			var dbConnection = DBManager.GetDbConnection();
 			dbConnection.Open();
 
 			if (DoCardsAlreadyExist(package, dbConnection))
@@ -125,7 +125,7 @@ namespace MTCG.Server.HttpRequests
 
 		private static bool IsAdmin(string authToken)
 		{
-			var dbConnection = DBManager.GetDBConnection();
+			var dbConnection = DBManager.GetDbConnection();
 			dbConnection.Open();
 
 			using NpgsqlCommand command = new($@"SELECT username FROM sessions WHERE token = '{authToken}';", dbConnection);
