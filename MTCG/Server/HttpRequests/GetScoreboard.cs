@@ -17,12 +17,12 @@ namespace MTCG.Server.HttpRequests
 	{
 		public string GetResponse(string request)
 		{
-			if (!HttpRequestUtility.IsUserAccessValid(request))
+			if (!HttpRequestUtility.IsUserAccessValid(request, out string? authToken))
 			{
 				return Text.Res_401_Unauthorized;
 			}
 
-			return RetrieveScoreboard(HttpRequestUtility.RetrieveUsernameFromToken(HttpRequestUtility.ExtractBearerToken(request)));
+			return RetrieveScoreboard(HttpRequestUtility.RetrieveUsernameFromToken(authToken!));
 		}
 
 		private static string RetrieveScoreboard(string username)

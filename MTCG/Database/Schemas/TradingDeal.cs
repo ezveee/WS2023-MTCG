@@ -8,8 +8,8 @@ namespace MTCG.Database.Schemas
 {
 	public class TradingDeal
 	{
-		public string Id { get; set; }
-		public string CardToTrade { get; set; }
+		public Guid Id { get; set; }
+		public Guid CardToTrade { get; set; }
 		public string Type { get; set; }
 		public float MinimumDamage { get; set; }
 

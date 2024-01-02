@@ -168,6 +168,20 @@ namespace MTCG.Database
 			},
 
 			{
+				"trades",
+				(
+					@"CREATE TABLE IF NOT EXISTS trades (
+						id uuid PRIMARY KEY,
+						cardid uuid UNIQUE,
+						type VARCHAR(20),
+						minimumDamage FLOAT
+					);",
+
+					null
+				)
+			},
+
+			{
 				"sessions",
 				(
 					@"CREATE TABLE IF NOT EXISTS sessions (

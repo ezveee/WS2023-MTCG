@@ -245,6 +245,42 @@ namespace MTCG {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to HTTP/1.1 201 Created
+        ///Content-Type: text/plain
+        ///
+        ///Trading deal successfully created.
+        /// </summary>
+        internal static string Res_PostTrading_201 {
+            get {
+                return ResourceManager.GetString("Res_PostTrading_201", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP/1.1 403 Forbidden
+        ///Content-Type: text/plain
+        ///
+        ///The deal contains a card that is not owned by the user or locked in the deck..
+        /// </summary>
+        internal static string Res_PostTrading_403 {
+            get {
+                return ResourceManager.GetString("Res_PostTrading_403", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP/1.1 409 Conflict
+        ///Content-Type: text/plain
+        ///
+        ///A deal with this deal ID already exists..
+        /// </summary>
+        internal static string Res_PostTrading_409 {
+            get {
+                return ResourceManager.GetString("Res_PostTrading_409", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HTTP/1.1 200 OK
         ///Content-Type: application/json
         ///

@@ -10,12 +10,12 @@ namespace MTCG.Server.HttpRequests
 	{
 		public string GetResponse(string request)
 		{
-			if (!HttpRequestUtility.IsUserAccessValid(request))
+			if (!HttpRequestUtility.IsUserAccessValid(request, out string? authToken))
 			{
 				return Text.Res_401_Unauthorized;
 			}
 
-			return RetrieveStats(HttpRequestUtility.RetrieveUsernameFromToken(HttpRequestUtility.ExtractBearerToken(request)));
+			return RetrieveStats(HttpRequestUtility.RetrieveUsernameFromToken(authToken!));
 		}
 
 		private static string RetrieveStats(string username)

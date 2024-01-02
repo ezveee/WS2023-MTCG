@@ -1,19 +1,20 @@
 ﻿using MTCG.Cards;
 using MTCG.Database;
+using MTCG.Database.Schemas;
+using Newtonsoft.Json;
 using Npgsql;
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace MTCG.Server
 {
 	public static class HttpRequestUtility
 	{
+		public static T DeserializeJson<T>(string request)
+		{
+			string jsonPayload = ExtractJsonPayload(request) ?? throw new InvalidOperationException();
+			T obj = JsonConvert.DeserializeObject<T>(jsonPayload) ?? throw new JsonSerializationException();
+			return obj;
+		}
+
 		public static string ExtractJsonPayload(string request)
 		{
 			int bodyStartIndex = request.IndexOf("\r\n\r\n", StringComparison.Ordinal) + 4;
@@ -101,9 +102,9 @@ namespace MTCG.Server
 			return (string)command.ExecuteScalar();
 		}
 
-		public static List<Card> RetrieveUserCards(string userName, string tableName, NpgsqlConnection dbConnection)
+		public static List<Cards.Card> RetrieveUserCards(string userName, string tableName, NpgsqlConnection dbConnection)
 		{
-			List<Card> cardList = new();
+			List<Cards.Card> cardList = new();
 
 			using NpgsqlCommand command = new(
 				@$"SELECT cards.id, cards.name, cards.damage
@@ -118,7 +119,7 @@ namespace MTCG.Server
 
 			while (reader.Read())
 			{
-				Card card = (Card)Card.CreateInstance(reader.GetGuid(0), reader.GetString(1), (float)reader.GetDouble(2));
+				Cards.Card card = (Cards.Card)Cards.Card.CreateInstance(reader.GetGuid(0), reader.GetString(1), (float)reader.GetDouble(2));
 
 				if (card is null)
 				{
@@ -130,15 +131,15 @@ namespace MTCG.Server
 
 			return cardList;
 		}
-		public static bool IsUserAccessValid(string request)
+		public static bool IsUserAccessValid(string request, out string? authToken)
 		{
-			string authToken;
 			try
 			{
 				authToken = ExtractBearerToken(request);
 			}
 			catch (InvalidOperationException)
 			{
+				authToken = null;
 				return false;
 			}
 

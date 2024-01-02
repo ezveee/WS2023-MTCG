@@ -10,7 +10,7 @@ namespace MTCG.Server.HttpRequests
 	{
 		public string GetResponse(string request)
 		{
-			if (!HttpRequestUtility.IsUserAccessValid(request))
+			if (!HttpRequestUtility.IsUserAccessValid(request, out string? authToken))
 			{
 				return Text.Res_401_Unauthorized;
 			}
@@ -21,7 +21,7 @@ namespace MTCG.Server.HttpRequests
 				return Text.Res_400_BadRequest;
 			}
 
-			string tokenUser = HttpRequestUtility.RetrieveUsernameFromToken(HttpRequestUtility.ExtractBearerToken(request));
+			string tokenUser = HttpRequestUtility.RetrieveUsernameFromToken(authToken!);
 			if (tokenUser != "admin" && tokenUser != user)
 			{
 				return Text.Res_401_Unauthorized;

@@ -211,6 +211,24 @@ Content-Type: text/plain
 
 Invalid username/password provided</value>
   </data>
+  <data name="Res_PostTrading_201" xml:space="preserve">
+    <value>HTTP/1.1 201 Created
+Content-Type: text/plain
+
+Trading deal successfully created</value>
+  </data>
+  <data name="Res_PostTrading_403" xml:space="preserve">
+    <value>HTTP/1.1 403 Forbidden
+Content-Type: text/plain
+
+The deal contains a card that is not owned by the user or locked in the deck.</value>
+  </data>
+  <data name="Res_PostTrading_409" xml:space="preserve">
+    <value>HTTP/1.1 409 Conflict
+Content-Type: text/plain
+
+A deal with this deal ID already exists.</value>
+  </data>
   <data name="Res_PostTransaction_200" xml:space="preserve">
     <value>HTTP/1.1 200 OK
 Content-Type: application/json
