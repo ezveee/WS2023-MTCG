@@ -329,5 +329,17 @@ namespace MTCG {
                 return ResourceManager.GetString("Res_PutDeck_403", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP/1.1 200 OK
+        ///Content-Type: text/plain
+        ///
+        ///User sucessfully updated..
+        /// </summary>
+        internal static string Res_PutUser_200 {
+            get {
+                return ResourceManager.GetString("Res_PutUser_200", resourceCulture);
+            }
+        }
     }
 }

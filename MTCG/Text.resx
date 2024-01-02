@@ -255,4 +255,10 @@ Content-Type: text/plain
 
 At least one of the provided cards does not belong to the user or is not available.</value>
   </data>
+  <data name="Res_PutUser_200" xml:space="preserve">
+    <value>HTTP/1.1 200 OK
+Content-Type: text/plain
+
+User sucessfully updated.</value>
+  </data>
 </root>

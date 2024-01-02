@@ -17,7 +17,9 @@ namespace MTCG.Server.HttpRequests
 
 			string? user;
 			if ((user = HttpRequestUtility.ExtractPathAddOns(request)) is null)
+			{
 				return Text.Res_400_BadRequest;
+			}
 
 			string tokenUser = HttpRequestUtility.RetrieveUsernameFromToken(HttpRequestUtility.ExtractBearerToken(request));
 			if (tokenUser != "admin" && tokenUser != user)

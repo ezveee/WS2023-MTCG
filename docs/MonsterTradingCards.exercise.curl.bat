@@ -191,6 +191,9 @@ curl -X PUT http://localhost:10001/users/altenhof --header "Content-Type: applic
 echo.
 curl -X GET http://localhost:10001/users/someGuy  --header "Authorization: Bearer kienboec-mtcgToken"
 echo.
+REM added by me ah ha ha, weil sonst der user doesn't exist error nicht kommen würde
+curl -X GET http://localhost:10001/users/someGuy  --header "Authorization: Bearer admin-mtcgToken"
+echo.
 echo.
 
 REM --------------------------------------------------
