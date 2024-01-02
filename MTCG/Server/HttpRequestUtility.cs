@@ -70,8 +70,16 @@ namespace MTCG.Server
 			var dbConnection = DBManager.GetDbConnection();
 			dbConnection.Open();
 
-			using NpgsqlCommand command = new($@"SELECT valid_until FROM sessions WHERE token = '{authToken}';", dbConnection);
-			DateTime validUntil = (DateTime)command.ExecuteScalar();
+			using NpgsqlCommand command = new("SELECT valid_until FROM sessions WHERE token = @token;", dbConnection);
+			command.Parameters.AddWithValue("token", authToken);
+			object? result = command.ExecuteScalar();
+
+			if (result is null)
+			{
+				return false;
+			}
+
+			DateTime? validUntil = result as DateTime?;
 
 			if (validUntil < DateTime.Now)
 			{
