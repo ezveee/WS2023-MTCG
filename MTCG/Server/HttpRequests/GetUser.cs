@@ -38,7 +38,7 @@ namespace MTCG.Server.HttpRequests
 			var dbConnection = DBManager.GetDBConnection();
 			dbConnection.Open();
 
-			NpgsqlCommand command = new("SELECT username, bio, image FROM users WHERE username = @username;", dbConnection);
+			NpgsqlCommand command = new("SELECT name, bio, image FROM userdata INNER JOIN users ON users.id = userdata.userid WHERE users.username = @username;", dbConnection);
 			command.Parameters.AddWithValue("username", user);
 
 			UserData userData;
