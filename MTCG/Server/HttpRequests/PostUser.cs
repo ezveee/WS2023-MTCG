@@ -42,24 +42,46 @@ namespace MTCG.Server.HttpRequests
 		//			possible solution: do query to check if exists if not -> insert
 		private static bool CreateDbUser(UserCredentials user)
 		{
+			var dbConnection = DBManager.GetDBConnection();
+			dbConnection.Open();
+
+			using NpgsqlCommand command = new();
+			command.Connection = dbConnection;
+
 			try
 			{
-				var dbConnection = DBManager.GetDBConnection();
-				dbConnection.Open();
-
-				using NpgsqlCommand command = new($@"INSERT INTO users (username, password, coins, elo, wins, losses, image, bio) VALUES ('{user.Username}', '{user.Password}', 20, 100, 0, 0, '', '');", dbConnection);
+				command.CommandText = "INSERT INTO users (username, password, coins) VALUES (@username, @password, 20);";
+				command.Parameters.AddWithValue("username", user.Username);
+				command.Parameters.AddWithValue("password", user.Password);
 				command.ExecuteNonQuery();
 
-				dbConnection.Close();
 			}
 			catch (PostgresException ex)
 			{
 				if (ex.SqlState == "23505") // == unique_violation (https://www.postgresql.org/docs/current/errcodes-appendix.html)
 				{
+					dbConnection.Close();
 					return false;
 				}
 			}
 
+			command.Parameters.Clear();
+			command.CommandText = "SELECT id FROM users WHERE username = @username;";
+			command.Parameters.AddWithValue("username", user.Username);
+			int id = Convert.ToInt32(command.ExecuteScalar());
+
+			command.Parameters.Clear();
+			command.CommandText = "INSERT INTO userdata (userid, name, bio, image) VALUES (@id, @username, '', '');";
+			command.Parameters.AddWithValue("id", id);
+			command.Parameters.AddWithValue("username", user.Username);
+			command.ExecuteNonQuery();
+
+			command.Parameters.Clear();
+			command.CommandText = "INSERT INTO userstats (userid, elo, wins, losses) VALUES (@id, 100, 0, 0);";
+			command.Parameters.AddWithValue("id", id);
+			command.ExecuteNonQuery();
+
+			dbConnection.Close();
 			return true;
 		}
 	}

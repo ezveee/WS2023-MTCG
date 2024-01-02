@@ -54,7 +54,7 @@ namespace MTCG.Server.HttpRequests
 			{
 				// TODO: check why 204 didn't work
 				// temporarily used 404
-				return Text.Res_GetDeck_204;
+				return Text.Res_204_NoContent;
 			}
 
 			string cardsJson = JsonConvert.SerializeObject(cardList, Formatting.Indented);

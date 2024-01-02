@@ -61,6 +61,17 @@ namespace MTCG {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to HTTP/1.1 204 No Content
+        ///
+        ///.
+        /// </summary>
+        internal static string Res_204_NoContent {
+            get {
+                return ResourceManager.GetString("Res_204_NoContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HTTP/1.1 400 Bad Request
         ///Content-Type: text/plain
         ///
@@ -97,6 +108,18 @@ namespace MTCG {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to HTTP/1.1 404 Not Found
+        ///Content-Type: text/plain
+        ///
+        ///User not found..
+        /// </summary>
+        internal static string Res_404_User {
+            get {
+                return ResourceManager.GetString("Res_404_User", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HTTP/1.1 500 Internal Server Error
         ///Content-Type: text/plain
         ///
@@ -123,18 +146,6 @@ namespace MTCG {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HTTP/1.1 404 No Content
-        ///Content-Type: text/plain
-        ///
-        ///The request was fine, but the deck doesn&apos;t have any cards.
-        /// </summary>
-        internal static string Res_GetDeck_204 {
-            get {
-                return ResourceManager.GetString("Res_GetDeck_204", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to HTTP/1.1 200 OK
         ///Content-Type: application/json
         ///
@@ -143,18 +154,6 @@ namespace MTCG {
         internal static string Res_GetStack_200 {
             get {
                 return ResourceManager.GetString("Res_GetStack_200", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP/1.1 404 No Content
-        ///Content-Type: text/plain
-        ///
-        ///The request was fine, but the user doesn&apos;t have any cards.
-        /// </summary>
-        internal static string Res_GetStack_204 {
-            get {
-                return ResourceManager.GetString("Res_GetStack_204", resourceCulture);
             }
         }
         
@@ -169,18 +168,6 @@ namespace MTCG {
         internal static string Res_GetUser_200 {
             get {
                 return ResourceManager.GetString("Res_GetUser_200", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP/1.1 404 Not Found
-        ///Content-Type: text/plain
-        ///
-        ///User not found..
-        /// </summary>
-        internal static string Res_GetUser_404 {
-            get {
-                return ResourceManager.GetString("Res_GetUser_404", resourceCulture);
             }
         }
         

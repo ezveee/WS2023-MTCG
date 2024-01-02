@@ -120,12 +120,35 @@ namespace MTCG.Database
 						id SERIAL PRIMARY KEY,
 						username VARCHAR(50) UNIQUE,
 						password VARCHAR(255),
-						coins INTEGER,
-						elo INTEGER,
-						wins INTEGER,
-						losses INTEGER,
+						coins INTEGER
+					);",
+
+					null
+				)
+			},
+
+			{
+				"userdata",
+				(
+					@"CREATE TABLE IF NOT EXISTS userdata (
+						userid INTEGER PRIMARY KEY,
+						name VARCHAR(50),
 						image VARCHAR(50),
 						bio VARCHAR(255)
+					);",
+
+					null
+				)
+			},
+
+			{
+				"userstats",
+				(
+					@"CREATE TABLE IF NOT EXISTS userstats (
+						userid INTEGER PRIMARY KEY,
+						elo INTEGER,
+						wins INTEGER,
+						losses INTEGER
 					);",
 
 					null
