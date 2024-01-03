@@ -117,55 +117,172 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="HttpResponse_200_OK" xml:space="preserve">
-    <value>HTTP/1.1 200 OK
-
-</value>
-  </data>
-  <data name="HttpResponse_200_OK_WithContent" xml:space="preserve">
+  <data name="Res_200_WithContent" xml:space="preserve">
     <value>HTTP/1.1 200 OK
 Content-Type: application/json
 
 {0}</value>
   </data>
-  <data name="HttpResponse_201_Created" xml:space="preserve">
-    <value>HTTP/1.1 201 Created
-
-</value>
-  </data>
-  <data name="HttpResponse_204_NoContent" xml:space="preserve">
+  <data name="Res_204_NoContent" xml:space="preserve">
     <value>HTTP/1.1 204 No Content
 
 </value>
   </data>
-  <data name="HttpResponse_400_BadRequest" xml:space="preserve">
+  <data name="Res_400_BadRequest" xml:space="preserve">
     <value>HTTP/1.1 400 Bad Request
+Content-Type: text/plain
 
-</value>
+Request could not be processed</value>
   </data>
-  <data name="HttpResponse_401_Unauthorized" xml:space="preserve">
+  <data name="Res_401_Unauthorized" xml:space="preserve">
     <value>HTTP/1.1 401 Unauthorized
+Content-Type: text/plain
 
-</value>
+Access token is missing or invalid</value>
   </data>
-  <data name="HttpResponse_403_Forbidden" xml:space="preserve">
-    <value>HTTP/1.1 403 Forbidden
-
-</value>
-  </data>
-  <data name="HttpResponse_404_NotFound" xml:space="preserve">
+  <data name="Res_404_NotFound" xml:space="preserve">
     <value>HTTP/1.1 404 Not Found
+Content-Type: text/plain
 
-</value>
+404 Not Found</value>
   </data>
-  <data name="HttpResponse_409_Conflict" xml:space="preserve">
-    <value>HTTP/1.1 409 Conflict
+  <data name="Res_404_User" xml:space="preserve">
+    <value>HTTP/1.1 404 Not Found
+Content-Type: text/plain
 
-</value>
+User not found.</value>
   </data>
-  <data name="HttpResponse_500_InternalServerError" xml:space="preserve">
+  <data name="Res_500_ServerError" xml:space="preserve">
     <value>HTTP/1.1 500 Internal Server Error
+Content-Type: text/plain
 
-</value>
+The server has encountered a situation it does not know how to handle</value>
+  </data>
+  <data name="Res_GetDeck_200" xml:space="preserve">
+    <value>HTTP/1.1 200 OK
+Content-Type: application/json
+
+{0}
+
+{1}</value>
+  </data>
+  <data name="Res_GetStack_200" xml:space="preserve">
+    <value>HTTP/1.1 200 OK
+Content-Type: application/json
+
+{0}</value>
+  </data>
+  <data name="Res_GetUser_200" xml:space="preserve">
+    <value>HTTP/1.1 200 OK
+Content-Type: application/json
+
+Data successfully retrieved
+
+{0}</value>
+  </data>
+  <data name="Res_PostPackage_201" xml:space="preserve">
+    <value>HTTP/1.1 201 Created
+Content-Type: text/plain
+
+Package and cards successfully created</value>
+  </data>
+  <data name="Res_PostPackage_403" xml:space="preserve">
+    <value>HTTP/1.1 403 Forbidden
+Content-Type: text/plain
+
+Provided user is not "admin"</value>
+  </data>
+  <data name="Res_PostPackage_409" xml:space="preserve">
+    <value>HTTP/1.1 409 Conflict
+Content-Type: text/plain
+
+At least one card in the packages already exists</value>
+  </data>
+  <data name="Res_PostSession_200" xml:space="preserve">
+    <value>HTTP/1.1 200 OK
+Content-Type: text/plain
+Authorization: Bearer {0}-mtcgToken
+
+User login successful</value>
+  </data>
+  <data name="Res_PostSession_401" xml:space="preserve">
+    <value>HTTP/1.1 401 Unauthorized
+Content-Type: text/plain
+
+Invalid username/password provided</value>
+  </data>
+  <data name="Res_PostTrading_201" xml:space="preserve">
+    <value>HTTP/1.1 201 Created
+Content-Type: text/plain
+
+Trading deal successfully created</value>
+  </data>
+  <data name="Res_PostTrading_403" xml:space="preserve">
+    <value>HTTP/1.1 403 Forbidden
+Content-Type: text/plain
+
+The deal contains a card that is not owned by the user or locked in the deck.</value>
+  </data>
+  <data name="Res_PostTrading_409" xml:space="preserve">
+    <value>HTTP/1.1 409 Conflict
+Content-Type: text/plain
+
+A deal with this deal ID already exists.</value>
+  </data>
+  <data name="Res_PostTransaction_200" xml:space="preserve">
+    <value>HTTP/1.1 200 OK
+Content-Type: application/json
+
+A package has been successfully bought
+
+{0}</value>
+  </data>
+  <data name="Res_PostTransaction_403" xml:space="preserve">
+    <value>HTTP/1.1 403 Forbidden
+Content-Type: text/plain
+
+Not enough money for buying a card package</value>
+  </data>
+  <data name="Res_PostTransaction_404" xml:space="preserve">
+    <value>HTTP/1.1 404 Not Found
+Content-Type: text/plain
+
+No card package available for buying</value>
+  </data>
+  <data name="Res_PostUser_201" xml:space="preserve">
+    <value>HTTP/1.1 201 Created
+Content-Type: text/plain
+
+User successfully created</value>
+  </data>
+  <data name="Res_PostUser_409" xml:space="preserve">
+    <value>HTTP/1.1 409 Conflict
+Content-Type: text/plain
+
+User with same username already registered</value>
+  </data>
+  <data name="Res_PutDeck_200" xml:space="preserve">
+    <value>HTTP/1.1 200 OK
+Content-Type: text/plain
+
+The deck has been successfully configured</value>
+  </data>
+  <data name="Res_PutDeck_400" xml:space="preserve">
+    <value>HTTP/1.1 400 Bad Request
+Content-Type: text/plain
+
+The provided deck did not include the required amount of cards</value>
+  </data>
+  <data name="Res_PutDeck_403" xml:space="preserve">
+    <value>HTTP/1.1 403 Forbidden
+Content-Type: text/plain
+
+At least one of the provided cards does not belong to the user or is not available.</value>
+  </data>
+  <data name="Res_PutUser_200" xml:space="preserve">
+    <value>HTTP/1.1 200 OK
+Content-Type: text/plain
+
+User sucessfully updated.</value>
   </data>
 </root>

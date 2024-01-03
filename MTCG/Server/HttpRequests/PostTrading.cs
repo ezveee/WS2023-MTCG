@@ -17,7 +17,7 @@ namespace MTCG.Server.HttpRequests
 		{
 			if (!HttpRequestUtility.IsUserAccessValid(request, out string? authToken))
 			{
-				return Text.Res_401_Unauthorized;
+				return Text.HttpResponse_401_Unauthorized;
 			}
 
 			TradingDeal trade;
@@ -27,7 +27,7 @@ namespace MTCG.Server.HttpRequests
 			}
 			catch (Exception ex) when (ex is InvalidOperationException || ex is JsonSerializationException)
 			{
-				return Text.Res_400_BadRequest;
+				return Text.HttpResponse_400_BadRequest;
 			}
 
 			return CreateTrade(trade, HttpRequestUtility.RetrieveUsernameFromToken(authToken!));
@@ -44,17 +44,17 @@ namespace MTCG.Server.HttpRequests
 			{
 				if (DoesDealIdAlreadyExist(trade.Id))
 				{
-					return Text.Res_PostTrading_409;
+					return Text.HttpResponse_409_Conflict;
 				}
 
 				if (!DoesCardBelongToUser(trade.CardToTrade, username))
 				{
-					return Text.Res_PostTrading_403;
+					return Text.HttpResponse_403_Forbidden;
 				}
 
 				if (IsCardInUserDeck(trade.CardToTrade, username))
 				{
-					return Text.Res_PostTrading_403;
+					return Text.HttpResponse_403_Forbidden;
 				}
 
 				using (NpgsqlCommand command = new())
@@ -79,7 +79,7 @@ namespace MTCG.Server.HttpRequests
 						if (ex.SqlState == "23505") // == unique_violation (https://www.postgresql.org/docs/current/errcodes-appendix.html)
 						{
 							dbConnection.Close();
-							return Text.Res_PostPackage_409 + "\r\nTEST";
+							return Text.HttpResponse_409_Conflict + "\r\nTEST";
 						}
 					}
 				}
@@ -91,11 +91,11 @@ namespace MTCG.Server.HttpRequests
 			{
 				transaction.Rollback();
 				Console.WriteLine("Transaction rolled back due to exception: " + ex.Message);
-				return Text.Res_500_ServerError;
+				return Text.HttpResponse_500_InternalServerError;
 			}
 
 			dbConnection.Close();
-			return Text.Res_PostTrading_201;
+			return Text.HttpResponse_201_Created;
 		}
 
 		private static bool DoesDealIdAlreadyExist(Guid tradeId)

@@ -23,14 +23,14 @@ namespace MTCG.Server.HttpRequests
 
 			if (jsonPayload == null)
 			{
-				return Text.Res_400_BadRequest;
+				return Text.HttpResponse_400_BadRequest;
 			}
 
 			List<Database.Schemas.Card>? package = JsonConvert.DeserializeObject<List<Database.Schemas.Card>>(jsonPayload);
 
 			if (package == null || package.Count != 5)
 			{
-				return Text.Res_400_BadRequest;
+				return Text.HttpResponse_400_BadRequest;
 			}
 
 			string response;
@@ -40,7 +40,7 @@ namespace MTCG.Server.HttpRequests
 			}
 			catch (InvalidOperationException)
 			{
-				return Text.Res_401_Unauthorized;
+				return Text.HttpResponse_401_Unauthorized;
 			}
 
 			return response;
@@ -54,19 +54,19 @@ namespace MTCG.Server.HttpRequests
 			if (DoCardsAlreadyExist(package, dbConnection))
 			{
 				dbConnection.Close();
-				return Text.Res_PostPackage_409;
+				return Text.HttpResponse_409_Conflict;
 			}
 
 			if (!IsAdmin(authToken))
 			{
 				dbConnection.Close();
-				return Text.Res_PostPackage_403;
+				return Text.HttpResponse_403_Forbidden;
 			}
 
 			if (!HttpRequestUtility.IsTokenValid(authToken))
 			{
 				dbConnection.Close();
-				return Text.Res_401_Unauthorized;
+				return Text.HttpResponse_401_Unauthorized;
 			}
 
 			using var transaction = dbConnection.BeginTransaction();
@@ -101,11 +101,11 @@ namespace MTCG.Server.HttpRequests
 			{
 				transaction.Rollback();
 				Console.WriteLine("Transaction rolled back due to exception: " + ex.Message);
-				return Text.Res_500_ServerError;
+				return Text.HttpResponse_500_InternalServerError;
 			}
 
 			dbConnection.Close();
-			return Text.Res_PostPackage_201;
+			return Text.HttpResponse_201_Created;
 		}
 
 		private static bool DoCardsAlreadyExist(List<Database.Schemas.Card> package, NpgsqlConnection dbConnection)

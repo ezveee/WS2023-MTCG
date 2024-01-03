@@ -18,7 +18,7 @@ namespace MTCG.Server.HttpRequests
 		public string GetResponse(string request)
 		{
 			if (HttpRequestUtility.ExtractPathAddOns(request) != "packages")
-				return Text.Res_404_NotFound;
+				return Text.HttpResponse_404_NotFound;
 
 			string response;
 			try
@@ -27,7 +27,7 @@ namespace MTCG.Server.HttpRequests
 			}
 			catch (InvalidOperationException)
 			{
-				return Text.Res_401_Unauthorized;
+				return Text.HttpResponse_401_Unauthorized;
 			}
 
 			return response;
@@ -37,7 +37,7 @@ namespace MTCG.Server.HttpRequests
 		{
 			if (!HttpRequestUtility.IsTokenValid(authToken))
 			{
-				return Text.Res_401_Unauthorized;
+				return Text.HttpResponse_401_Unauthorized;
 			}
 
 			var dbConnection = DBManager.GetDbConnection();
@@ -52,7 +52,7 @@ namespace MTCG.Server.HttpRequests
 
 				if (coins < Constants.PackageCost)
 				{
-					return Text.Res_PostTransaction_403;
+					return Text.HttpResponse_403_Forbidden;
 				}
 			}
 
@@ -62,7 +62,7 @@ namespace MTCG.Server.HttpRequests
 
 				if (entries <= 0)
 				{
-					return Text.Res_PostTransaction_404;
+					return Text.HttpResponse_404_NotFound;
 				}
 			}
 
@@ -130,13 +130,13 @@ namespace MTCG.Server.HttpRequests
 			{
 				transaction.Rollback();
 				Console.WriteLine("Transaction rolled back due to exception: " + ex.Message);
-				return Text.Res_500_ServerError;
+				return Text.HttpResponse_500_InternalServerError;
 			}
 
 			dbConnection.Close();
 
 			string cardsJson = JsonConvert.SerializeObject(cardList, Formatting.Indented);
-			return String.Format(Text.Res_PostTransaction_200, cardsJson);
+			return String.Format(Text.HttpResponse_200_OK_WithContent, cardsJson);
 		}
 	}
 }

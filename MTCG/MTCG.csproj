@@ -13,6 +13,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="OLD-VERSION-Text.Designer.cs">
+      <DependentUpon>OLD-VERSION-Text.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Response.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Response.resx</DependentUpon>
+    </Compile>
     <Compile Update="Text.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -21,6 +31,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="OLD-VERSION-Text.resx">
+      <LastGenOutput>OLD-VERSION-Text.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Response.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Response.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Text.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Text.Designer.cs</LastGenOutput>

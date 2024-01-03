@@ -15,19 +15,19 @@ namespace MTCG.Server.HttpRequests
 
 			if (jsonPayload == null)
 			{
-				return Text.Res_400_BadRequest;
+				return Text.HttpResponse_400_BadRequest;
 			}
 
 			List<Guid>? cardIds = JsonConvert.DeserializeObject<List<Guid>>(jsonPayload);
 
 			if (cardIds == null)
 			{
-				return Text.Res_400_BadRequest;
+				return Text.HttpResponse_400_BadRequest;
 			}
 
 			if (cardIds.Count != 4)
 			{
-				return Text.Res_PutDeck_400;
+				return Text.HttpResponse_400_BadRequest;
 			}
 
 			string response;
@@ -37,7 +37,7 @@ namespace MTCG.Server.HttpRequests
 			}
 			catch (InvalidOperationException)
 			{
-				return Text.Res_401_Unauthorized;
+				return Text.HttpResponse_401_Unauthorized;
 			}
 
 			return response;
@@ -47,7 +47,7 @@ namespace MTCG.Server.HttpRequests
 		{
 			if (!HttpRequestUtility.IsTokenValid(authToken))
 			{
-				return Text.Res_401_Unauthorized;
+				return Text.HttpResponse_401_Unauthorized;
 			}
 
 			var dbConnection = DBManager.GetDbConnection();
@@ -62,7 +62,7 @@ namespace MTCG.Server.HttpRequests
 
 				if (count != 4)
 				{
-					return Text.Res_PutDeck_403;
+					return Text.HttpResponse_403_Forbidden;
 				}
 			}
 
@@ -97,11 +97,11 @@ namespace MTCG.Server.HttpRequests
 			{
 				transaction.Rollback();
 				Console.WriteLine("Transaction rolled back due to exception: " + ex.Message);
-				return Text.Res_500_ServerError;
+				return Text.HttpResponse_500_InternalServerError;
 			}
 
 			dbConnection.Close();
-			return Text.Res_PutDeck_200;
+			return Text.HttpResponse_200_OK;
 		}
 
 

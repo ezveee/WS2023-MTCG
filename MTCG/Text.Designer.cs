@@ -62,13 +62,35 @@ namespace MTCG {
         
         /// <summary>
         ///   Looks up a localized string similar to HTTP/1.1 200 OK
+        ///
+        ///.
+        /// </summary>
+        internal static string HttpResponse_200_OK {
+            get {
+                return ResourceManager.GetString("HttpResponse_200_OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP/1.1 200 OK
         ///Content-Type: application/json
         ///
         ///{0}.
         /// </summary>
-        internal static string Res_200_WithContent {
+        internal static string HttpResponse_200_OK_WithContent {
             get {
-                return ResourceManager.GetString("Res_200_WithContent", resourceCulture);
+                return ResourceManager.GetString("HttpResponse_200_OK_WithContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP/1.1 201 Created
+        ///
+        ///.
+        /// </summary>
+        internal static string HttpResponse_201_Created {
+            get {
+                return ResourceManager.GetString("HttpResponse_201_Created", resourceCulture);
             }
         }
         
@@ -77,316 +99,75 @@ namespace MTCG {
         ///
         ///.
         /// </summary>
-        internal static string Res_204_NoContent {
+        internal static string HttpResponse_204_NoContent {
             get {
-                return ResourceManager.GetString("Res_204_NoContent", resourceCulture);
+                return ResourceManager.GetString("HttpResponse_204_NoContent", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to HTTP/1.1 400 Bad Request
-        ///Content-Type: text/plain
         ///
-        ///Request could not be processed.
+        ///.
         /// </summary>
-        internal static string Res_400_BadRequest {
+        internal static string HttpResponse_400_BadRequest {
             get {
-                return ResourceManager.GetString("Res_400_BadRequest", resourceCulture);
+                return ResourceManager.GetString("HttpResponse_400_BadRequest", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to HTTP/1.1 401 Unauthorized
-        ///Content-Type: text/plain
         ///
-        ///Access token is missing or invalid.
+        ///.
         /// </summary>
-        internal static string Res_401_Unauthorized {
+        internal static string HttpResponse_401_Unauthorized {
             get {
-                return ResourceManager.GetString("Res_401_Unauthorized", resourceCulture);
+                return ResourceManager.GetString("HttpResponse_401_Unauthorized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP/1.1 403 Forbidden
+        ///
+        ///.
+        /// </summary>
+        internal static string HttpResponse_403_Forbidden {
+            get {
+                return ResourceManager.GetString("HttpResponse_403_Forbidden", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to HTTP/1.1 404 Not Found
-        ///Content-Type: text/plain
         ///
-        ///404 Not Found.
+        ///.
         /// </summary>
-        internal static string Res_404_NotFound {
+        internal static string HttpResponse_404_NotFound {
             get {
-                return ResourceManager.GetString("Res_404_NotFound", resourceCulture);
+                return ResourceManager.GetString("HttpResponse_404_NotFound", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HTTP/1.1 404 Not Found
-        ///Content-Type: text/plain
+        ///   Looks up a localized string similar to HTTP/1.1 409 Conflict
         ///
-        ///User not found..
+        ///.
         /// </summary>
-        internal static string Res_404_User {
+        internal static string HttpResponse_409_Conflict {
             get {
-                return ResourceManager.GetString("Res_404_User", resourceCulture);
+                return ResourceManager.GetString("HttpResponse_409_Conflict", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to HTTP/1.1 500 Internal Server Error
-        ///Content-Type: text/plain
         ///
-        ///The server has encountered a situation it does not know how to handle.
+        ///.
         /// </summary>
-        internal static string Res_500_ServerError {
+        internal static string HttpResponse_500_InternalServerError {
             get {
-                return ResourceManager.GetString("Res_500_ServerError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP/1.1 200 OK
-        ///Content-Type: application/json
-        ///
-        ///{0}
-        ///
-        ///{1}.
-        /// </summary>
-        internal static string Res_GetDeck_200 {
-            get {
-                return ResourceManager.GetString("Res_GetDeck_200", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP/1.1 200 OK
-        ///Content-Type: application/json
-        ///
-        ///{0}.
-        /// </summary>
-        internal static string Res_GetStack_200 {
-            get {
-                return ResourceManager.GetString("Res_GetStack_200", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP/1.1 200 OK
-        ///Content-Type: application/json
-        ///
-        ///Data successfully retrieved
-        ///
-        ///{0}.
-        /// </summary>
-        internal static string Res_GetUser_200 {
-            get {
-                return ResourceManager.GetString("Res_GetUser_200", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP/1.1 201 Created
-        ///Content-Type: text/plain
-        ///
-        ///Package and cards successfully created.
-        /// </summary>
-        internal static string Res_PostPackage_201 {
-            get {
-                return ResourceManager.GetString("Res_PostPackage_201", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP/1.1 403 Forbidden
-        ///Content-Type: text/plain
-        ///
-        ///Provided user is not &quot;admin&quot;.
-        /// </summary>
-        internal static string Res_PostPackage_403 {
-            get {
-                return ResourceManager.GetString("Res_PostPackage_403", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP/1.1 409 Conflict
-        ///Content-Type: text/plain
-        ///
-        ///At least one card in the packages already exists.
-        /// </summary>
-        internal static string Res_PostPackage_409 {
-            get {
-                return ResourceManager.GetString("Res_PostPackage_409", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP/1.1 200 OK
-        ///Content-Type: text/plain
-        ///Authorization: Bearer {0}-mtcgToken
-        ///
-        ///User login successful.
-        /// </summary>
-        internal static string Res_PostSession_200 {
-            get {
-                return ResourceManager.GetString("Res_PostSession_200", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP/1.1 401 Unauthorized
-        ///Content-Type: text/plain
-        ///
-        ///Invalid username/password provided.
-        /// </summary>
-        internal static string Res_PostSession_401 {
-            get {
-                return ResourceManager.GetString("Res_PostSession_401", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP/1.1 201 Created
-        ///Content-Type: text/plain
-        ///
-        ///Trading deal successfully created.
-        /// </summary>
-        internal static string Res_PostTrading_201 {
-            get {
-                return ResourceManager.GetString("Res_PostTrading_201", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP/1.1 403 Forbidden
-        ///Content-Type: text/plain
-        ///
-        ///The deal contains a card that is not owned by the user or locked in the deck..
-        /// </summary>
-        internal static string Res_PostTrading_403 {
-            get {
-                return ResourceManager.GetString("Res_PostTrading_403", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP/1.1 409 Conflict
-        ///Content-Type: text/plain
-        ///
-        ///A deal with this deal ID already exists..
-        /// </summary>
-        internal static string Res_PostTrading_409 {
-            get {
-                return ResourceManager.GetString("Res_PostTrading_409", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP/1.1 200 OK
-        ///Content-Type: application/json
-        ///
-        ///A package has been successfully bought
-        ///
-        ///{0}.
-        /// </summary>
-        internal static string Res_PostTransaction_200 {
-            get {
-                return ResourceManager.GetString("Res_PostTransaction_200", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP/1.1 403 Forbidden
-        ///Content-Type: text/plain
-        ///
-        ///Not enough money for buying a card package.
-        /// </summary>
-        internal static string Res_PostTransaction_403 {
-            get {
-                return ResourceManager.GetString("Res_PostTransaction_403", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP/1.1 404 Not Found
-        ///Content-Type: text/plain
-        ///
-        ///No card package available for buying.
-        /// </summary>
-        internal static string Res_PostTransaction_404 {
-            get {
-                return ResourceManager.GetString("Res_PostTransaction_404", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP/1.1 201 Created
-        ///Content-Type: text/plain
-        ///
-        ///User successfully created.
-        /// </summary>
-        internal static string Res_PostUser_201 {
-            get {
-                return ResourceManager.GetString("Res_PostUser_201", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP/1.1 409 Conflict
-        ///Content-Type: text/plain
-        ///
-        ///User with same username already registered.
-        /// </summary>
-        internal static string Res_PostUser_409 {
-            get {
-                return ResourceManager.GetString("Res_PostUser_409", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP/1.1 200 OK
-        ///Content-Type: text/plain
-        ///
-        ///The deck has been successfully configured.
-        /// </summary>
-        internal static string Res_PutDeck_200 {
-            get {
-                return ResourceManager.GetString("Res_PutDeck_200", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP/1.1 400 Bad Request
-        ///Content-Type: text/plain
-        ///
-        ///The provided deck did not include the required amount of cards.
-        /// </summary>
-        internal static string Res_PutDeck_400 {
-            get {
-                return ResourceManager.GetString("Res_PutDeck_400", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP/1.1 403 Forbidden
-        ///Content-Type: text/plain
-        ///
-        ///At least one of the provided cards does not belong to the user or is not available..
-        /// </summary>
-        internal static string Res_PutDeck_403 {
-            get {
-                return ResourceManager.GetString("Res_PutDeck_403", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP/1.1 200 OK
-        ///Content-Type: text/plain
-        ///
-        ///User sucessfully updated..
-        /// </summary>
-        internal static string Res_PutUser_200 {
-            get {
-                return ResourceManager.GetString("Res_PutUser_200", resourceCulture);
+                return ResourceManager.GetString("HttpResponse_500_InternalServerError", resourceCulture);
             }
         }
     }

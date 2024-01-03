@@ -19,22 +19,22 @@ namespace MTCG.Server.HttpRequests
 
 			if (jsonPayload == null)
 			{
-				return Text.Res_400_BadRequest;
+				return Text.HttpResponse_400_BadRequest;
 			}
 
 			UserCredentials? user = JsonConvert.DeserializeObject<UserCredentials>(jsonPayload);
 
 			if (user == null)
 			{
-				return Text.Res_400_BadRequest;
+				return Text.HttpResponse_400_BadRequest;
 			}
 
 			if (!CreateDbUser(user))
 			{
-				return Text.Res_PostUser_409;
+				return Text.HttpResponse_409_Conflict;
 			}
 
-			return Text.Res_PostUser_201;
+			return Text.HttpResponse_201_Created;
 		}
 
 		// TODO:	when trying to insert user with preexisting username, it doesn't create a new entry

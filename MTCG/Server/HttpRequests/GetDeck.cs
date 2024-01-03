@@ -17,7 +17,7 @@ namespace MTCG.Server.HttpRequests
 			}
 			catch (InvalidOperationException)
 			{
-				return Text.Res_401_Unauthorized;
+				return Text.HttpResponse_401_Unauthorized;
 			}
 
 			return response;
@@ -27,7 +27,7 @@ namespace MTCG.Server.HttpRequests
 		{
 			if (!HttpRequestUtility.IsTokenValid(authToken))
 			{
-				return Text.Res_401_Unauthorized;
+				return Text.HttpResponse_401_Unauthorized;
 			}
 
 			var dbConnection = DBManager.GetDbConnection();
@@ -36,17 +36,17 @@ namespace MTCG.Server.HttpRequests
 			string username = HttpRequestUtility.RetrieveUsernameFromToken(authToken);
 
 			// TODO: see if description is even necessary
-			string? description;
-			using (NpgsqlCommand command = new(
-				@"SELECT description FROM decks
-				JOIN users ON decks.userid = users.id
-				WHERE users.username = @user;", dbConnection))
-			{
-				command.Parameters.AddWithValue("user", username);
+			//string? description;
+			//using (NpgsqlCommand command = new(
+			//	@"SELECT description FROM decks
+			//	JOIN users ON decks.userid = users.id
+			//	WHERE users.username = @user;", dbConnection))
+			//{
+			//	command.Parameters.AddWithValue("user", username);
 
-				object? obj = command.ExecuteScalar();
-				description = (obj is null) ? string.Empty : obj.ToString();
-			}
+			//	object? obj = command.ExecuteScalar();
+			//	description = (obj is null) ? string.Empty : obj.ToString();
+			//}
 
 			List<Card> cardList = HttpRequestUtility.RetrieveUserCards(username, "decks", dbConnection);
 
@@ -54,11 +54,11 @@ namespace MTCG.Server.HttpRequests
 			{
 				// TODO: check why 204 didn't work
 				// temporarily used 404
-				return Text.Res_204_NoContent;
+				return Text.HttpResponse_204_NoContent;
 			}
 
 			string cardsJson = JsonConvert.SerializeObject(cardList, Formatting.Indented);
-			return String.Format(Text.Res_GetDeck_200, cardsJson, description);
+			return String.Format(Text.HttpResponse_200_OK_WithContent, cardsJson);
 		}
 	}
 }

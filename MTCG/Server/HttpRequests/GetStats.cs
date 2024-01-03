@@ -12,7 +12,7 @@ namespace MTCG.Server.HttpRequests
 		{
 			if (!HttpRequestUtility.IsUserAccessValid(request, out string? authToken))
 			{
-				return Text.Res_401_Unauthorized;
+				return Text.HttpResponse_401_Unauthorized;
 			}
 
 			return RetrieveStats(HttpRequestUtility.RetrieveUsernameFromToken(authToken!));
@@ -48,10 +48,10 @@ namespace MTCG.Server.HttpRequests
 			// stats get initialized upon user creation
 			if (stats is null)
 			{
-				return Text.Res_500_ServerError;
+				return Text.HttpResponse_500_InternalServerError;
 			}
 
-			return string.Format(Text.Res_200_WithContent, JsonConvert.SerializeObject(stats, Formatting.Indented));
+			return string.Format(Text.HttpResponse_200_OK_WithContent, JsonConvert.SerializeObject(stats, Formatting.Indented));
 		}
 	}
 }
