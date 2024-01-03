@@ -40,7 +40,7 @@ namespace MTCG.Server.HttpRequests
 			}
 			catch (InvalidOperationException)
 			{
-				return Text.HttpResponse_401_Unauthorized;
+				return String.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
 			}
 
 			return response;
@@ -54,19 +54,19 @@ namespace MTCG.Server.HttpRequests
 			if (DoCardsAlreadyExist(package, dbConnection))
 			{
 				dbConnection.Close();
-				return Text.HttpResponse_409_Conflict;
+				return String.Format(Text.HttpResponse_409_Conflict, Text.Description_PostPackage_409);
 			}
 
 			if (!IsAdmin(authToken))
 			{
 				dbConnection.Close();
-				return Text.HttpResponse_403_Forbidden;
+				return String.Format(Text.HttpResponse_403_Forbidden, Text.Description_PostPackage_403);
 			}
 
 			if (!HttpRequestUtility.IsTokenValid(authToken))
 			{
 				dbConnection.Close();
-				return Text.HttpResponse_401_Unauthorized;
+				return String.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
 			}
 
 			using var transaction = dbConnection.BeginTransaction();
@@ -105,7 +105,7 @@ namespace MTCG.Server.HttpRequests
 			}
 
 			dbConnection.Close();
-			return Text.HttpResponse_201_Created;
+			return String.Format(Text.HttpResponse_201_Created, Text.Description_PostPackage_201);
 		}
 
 		private static bool DoCardsAlreadyExist(List<Database.Schemas.Card> package, NpgsqlConnection dbConnection)

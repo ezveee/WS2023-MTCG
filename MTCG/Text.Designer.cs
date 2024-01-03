@@ -61,7 +61,332 @@ namespace MTCG {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Access token is missing or invalid.
+        /// </summary>
+        internal static string Description_Default_401 {
+            get {
+                return ResourceManager.GetString("Description_Default_401", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User not found..
+        /// </summary>
+        internal static string Description_Default_404_User {
+            get {
+                return ResourceManager.GetString("Description_Default_404_User", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trading deal successfully deleted.
+        /// </summary>
+        internal static string Description_DeleteTrading_200 {
+            get {
+                return ResourceManager.GetString("Description_DeleteTrading_200", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The deal contains a card that is not owned by the user..
+        /// </summary>
+        internal static string Description_DeleteTrading_403 {
+            get {
+                return ResourceManager.GetString("Description_DeleteTrading_403", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The provided deal ID was not found..
+        /// </summary>
+        internal static string Description_DeleteTrading_404 {
+            get {
+                return ResourceManager.GetString("Description_DeleteTrading_404", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The deck has cards, the response contains these.
+        /// </summary>
+        internal static string Description_GetDeck_200 {
+            get {
+                return ResourceManager.GetString("Description_GetDeck_200", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The request was fine, but the deck doesn&apos;t have any cards.
+        /// </summary>
+        internal static string Description_GetDeck_204 {
+            get {
+                return ResourceManager.GetString("Description_GetDeck_204", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The scoreboard could be retrieved successfully..
+        /// </summary>
+        internal static string Description_GetScoreboard_200 {
+            get {
+                return ResourceManager.GetString("Description_GetScoreboard_200", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The user has cards, the response contains these.
+        /// </summary>
+        internal static string Description_GetStack_200 {
+            get {
+                return ResourceManager.GetString("Description_GetStack_200", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The request was fine, but the user doesn&apos;t have any cards.
+        /// </summary>
+        internal static string Description_GetStack_204 {
+            get {
+                return ResourceManager.GetString("Description_GetStack_204", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The stats could be retrieved successfully..
+        /// </summary>
+        internal static string Description_GetStats_200 {
+            get {
+                return ResourceManager.GetString("Description_GetStats_200", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There are trading deals available, the response contains these.
+        /// </summary>
+        internal static string Description_GetTrading_200 {
+            get {
+                return ResourceManager.GetString("Description_GetTrading_200", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The request was fine, but there are no trading deals available.
+        /// </summary>
+        internal static string Description_GetTrading_204 {
+            get {
+                return ResourceManager.GetString("Description_GetTrading_204", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data successfully retrieved.
+        /// </summary>
+        internal static string Description_GetUser_200 {
+            get {
+                return ResourceManager.GetString("Description_GetUser_200", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The battle has been carried out successfully..
+        /// </summary>
+        internal static string Description_PostBattle_200 {
+            get {
+                return ResourceManager.GetString("Description_PostBattle_200", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Package and cards successfully created.
+        /// </summary>
+        internal static string Description_PostPackage_201 {
+            get {
+                return ResourceManager.GetString("Description_PostPackage_201", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Provided user is not &quot;admin&quot;.
+        /// </summary>
+        internal static string Description_PostPackage_403 {
+            get {
+                return ResourceManager.GetString("Description_PostPackage_403", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to At least one card in the packages already exists.
+        /// </summary>
+        internal static string Description_PostPackage_409 {
+            get {
+                return ResourceManager.GetString("Description_PostPackage_409", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User login successful.
+        /// </summary>
+        internal static string Description_PostSession_200 {
+            get {
+                return ResourceManager.GetString("Description_PostSession_200", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid username/password provided.
+        /// </summary>
+        internal static string Description_PostSession_401 {
+            get {
+                return ResourceManager.GetString("Description_PostSession_401", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trading deal successfully created.
+        /// </summary>
+        internal static string Description_PostTrading_201 {
+            get {
+                return ResourceManager.GetString("Description_PostTrading_201", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The deal contains a card that is not owned by the user or locked in the deck..
+        /// </summary>
+        internal static string Description_PostTrading_403 {
+            get {
+                return ResourceManager.GetString("Description_PostTrading_403", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A deal with this deal ID already exists..
+        /// </summary>
+        internal static string Description_PostTrading_409 {
+            get {
+                return ResourceManager.GetString("Description_PostTrading_409", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Card already engaged in another trade.
+        /// </summary>
+        internal static string Description_PostTrading_409_Custom {
+            get {
+                return ResourceManager.GetString("Description_PostTrading_409_Custom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trading deal successfully executed..
+        /// </summary>
+        internal static string Description_PostTrading_CarryOutTrade_200 {
+            get {
+                return ResourceManager.GetString("Description_PostTrading_CarryOutTrade_200", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The offered card is not owned by the user, or the requirements are not met (Type, MinimumDamage), or the offered card is locked in the deck..
+        /// </summary>
+        internal static string Description_PostTrading_CarryOutTrade_403 {
+            get {
+                return ResourceManager.GetString("Description_PostTrading_CarryOutTrade_403", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The provided deal ID was not found..
+        /// </summary>
+        internal static string Description_PostTrading_CarryOutTrade_404 {
+            get {
+                return ResourceManager.GetString("Description_PostTrading_CarryOutTrade_404", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A package has been successfully bought.
+        /// </summary>
+        internal static string Description_PostTransaction_200 {
+            get {
+                return ResourceManager.GetString("Description_PostTransaction_200", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not enough money for buying a card package.
+        /// </summary>
+        internal static string Description_PostTransaction_403 {
+            get {
+                return ResourceManager.GetString("Description_PostTransaction_403", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No card package available for buying.
+        /// </summary>
+        internal static string Description_PostTransaction_404 {
+            get {
+                return ResourceManager.GetString("Description_PostTransaction_404", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User successfully created.
+        /// </summary>
+        internal static string Description_PostUser_201 {
+            get {
+                return ResourceManager.GetString("Description_PostUser_201", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User with same username already registered.
+        /// </summary>
+        internal static string Description_PostUser_409 {
+            get {
+                return ResourceManager.GetString("Description_PostUser_409", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The deck has been successfully configured.
+        /// </summary>
+        internal static string Description_PutDeck_200 {
+            get {
+                return ResourceManager.GetString("Description_PutDeck_200", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The provided deck did not include the required amount of cards.
+        /// </summary>
+        internal static string Description_PutDeck_400 {
+            get {
+                return ResourceManager.GetString("Description_PutDeck_400", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to At least one of the provided cards does not belong to the user or is not available..
+        /// </summary>
+        internal static string Description_PutDeck_403 {
+            get {
+                return ResourceManager.GetString("Description_PutDeck_403", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User sucessfully updated..
+        /// </summary>
+        internal static string Description_PutUser_200 {
+            get {
+                return ResourceManager.GetString("Description_PutUser_200", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HTTP/1.1 200 OK
+        ///X-Description: {0}
         ///
         ///.
         /// </summary>
@@ -74,8 +399,9 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to HTTP/1.1 200 OK
         ///Content-Type: application/json
+        ///X-Description: {0}
         ///
-        ///{0}.
+        ///{1}.
         /// </summary>
         internal static string HttpResponse_200_OK_WithContent {
             get {
@@ -85,6 +411,7 @@ namespace MTCG {
         
         /// <summary>
         ///   Looks up a localized string similar to HTTP/1.1 201 Created
+        ///X-Description: {0}
         ///
         ///.
         /// </summary>
@@ -96,6 +423,7 @@ namespace MTCG {
         
         /// <summary>
         ///   Looks up a localized string similar to HTTP/1.1 204 No Content
+        ///X-Description: {0}
         ///
         ///.
         /// </summary>
@@ -107,6 +435,7 @@ namespace MTCG {
         
         /// <summary>
         ///   Looks up a localized string similar to HTTP/1.1 400 Bad Request
+        ///X-Description: {0}
         ///
         ///.
         /// </summary>
@@ -118,6 +447,7 @@ namespace MTCG {
         
         /// <summary>
         ///   Looks up a localized string similar to HTTP/1.1 401 Unauthorized
+        ///X-Description: {0}
         ///
         ///.
         /// </summary>
@@ -129,6 +459,7 @@ namespace MTCG {
         
         /// <summary>
         ///   Looks up a localized string similar to HTTP/1.1 403 Forbidden
+        ///X-Description: {0}
         ///
         ///.
         /// </summary>
@@ -140,6 +471,7 @@ namespace MTCG {
         
         /// <summary>
         ///   Looks up a localized string similar to HTTP/1.1 404 Not Found
+        ///X-Description: {0}
         ///
         ///.
         /// </summary>
@@ -151,6 +483,7 @@ namespace MTCG {
         
         /// <summary>
         ///   Looks up a localized string similar to HTTP/1.1 409 Conflict
+        ///X-Description: {0}
         ///
         ///.
         /// </summary>
@@ -162,6 +495,7 @@ namespace MTCG {
         
         /// <summary>
         ///   Looks up a localized string similar to HTTP/1.1 500 Internal Server Error
+        ///X-Description: {0}
         ///
         ///.
         /// </summary>

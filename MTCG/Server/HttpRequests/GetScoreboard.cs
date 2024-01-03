@@ -19,7 +19,7 @@ namespace MTCG.Server.HttpRequests
 		{
 			if (!HttpRequestUtility.IsUserAccessValid(request, out string? authToken))
 			{
-				return Text.HttpResponse_401_Unauthorized;
+				return String.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
 			}
 
 			return RetrieveScoreboard(HttpRequestUtility.RetrieveUsernameFromToken(authToken!));
@@ -53,7 +53,7 @@ namespace MTCG.Server.HttpRequests
 
 			dbConnection.Close();
 
-			return string.Format(Text.HttpResponse_200_OK_WithContent, JsonConvert.SerializeObject(statList, Formatting.Indented));
+			return string.Format(Text.HttpResponse_200_OK_WithContent, Text.Description_GetScoreboard_200, JsonConvert.SerializeObject(statList, Formatting.Indented));
 		}
 	}
 }

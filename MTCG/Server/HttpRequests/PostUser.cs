@@ -31,10 +31,10 @@ namespace MTCG.Server.HttpRequests
 
 			if (!CreateDbUser(user))
 			{
-				return Text.HttpResponse_409_Conflict;
+				return String.Format(Text.HttpResponse_409_Conflict, Text.Description_PostUser_409);
 			}
 
-			return Text.HttpResponse_201_Created;
+			return String.Format(Text.HttpResponse_201_Created, Text.Description_PostUser_201);
 		}
 
 		// TODO:	when trying to insert user with preexisting username, it doesn't create a new entry

@@ -17,7 +17,7 @@ namespace MTCG.Server.HttpRequests
 			}
 			catch (InvalidOperationException)
 			{
-				return Text.HttpResponse_401_Unauthorized;
+				return String.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
 			}
 
 			return response;
@@ -27,7 +27,7 @@ namespace MTCG.Server.HttpRequests
 		{
 			if (!HttpRequestUtility.IsTokenValid(authToken))
 			{
-				return Text.HttpResponse_401_Unauthorized;
+				return String.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
 			}
 
 			var dbConnection = DBManager.GetDbConnection();
@@ -38,13 +38,11 @@ namespace MTCG.Server.HttpRequests
 
 			if (cardList.Count <= 0)
 			{
-				// TODO: check why 204 didn't work
-				// temporarily used 404
-				return Text.HttpResponse_204_NoContent;
+				return String.Format(Text.HttpResponse_204_NoContent, Text.Description_GetStack_204);
 			}
 
 			string cardsJson = JsonConvert.SerializeObject(cardList, Formatting.Indented);
-			return String.Format(Text.HttpResponse_200_OK_WithContent, cardsJson);
+			return String.Format(Text.HttpResponse_200_OK_WithContent, Text.Description_GetStack_200, cardsJson);
 		}
 	}
 }

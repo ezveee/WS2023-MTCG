@@ -12,7 +12,7 @@ namespace MTCG.Server.HttpRequests
 		{
 			if (!HttpRequestUtility.IsUserAccessValid(request, out string? authToken))
 			{
-				return Text.HttpResponse_401_Unauthorized;
+				return String.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
 			}
 
 			string? user;
@@ -22,13 +22,13 @@ namespace MTCG.Server.HttpRequests
 			string tokenUser = HttpRequestUtility.RetrieveUsernameFromToken(authToken!);
 			if (tokenUser != "admin" && tokenUser != user)
 			{
-				return Text.HttpResponse_401_Unauthorized;
+				return String.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
 			}
 
 			// admin authorized but user not in db
 			if (!DoesUserExist(user))
 			{
-				return Text.HttpResponse_404_NotFound;
+				return String.Format(Text.HttpResponse_404_NotFound, Text.Description_Default_404_User);
 			}
 
 			string jsonPayload = HttpRequestUtility.ExtractJsonPayload(request);
@@ -63,7 +63,7 @@ namespace MTCG.Server.HttpRequests
 			dbConnection.Close();
 
 			string userDataJson = JsonConvert.SerializeObject(userData, Formatting.Indented);
-			return Text.HttpResponse_200_OK;
+			return String.Format(Text.HttpResponse_200_OK, Text.Description_PutUser_200);
 		}
 
 		// TODO: db layer?

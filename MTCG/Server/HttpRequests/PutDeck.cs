@@ -27,8 +27,10 @@ namespace MTCG.Server.HttpRequests
 
 			if (cardIds.Count != 4)
 			{
-				return Text.HttpResponse_400_BadRequest;
+				return String.Format(Text.HttpResponse_400_BadRequest, Text.Description_PutDeck_400);
 			}
+
+			// TODO: check if any of new cards are engaged in a trade
 
 			string response;
 			try
@@ -37,7 +39,7 @@ namespace MTCG.Server.HttpRequests
 			}
 			catch (InvalidOperationException)
 			{
-				return Text.HttpResponse_401_Unauthorized;
+				return String.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
 			}
 
 			return response;
@@ -47,7 +49,7 @@ namespace MTCG.Server.HttpRequests
 		{
 			if (!HttpRequestUtility.IsTokenValid(authToken))
 			{
-				return Text.HttpResponse_401_Unauthorized;
+				return String.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
 			}
 
 			var dbConnection = DBManager.GetDbConnection();
@@ -62,7 +64,7 @@ namespace MTCG.Server.HttpRequests
 
 				if (count != 4)
 				{
-					return Text.HttpResponse_403_Forbidden;
+					return String.Format(Text.HttpResponse_403_Forbidden, Text.Description_PutDeck_403);
 				}
 			}
 
@@ -101,27 +103,7 @@ namespace MTCG.Server.HttpRequests
 			}
 
 			dbConnection.Close();
-			return Text.HttpResponse_200_OK;
-		}
-
-
-		private static void InsertIntoCardsTable(List<Database.Schemas.Card> package, NpgsqlCommand command)
-		{
-			foreach (var card in package)
-			{
-				command.CommandText = $@"INSERT INTO cards (id, name, cardtype, element, damage) VALUES (@id, @name, @cardtype, @element, @damage);";
-
-				command.Parameters.Clear();
-				command.Parameters.AddWithValue("id", card.Id);
-				command.Parameters.AddWithValue("name", card.Name);
-				command.Parameters.AddWithValue("cardtype", (int)Cards.Card.GetCardTypeByName(card.Name));
-				command.Parameters.AddWithValue("element", (int)Cards.Card.GetElementTypeByName(card.Name));
-				command.Parameters.AddWithValue("damage", card.Damage);
-
-				command.ExecuteNonQuery();
-
-				Console.WriteLine("Card inserted successfully");
-			}
+			return String.Format(Text.HttpResponse_200_OK, Text.Description_PutDeck_200);
 		}
 	}
 }

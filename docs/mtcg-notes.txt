@@ -1,6 +1,6 @@
 POSTGRESQL COMMANDS
 
-DROP TABLE users; DROP TABLE sessions; DROP TABLE stacks; DROP TABLE decks; DROP TABLE packages; DROP TABLE cards; DROP TABLE cardcategories; DROP TABLE cardtypes; DROP TABLE elements; DROP SEQUENCE packageids;
+DROP TABLE users; DROP TABLE sessions; DROP TABLE stacks; DROP TABLE decks; DROP TABLE packages; DROP TABLE cards; DROP TABLE cardcategories; DROP TABLE cardtypes; DROP TABLE elements; DROP SEQUENCE packageids; DROP TABLE trades; DROP TABLE userdata; DROP TABLE userstats;
 
 SELECT * FROM users; SELECT * FROM sessions;
 SELECT * FROM stacks; SELECT * FROM cards;

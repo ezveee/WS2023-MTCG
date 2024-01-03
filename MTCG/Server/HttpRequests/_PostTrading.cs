@@ -17,7 +17,7 @@ namespace MTCG.Server.HttpRequests
 		{
 			if (!HttpRequestUtility.IsUserAccessValid(request, out string? authToken))
 			{
-				return Text.HttpResponse_401_Unauthorized;
+				return String.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
 			}
 
 			TradingDeal trade;
@@ -44,17 +44,17 @@ namespace MTCG.Server.HttpRequests
 			{
 				if (DoesDealIdAlreadyExist(trade.Id))
 				{
-					return Text.HttpResponse_409_Conflict;
+					return String.Format(Text.HttpResponse_409_Conflict, Text.Description_PostTrading_409);
 				}
 
 				if (!DoesCardBelongToUser(trade.CardToTrade, username))
 				{
-					return Text.HttpResponse_403_Forbidden;
+					return String.Format(Text.HttpResponse_403_Forbidden, Text.Description_PostTrading_403);
 				}
 
 				if (IsCardInUserDeck(trade.CardToTrade, username))
 				{
-					return Text.HttpResponse_403_Forbidden;
+					return String.Format(Text.HttpResponse_403_Forbidden, Text.Description_PostTrading_403);
 				}
 
 				using (NpgsqlCommand command = new())
@@ -79,7 +79,7 @@ namespace MTCG.Server.HttpRequests
 						if (ex.SqlState == "23505") // == unique_violation (https://www.postgresql.org/docs/current/errcodes-appendix.html)
 						{
 							dbConnection.Close();
-							return Text.HttpResponse_409_Conflict + "\r\nTEST";
+							return String.Format(Text.HttpResponse_409_Conflict, Text.Description_PostTrading_409_Custom);
 						}
 					}
 				}
@@ -95,7 +95,7 @@ namespace MTCG.Server.HttpRequests
 			}
 
 			dbConnection.Close();
-			return Text.HttpResponse_201_Created;
+			return String.Format(Text.HttpResponse_201_Created, Text.Description_PostTrading_201);
 		}
 
 		private static bool DoesDealIdAlreadyExist(Guid tradeId)
