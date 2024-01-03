@@ -18,7 +18,9 @@ namespace MTCG.Server.HttpRequests
 		public string GetResponse(string request)
 		{
 			if (HttpRequestUtility.ExtractPathAddOns(request) != "packages")
+			{
 				return string.Format(Text.HttpResponse_400_BadRequest);
+			}
 
 			string response;
 			try

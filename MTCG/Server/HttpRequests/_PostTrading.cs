@@ -42,17 +42,17 @@ namespace MTCG.Server.HttpRequests
 
 			try
 			{
-				if (DoesDealIdAlreadyExist(trade.Id))
+				if (HttpRequestUtility.DoesDealIdAlreadyExist(trade.Id))
 				{
 					return string.Format(Text.HttpResponse_409_Conflict, Text.Description_PostTrading_409);
 				}
 
-				if (!DoesCardBelongToUser(trade.CardToTrade, username))
+				if (!HttpRequestUtility.DoesCardBelongToUser(trade.CardToTrade, username))
 				{
 					return string.Format(Text.HttpResponse_403_Forbidden, Text.Description_PostTrading_403);
 				}
 
-				if (IsCardInUserDeck(trade.CardToTrade, username))
+				if (HttpRequestUtility.IsCardInUserDeck(trade.CardToTrade, username))
 				{
 					return string.Format(Text.HttpResponse_403_Forbidden, Text.Description_PostTrading_403);
 				}
@@ -96,47 +96,6 @@ namespace MTCG.Server.HttpRequests
 
 			dbConnection.Close();
 			return string.Format(Text.HttpResponse_201_Created, Text.Description_PostTrading_201);
-		}
-
-		private static bool DoesDealIdAlreadyExist(Guid tradeId)
-		{
-			using var dbConnection = DBManager.GetDbConnection();
-			dbConnection.Open();
-
-			using NpgsqlCommand command = new($@"SELECT COUNT(*) FROM trades WHERE id = @id;", dbConnection);
-			command.Parameters.AddWithValue("id", tradeId);
-			int count = Convert.ToInt32(command.ExecuteScalar());
-
-			dbConnection.Close();
-			return count > 0;
-		}
-
-		private static bool DoesCardBelongToUser(Guid cardid, string username)
-		{
-			using var dbConnection = DBManager.GetDbConnection();
-			dbConnection.Open();
-
-			using NpgsqlCommand command = new($@"SELECT COUNT(*) FROM stacks INNER JOIN users ON stacks.userid = users.id WHERE users.username = @username AND stacks.cardid = @id;", dbConnection);
-			command.Parameters.AddWithValue("username", username);
-			command.Parameters.AddWithValue("id", cardid);
-			int count = Convert.ToInt32(command.ExecuteScalar());
-
-			dbConnection.Close();
-			return count > 0;
-		}
-
-		private static bool IsCardInUserDeck(Guid cardid, string username)
-		{
-			using var dbConnection = DBManager.GetDbConnection();
-			dbConnection.Open();
-
-			using NpgsqlCommand command = new($@"SELECT COUNT(*) FROM decks INNER JOIN users ON decks.userid = users.id WHERE users.username = @username AND decks.cardid = @id;", dbConnection);
-			command.Parameters.AddWithValue("username", username);
-			command.Parameters.AddWithValue("id", cardid);
-			int count = Convert.ToInt32(command.ExecuteScalar());
-
-			dbConnection.Close();
-			return count > 0;
 		}
 	}
 }

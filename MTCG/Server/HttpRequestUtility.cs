@@ -150,5 +150,67 @@ namespace MTCG.Server
 
 			return true;
 		}
+
+		public static bool DoesCardBelongToUser(Guid cardid, string username)
+		{
+			using var dbConnection = DBManager.GetDbConnection();
+			dbConnection.Open();
+
+			using NpgsqlCommand command = new($@"SELECT COUNT(*) FROM stacks INNER JOIN users ON stacks.userid = users.id WHERE users.username = @username AND stacks.cardid = @id;", dbConnection);
+			command.Parameters.AddWithValue("username", username);
+			command.Parameters.AddWithValue("id", cardid);
+			int count = Convert.ToInt32(command.ExecuteScalar());
+
+			dbConnection.Close();
+			return count > 0;
+		}
+
+		public static bool DoesDealIdAlreadyExist(Guid tradeId)
+		{
+			using var dbConnection = DBManager.GetDbConnection();
+			dbConnection.Open();
+
+			using NpgsqlCommand command = new($@"SELECT COUNT(*) FROM trades WHERE id = @id;", dbConnection);
+			command.Parameters.AddWithValue("id", tradeId);
+			int count = Convert.ToInt32(command.ExecuteScalar());
+
+			dbConnection.Close();
+			return count > 0;
+		}
+
+		public static bool IsCardInUserDeck(Guid cardid, string username)
+		{
+			using var dbConnection = DBManager.GetDbConnection();
+			dbConnection.Open();
+
+			using NpgsqlCommand command = new($@"SELECT COUNT(*) FROM decks INNER JOIN users ON decks.userid = users.id WHERE users.username = @username AND decks.cardid = @id;", dbConnection);
+			command.Parameters.AddWithValue("username", username);
+			command.Parameters.AddWithValue("id", cardid);
+			int count = Convert.ToInt32(command.ExecuteScalar());
+
+			dbConnection.Close();
+			return count > 0;
+		}
+
+		public static Guid? RetrieveCardidFromTradeid(Guid tradeId)
+		{
+			var dbConnection = DBManager.GetDbConnection();
+			dbConnection.Open();
+
+			Guid cardId;
+			using (NpgsqlCommand command = new("SELECT cardid FROM trades WHERE id = @id;", dbConnection))
+			{
+				command.Parameters.AddWithValue("id", tradeId);
+				object? obj = command.ExecuteScalar();
+				if (obj is null)
+				{
+					return null;
+				}
+				cardId = (Guid)obj;
+			}
+
+			dbConnection.Close();
+			return cardId;
+		}
 	}
 }
