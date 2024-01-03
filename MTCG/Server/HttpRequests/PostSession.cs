@@ -33,10 +33,10 @@ namespace MTCG.Server.HttpRequests
 
 			if (!LoginDbUser(user, out string authToken))
 			{
-				return String.Format(Text.HttpResponse_401_Unauthorized, Text.Description_PostSession_401);
+				return string.Format(Text.HttpResponse_401_Unauthorized, Text.Description_PostSession_401);
 			}
 
-			return String.Format(Text.HttpResponse_200_OK_WithContent, Text.Description_PostSession_200, authToken);
+			return string.Format(Text.HttpResponse_200_OK_WithContent, Text.Description_PostSession_200, authToken);
 		}
 		private static bool LoginDbUser(UserCredentials user, out string authToken)
 		{

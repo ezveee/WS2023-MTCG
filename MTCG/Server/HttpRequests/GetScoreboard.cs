@@ -19,7 +19,7 @@ namespace MTCG.Server.HttpRequests
 		{
 			if (!HttpRequestUtility.IsUserAccessValid(request, out string? authToken))
 			{
-				return String.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
+				return string.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
 			}
 
 			return RetrieveScoreboard(HttpRequestUtility.RetrieveUsernameFromToken(authToken!));

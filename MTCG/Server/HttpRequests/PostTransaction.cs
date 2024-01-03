@@ -18,7 +18,7 @@ namespace MTCG.Server.HttpRequests
 		public string GetResponse(string request)
 		{
 			if (HttpRequestUtility.ExtractPathAddOns(request) != "packages")
-				return String.Format(Text.HttpResponse_400_BadRequest);
+				return string.Format(Text.HttpResponse_400_BadRequest);
 
 			string response;
 			try
@@ -27,7 +27,7 @@ namespace MTCG.Server.HttpRequests
 			}
 			catch (InvalidOperationException)
 			{
-				return String.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
+				return string.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
 			}
 
 			return response;
@@ -37,7 +37,7 @@ namespace MTCG.Server.HttpRequests
 		{
 			if (!HttpRequestUtility.IsTokenValid(authToken))
 			{
-				return String.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
+				return string.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
 			}
 
 			var dbConnection = DBManager.GetDbConnection();
@@ -52,7 +52,7 @@ namespace MTCG.Server.HttpRequests
 
 				if (coins < Constants.PackageCost)
 				{
-					return String.Format(Text.HttpResponse_403_Forbidden, Text.Description_PostTransaction_403);
+					return string.Format(Text.HttpResponse_403_Forbidden, Text.Description_PostTransaction_403);
 				}
 			}
 
@@ -62,7 +62,7 @@ namespace MTCG.Server.HttpRequests
 
 				if (entries <= 0)
 				{
-					return String.Format(Text.HttpResponse_404_NotFound, Text.Description_PostTransaction_404);
+					return string.Format(Text.HttpResponse_404_NotFound, Text.Description_PostTransaction_404);
 				}
 			}
 
@@ -136,7 +136,7 @@ namespace MTCG.Server.HttpRequests
 			dbConnection.Close();
 
 			string cardsJson = JsonConvert.SerializeObject(cardList, Formatting.Indented);
-			return String.Format(Text.HttpResponse_200_OK_WithContent, Text.Description_PostTransaction_200, cardsJson);
+			return string.Format(Text.HttpResponse_200_OK_WithContent, Text.Description_PostTransaction_200, cardsJson);
 		}
 	}
 }

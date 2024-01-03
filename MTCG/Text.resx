@@ -150,10 +150,10 @@
   <data name="Description_GetStats_200" xml:space="preserve">
     <value>The stats could be retrieved successfully.</value>
   </data>
-  <data name="Description_GetTrading_200" xml:space="preserve">
+  <data name="Description_GetTradings_200" xml:space="preserve">
     <value>There are trading deals available, the response contains these</value>
   </data>
-  <data name="Description_GetTrading_204" xml:space="preserve">
+  <data name="Description_GetTradings_204" xml:space="preserve">
     <value>The request was fine, but there are no trading deals available</value>
   </data>
   <data name="Description_GetUser_200" xml:space="preserve">

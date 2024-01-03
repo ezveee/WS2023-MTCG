@@ -162,18 +162,18 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to There are trading deals available, the response contains these.
         /// </summary>
-        internal static string Description_GetTrading_200 {
+        internal static string Description_GetTradings_200 {
             get {
-                return ResourceManager.GetString("Description_GetTrading_200", resourceCulture);
+                return ResourceManager.GetString("Description_GetTradings_200", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to The request was fine, but there are no trading deals available.
         /// </summary>
-        internal static string Description_GetTrading_204 {
+        internal static string Description_GetTradings_204 {
             get {
-                return ResourceManager.GetString("Description_GetTrading_204", resourceCulture);
+                return ResourceManager.GetString("Description_GetTradings_204", resourceCulture);
             }
         }
         

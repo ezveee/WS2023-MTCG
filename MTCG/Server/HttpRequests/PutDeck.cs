@@ -27,7 +27,7 @@ namespace MTCG.Server.HttpRequests
 
 			if (cardIds.Count != 4)
 			{
-				return String.Format(Text.HttpResponse_400_BadRequest, Text.Description_PutDeck_400);
+				return string.Format(Text.HttpResponse_400_BadRequest, Text.Description_PutDeck_400);
 			}
 
 			// TODO: check if any of new cards are engaged in a trade
@@ -39,7 +39,7 @@ namespace MTCG.Server.HttpRequests
 			}
 			catch (InvalidOperationException)
 			{
-				return String.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
+				return string.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
 			}
 
 			return response;
@@ -49,7 +49,7 @@ namespace MTCG.Server.HttpRequests
 		{
 			if (!HttpRequestUtility.IsTokenValid(authToken))
 			{
-				return String.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
+				return string.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
 			}
 
 			var dbConnection = DBManager.GetDbConnection();
@@ -64,7 +64,7 @@ namespace MTCG.Server.HttpRequests
 
 				if (count != 4)
 				{
-					return String.Format(Text.HttpResponse_403_Forbidden, Text.Description_PutDeck_403);
+					return string.Format(Text.HttpResponse_403_Forbidden, Text.Description_PutDeck_403);
 				}
 			}
 
@@ -103,7 +103,7 @@ namespace MTCG.Server.HttpRequests
 			}
 
 			dbConnection.Close();
-			return String.Format(Text.HttpResponse_200_OK, Text.Description_PutDeck_200);
+			return string.Format(Text.HttpResponse_200_OK, Text.Description_PutDeck_200);
 		}
 	}
 }
