@@ -39,9 +39,8 @@ namespace MTCG.Server
 			routeTable["POST /users"] = new PostUser();
 			routeTable["POST /sessions"] = new PostSession();
 			routeTable["POST /packages"] = new PostPackage();
-			// implementation still missing
-			routeTable["GET /users"] = new GetUser(); // TODO: change cause it gets a specific username
-			routeTable["PUT /users"] = new PutUser(); // TODO: change cause it gets a specific username
+			routeTable["GET /users"] = new GetUser();
+			routeTable["PUT /users"] = new PutUser();
 			routeTable["POST /transactions"] = new PostTransaction();
 			routeTable["GET /cards"] = new GetStack();
 			routeTable["GET /deck"] = new GetDeck();
@@ -50,9 +49,8 @@ namespace MTCG.Server
 			routeTable["GET /scoreboard"] = new GetScoreboard();
 			routeTable["POST /battles"] = new PostBattle();
 			routeTable["GET /tradings"] = new GetTradings();
-			routeTable["POST /tradings"] = new PostTrading(); // TODO: change cause it gets a specific trade deal id
-			routeTable["DELETE /tradings"] = new DeleteTrading(); // TODO: change cause it gets a specific trade deal id
-
+			routeTable["POST /tradings"] = new PostTrading();
+			routeTable["DELETE /tradings"] = new DeleteTrading();
 		}
 
 		public void Start()

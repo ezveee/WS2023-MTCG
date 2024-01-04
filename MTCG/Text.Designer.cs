@@ -295,6 +295,15 @@ namespace MTCG {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You are not allowed to trade with yourself..
+        /// </summary>
+        internal static string Description_PostTrading_CarryOutTrade_403_TradeWithSelf {
+            get {
+                return ResourceManager.GetString("Description_PostTrading_CarryOutTrade_403_TradeWithSelf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The provided deal ID was not found..
         /// </summary>
         internal static string Description_PostTrading_CarryOutTrade_404 {

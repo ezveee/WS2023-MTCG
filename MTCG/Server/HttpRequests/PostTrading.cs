@@ -20,6 +20,14 @@ namespace MTCG.Server.HttpRequests
 				return string.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
 			}
 
+			string username = HttpRequestUtility.RetrieveUsernameFromToken(authToken!);
+
+			string? tradeId = HttpRequestUtility.ExtractPathAddOns(request);
+			if (tradeId is not null)
+			{
+				return new CarryOutTrade(tradeId, username).GetResponse(request);
+			}
+
 			TradingDeal trade;
 			try
 			{
@@ -30,7 +38,7 @@ namespace MTCG.Server.HttpRequests
 				return Text.HttpResponse_400_BadRequest;
 			}
 
-			return CreateTrade(trade, HttpRequestUtility.RetrieveUsernameFromToken(authToken!));
+			return CreateTrade(trade, username);
 		}
 
 		private static string CreateTrade(TradingDeal trade, string username)
@@ -76,7 +84,7 @@ namespace MTCG.Server.HttpRequests
 					{
 						// not in api-specification
 						// cardid needs to be unique -> no two trades available for one card
-						if (ex.SqlState == "23505") // == unique_violation (https://www.postgresql.org/docs/current/errcodes-appendix.html)
+						if (ex.SqlState == "23505")
 						{
 							dbConnection.Close();
 							return string.Format(Text.HttpResponse_409_Conflict, Text.Description_PostTrading_409_Custom);

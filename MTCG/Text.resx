@@ -195,6 +195,9 @@
   <data name="Description_PostTrading_CarryOutTrade_403" xml:space="preserve">
     <value>The offered card is not owned by the user, or the requirements are not met (Type, MinimumDamage), or the offered card is locked in the deck.</value>
   </data>
+  <data name="Description_PostTrading_CarryOutTrade_403_TradeWithSelf" xml:space="preserve">
+    <value>You are not allowed to trade with yourself.</value>
+  </data>
   <data name="Description_PostTrading_CarryOutTrade_404" xml:space="preserve">
     <value>The provided deal ID was not found.</value>
   </data>
