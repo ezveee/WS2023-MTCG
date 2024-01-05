@@ -14,7 +14,7 @@ namespace MTCG.Server.HttpRequests
 			}
 
 			string username = HttpRequestUtility.RetrieveUsernameFromToken(authToken!);
-			Guid cardId = new(HttpRequestUtility.ExtractJsonPayload(request)); ;
+			Guid cardId = new(HttpRequestUtility.ExtractJsonPayload(request).Trim('\"'));
 
 			if (!HttpRequestUtility.DoesCardBelongToUser(cardId, username)
 				|| HttpRequestUtility.IsCardInUserDeck(cardId, username)

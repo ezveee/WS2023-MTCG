@@ -211,10 +211,10 @@ echo.
 echo.
 
 REM --------------------------------------------------
-echo 17) battle
-start /b "kienboec battle" curl -X POST http://localhost:10001/battles --header "Authorization: Bearer kienboec-mtcgToken"
-start /b "altenhof battle" curl -X POST http://localhost:10001/battles --header "Authorization: Bearer altenhof-mtcgToken"
-ping localhost -n 10 >NUL 2>NUL
+REM echo 17) battle
+REM start /b "kienboec battle" curl -X POST http://localhost:10001/battles --header "Authorization: Bearer kienboec-mtcgToken"
+REM start /b "altenhof battle" curl -X POST http://localhost:10001/battles --header "Authorization: Bearer altenhof-mtcgToken"
+REM ping localhost -n 10 >NUL 2>NUL
 
 REM --------------------------------------------------
 echo 18) Stats 
@@ -274,9 +274,18 @@ echo.
 
 REM --------------------------------------------------
 echo 22) mandatory unique feature
+echo kienboec
 curl -X POST http://localhost:10001/campfire --header "Content-Type: application/json" --header "Authorization: Bearer kienboec-mtcgToken" -d "\"8c20639d-6400-4534-bd0f-ae563f11f57a\""
 echo.
-
+curl -X POST http://localhost:10001/campfire --header "Content-Type: application/json" --header "Authorization: Bearer kienboec-mtcgToken" -d "\"f3fad0f2-a1af-45df-b80d-2e48825773d9\""
+echo.
+echo altenhof
+curl -X POST http://localhost:10001/campfire --header "Content-Type: application/json" --header "Authorization: Bearer altenhof-mtcgToken" -d "\"a1618f1e-4f4c-4e09-9647-87e16f1edd2d\""
+echo.
+curl -X POST http://localhost:10001/campfire --header "Content-Type: application/json" --header "Authorization: Bearer altenhof-mtcgToken" -d "\"a6fde738-c65a-4b10-b400-6fef0fdb28ba\""
+echo.
+curl -X POST http://localhost:10001/campfire --header "Content-Type: application/json" --header "Authorization: Bearer altenhof-mtcgToken" -d "\"ce6bcaee-47e1-4011-a49e-5a4d7d4245f3\""
+echo.
 
 REM --------------------------------------------------
 echo end...

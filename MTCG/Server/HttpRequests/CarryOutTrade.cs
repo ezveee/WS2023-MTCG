@@ -27,7 +27,8 @@ namespace MTCG.Server.HttpRequests
 
 		public string GetResponse(string request)
 		{
-			Guid offeredCardId = new(HttpRequestUtility.ExtractJsonPayload(request)); ;
+			string jsonPayload = HttpRequestUtility.ExtractJsonPayload(request).Trim('\"');
+			Guid offeredCardId = new(jsonPayload);
 
 			if (!HttpRequestUtility.DoesDealIdAlreadyExist(tradeId))
 			{
