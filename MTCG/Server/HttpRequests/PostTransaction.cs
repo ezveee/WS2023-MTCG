@@ -2,14 +2,7 @@
 using MTCG.Database;
 using MTCG.Interfaces.IHttpRequest;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Npgsql;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MTCG.Server.HttpRequests
 {

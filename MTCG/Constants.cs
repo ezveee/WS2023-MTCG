@@ -8,15 +8,15 @@ namespace MTCG
 {
 	static class Constants
 	{
-		// http server
 		public const int HttpServerPort = 10001;
 
-		// login
 		public const int SessionTimeoutInMinutes = 5000;
 
 		public const int PackageCost = 5;
 
-		// battle logic
+		public const float CampfireOdds = 0.75f;
+		public const float CampfireDamageIncrease = 5;
+
 		public const int MaxRounds = 100;
 
 		public const float EffectiveMultiplier = 2f;

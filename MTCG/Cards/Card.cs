@@ -66,7 +66,6 @@ namespace MTCG.Cards
 			// changed fightlog a bit; original didn't show damage change in pure monster fight
 			// used spell fight template for monsters as well in account of specifications
 			log.Append($"Player1: {player1.Name} ({player1.Damage} Damage) vs Player2: {player2.Name} ({player2.Damage} Damage) => ");
-			log.Append($"Player1: {player1.Name} ({player1.Damage} Damage) vs Player2: {player2.Name} ({player2.Damage} Damage) => ");
 
 			float damagePlayer1 = player1.GetDamageAgainst(player2);
 			float damagePlayer2 = player2.GetDamageAgainst(player1);

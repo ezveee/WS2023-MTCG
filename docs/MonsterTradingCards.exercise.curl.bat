@@ -273,6 +273,12 @@ curl -X GET http://localhost:10001/tradings --header "Authorization: Bearer alte
 echo.
 
 REM --------------------------------------------------
+echo 22) mandatory unique feature
+curl -X POST http://localhost:10001/campfire --header "Content-Type: application/json" --header "Authorization: Bearer kienboec-mtcgToken" -d "\"8c20639d-6400-4534-bd0f-ae563f11f57a\""
+echo.
+
+
+REM --------------------------------------------------
 echo end...
 
 REM this is approx a sleep 

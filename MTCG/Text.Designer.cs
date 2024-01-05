@@ -196,6 +196,33 @@ namespace MTCG {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your creature joined the group of hungry survivors. (Card lost).
+        /// </summary>
+        internal static string Description_PostCampfire_200_Fail {
+            get {
+                return ResourceManager.GetString("Description_PostCampfire_200_Fail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The fire warmed the weary creature and it enhanced its power. (Damage increased by 5).
+        /// </summary>
+        internal static string Description_PostCampfire_200_Success {
+            get {
+                return ResourceManager.GetString("Description_PostCampfire_200_Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The deal contains a card that is not owned by the user, locked in the deck or locked in a trade..
+        /// </summary>
+        internal static string Description_PostCampfire_403 {
+            get {
+                return ResourceManager.GetString("Description_PostCampfire_403", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Package and cards successfully created.
         /// </summary>
         internal static string Description_PostPackage_201 {

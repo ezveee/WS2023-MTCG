@@ -162,6 +162,15 @@
   <data name="Description_PostBattle_200" xml:space="preserve">
     <value>The battle has been carried out successfully.</value>
   </data>
+  <data name="Description_PostCampfire_200_Fail" xml:space="preserve">
+    <value>Your creature joined the group of hungry survivors. (Card lost)</value>
+  </data>
+  <data name="Description_PostCampfire_200_Success" xml:space="preserve">
+    <value>The fire warmed the weary creature and it enhanced its power. (Damage increased by 5)</value>
+  </data>
+  <data name="Description_PostCampfire_403" xml:space="preserve">
+    <value>The deal contains a card that is not owned by the user, locked in the deck or locked in a trade.</value>
+  </data>
   <data name="Description_PostPackage_201" xml:space="preserve">
     <value>Package and cards successfully created</value>
   </data>

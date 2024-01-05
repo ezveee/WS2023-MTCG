@@ -212,5 +212,18 @@ namespace MTCG.Server
 			dbConnection.Close();
 			return cardId;
 		}
+
+		public static bool IsCardEngagedInTrade(Guid cardid)
+		{
+			using var dbConnection = DBManager.GetDbConnection();
+			dbConnection.Open();
+
+			using NpgsqlCommand command = new($@"SELECT COUNT(*) FROM trades WHERE cardid = @id;", dbConnection);
+			command.Parameters.AddWithValue("id", cardid);
+			int count = Convert.ToInt32(command.ExecuteScalar());
+
+			dbConnection.Close();
+			return count > 0;
+		}
 	}
 }

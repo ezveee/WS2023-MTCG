@@ -1,15 +1,9 @@
-﻿using MTCG.Database;
-using MTCG.Interfaces.IHttpRequest;
+﻿using MTCG.Interfaces.IHttpRequest;
 using MTCG.Server.HttpRequests;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Reflection.PortableExecutable;
 using System.Text;
-using System.Threading.Tasks;
+
 namespace MTCG.Server
 {
 	public class HttpServer
@@ -35,7 +29,6 @@ namespace MTCG.Server
 
 		private static void InitializRoutes()
 		{
-			// add keys and instances of classes to dictionary
 			routeTable["POST /users"] = new PostUser();
 			routeTable["POST /sessions"] = new PostSession();
 			routeTable["POST /packages"] = new PostPackage();
@@ -51,6 +44,7 @@ namespace MTCG.Server
 			routeTable["GET /tradings"] = new GetTradings();
 			routeTable["POST /tradings"] = new PostTrading();
 			routeTable["DELETE /tradings"] = new DeleteTrading();
+			routeTable["POST /campfire"] = new PostCampfire(); // mandatory unique feature
 		}
 
 		public void Start()
