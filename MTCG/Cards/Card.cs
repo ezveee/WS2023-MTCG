@@ -1,4 +1,5 @@
-﻿using MTCG.Interfaces.ICard;
+﻿using MTCG.Database.Schemas;
+using MTCG.Interfaces.ICard;
 using System.Collections.Immutable;
 
 namespace MTCG.Cards
@@ -37,10 +38,9 @@ namespace MTCG.Cards
 
 		public ElementType Element { get; private set; }
 
-		public virtual float GetDamageAgainst(ICard card)
-		{
-			return Damage;
-		}
+		public static CardType GetCardTypeByName(string name) => cardCategories[name].CardType;
+
+		public static ElementType GetElementTypeByName(string name) => cardCategories[name].ElementType;
 
 		public static ICard? CreateInstance(Guid id, string name, float damage)
 		{
@@ -58,8 +58,30 @@ namespace MTCG.Cards
 			return card;
 		}
 
-		public static CardType GetCardTypeByName(string name) => cardCategories[name].CardType;
+		public virtual float GetDamageAgainst(ICard card)
+		{
+			return Damage;
+		}
 
-		public static ElementType GetElementTypeByName(string name) => cardCategories[name].ElementType;
+		public float GetElementalFactorAgainst(ICard card)
+		{
+			ElementType ownType = this.Element;
+			ElementType opposingType = card.Element;
+
+			if (ownType == opposingType)
+			{
+				return 1;
+			}
+
+			switch (ownType)
+			{
+				case ElementType.Water when opposingType == ElementType.Fire:
+				case ElementType.Fire when opposingType == ElementType.Regular:
+				case ElementType.Regular when opposingType == ElementType.Water:
+					return 2;
+			}
+
+			return 0.5f;
+		}
 	}
 }

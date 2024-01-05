@@ -1,13 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MTCG.Interfaces.ICard;
 
 namespace MTCG.Cards
 {
 	public class CardKnight : Card
 	{
-		// NYI
+		public override float GetDamageAgainst(ICard card)
+		{
+			if (card.Type == CardType.Spell && card.Element == ElementType.Water)
+			{
+				return -1;
+			}
+
+			return base.GetDamageAgainst(card);
+		}
 	}
 }

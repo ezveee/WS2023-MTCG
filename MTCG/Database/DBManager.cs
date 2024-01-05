@@ -231,8 +231,7 @@ namespace MTCG.Database
 					@"CREATE TABLE IF NOT EXISTS decks (
 						id SERIAL PRIMARY KEY,
 						userid INTEGER,
-						cardid uuid UNIQUE,
-						description VARCHAR(200)
+						cardid uuid UNIQUE
 					);",
 
 					null

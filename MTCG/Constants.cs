@@ -17,6 +17,8 @@ namespace MTCG
 		public const int PackageCost = 5;
 
 		// battle logic
+		public const int MaxRounds = 100;
+
 		public const float EffectiveMultiplier = 2f;
 		public const float NotEffectiveMultiplier = .5f;
 	}
