@@ -1,5 +1,6 @@
 ﻿using MTCG.Cards;
-using MTCG.Database;
+using MTCG.Interfaces.ICard;
+using System.Numerics;
 using System.Text;
 
 namespace MTCG.Battle
@@ -17,184 +18,147 @@ namespace MTCG.Battle
 			}
 		}
 
-		private static List<Player> battleLobby = new();
+		// private static List<Player> battleLobby = new();
+
+		private static Player? queuedPlayer;
+		private static Dictionary<string, string?> resultCache = new();
 
 		public static string HandleBattle(Player player)
 		{
-			// TODO: fix battle
-			lock (battleLobby)
+			if (queuedPlayer is null)
 			{
-				battleLobby.Add(player);
-
-				if (battleLobby.Count >= 2)
-				{
-					Player playerA = battleLobby[0];
-					Player playerB = battleLobby[1];
-
-					string battleLog = Battle(playerA, playerB);
-
-					battleLobby.Remove(playerA);
-					battleLobby.Remove(playerB);
-
-					return battleLog;
-				}
-
-				return string.Empty;
+				queuedPlayer = player;
+				resultCache.Add(player.Username, null);
+				return CheckIfResultIsAvailable(player.Username);
 			}
+
+			Player player1;
+			Player player2;
+
+			lock (queuedPlayer)
+			{
+				player1 = player;
+				player2 = queuedPlayer;
+
+				queuedPlayer = null;
+			}
+
+			StringBuilder log = new();
+			Battle(player1, player2, log);
+
+			resultCache[player2.Username] = log.ToString();
+
+			return log.ToString();
 		}
 
-		public static string Battle(Player playerA, Player playerB)
+		private static string CheckIfResultIsAvailable(string username)
 		{
-			StringBuilder battleLog = new();
+			while (resultCache[username] is null) ;
+			string log = resultCache[username];
+			resultCache.Remove(username);
+			return log;
+		}
 
-			Card cardA = playerA.Deck[GetRandomCard(playerA.Deck)];
-			Card cardB = playerB.Deck[GetRandomCard(playerB.Deck)];
-
-			bool playerAWon;
-
+		public static void Battle(Player player1, Player player2, StringBuilder log)
+		{
 			for (int roundCounter = 0; roundCounter < Constants.MaxRounds; ++roundCounter)
 			{
-				if (playerA.Deck.Count <= 0 || playerB.Deck.Count <= 0)
+				PlayRound(player1.Deck, player2.Deck, log);
+				if (!player1.Deck.Any() || !player2.Deck.Any())
 				{
-					break;
+					return;
 				}
-
-				battleLog.Append($"{playerA.Username}: {cardA.Name}({cardA.Damage}) vs {playerA.Username}: {cardB.Name}({cardB.Damage}) => ");
-
-				if (IsPureMonsterFight(cardA, cardB))
-				{
-					playerAWon = cardA.Damage > cardB.Damage;
-
-					if (playerAWon)
-					{
-						battleLog.Append($"{cardA.Name} defeats {cardB.Name}");
-						TransferCardToWinner(playerB, playerA, cardB);
-						continue;
-					}
-
-					battleLog.Append($"{cardB.Name} defeats {cardA.Name}");
-					TransferCardToWinner(playerA, playerB, cardA);
-
-					continue;
-				}
-
-				float damageA = CalculateDamage(cardA, cardB);
-				float damageB = CalculateDamage(cardB, cardA);
-
-				battleLog.Append($"{cardA.Damage} VS {cardB.Damage} -> {damageA} VS {damageB} => ");
-				playerAWon = damageA > damageB;
-
-				if (playerAWon)
-				{
-					battleLog.Append($"{cardA.Name} wins");
-					TransferCardToWinner(playerB, playerA, cardB);
-					continue;
-				}
-
-				battleLog.Append($"{cardB.Name} wins");
-				TransferCardToWinner(playerA, playerB, cardA);
 			}
-
-			return battleLog.ToString();
 		}
 
-		public static SpellEffect CheckElementEffectiveness(Card cardA, Card cardB)
+
+		public static void PlayRound(List<ICard> player1Deck, List<ICard> player2Deck, StringBuilder log)
 		{
-			ElementType ownType = cardA.Element;
-			ElementType opposingType = cardB.Element;
+			ICard player1 = player1Deck[GetRandomCard(player1Deck)];
+			ICard player2 = player2Deck[GetRandomCard(player2Deck)];
 
-			if (ownType == opposingType)
+			FightResult result = CompareCards(player1, player2, log);
+
+			if (result == FightResult.Player1)
 			{
-				return SpellEffect.NoEffect;
+				TransferCardToWinner(player2Deck, player1Deck, player2);
 			}
 
-			switch (ownType)
+			if (result == FightResult.Player2)
 			{
-				case ElementType.Water when opposingType == ElementType.Fire:
-				case ElementType.Fire when opposingType == ElementType.Regular:
-				case ElementType.Regular when opposingType == ElementType.Water:
-					return SpellEffect.Effective;
+				TransferCardToWinner(player1Deck, player1Deck, player1);
 			}
-
-			return SpellEffect.NotEffective;
 		}
 
-		public static CardSpecialty CheckSpecialty(Card cardA, Card cardB)
+		public static FightResult CompareCards(ICard player1, ICard player2, StringBuilder log)
 		{
-			CardType ownType = cardA.Type;
-			CardType opposingType = cardB.Type;
+			// TODO: change to actual usernames
+			// changed fightlog a bit; original didn't show damage change in pure monster fight
+			// used spell fight template for monsters as well in account of specifications
+			log.Append($"Player1: {player1.Name} ({player1.Damage} Damage) vs Player2: {player2.Name} ({player2.Damage} Damage) => ");
 
-			switch (ownType)
+			float damagePlayer1 = player1.GetDamageAgainst(player2);
+			float damagePlayer2 = player2.GetDamageAgainst(player1);
+
+			log.Append($"{player1.Damage} VS {player2.Damage} -> {damagePlayer1} VS {damagePlayer2} => ");
+
+			if (IsPureMonsterFight(player1, player2))
 			{
-				case CardType.Goblin when opposingType == CardType.Dragon:
-				case CardType.Ork when opposingType == CardType.Wizard:
-				case CardType.Spell when opposingType == CardType.Kraken:
-				case CardType.Dragon
-					when opposingType == CardType.Elf && cardB.Element == ElementType.Fire:
-					return CardSpecialty.CantAttack;
+				if (damagePlayer1 > damagePlayer2)
+				{
+					log.Append($"{player1.Name} defeats {player2.Name}");
+					return FightResult.Player1;
+				}
 
-				case CardType.Knight
-					when opposingType == CardType.Spell && cardB.Element == ElementType.Water:
-					return CardSpecialty.Dies;
+				if (damagePlayer1 < damagePlayer2)
+				{
+					log.Append($"{player2.Name} defeats {player1.Name}");
+					return FightResult.Player2;
+				}
+
+				log.Append("Draw (no action)");
+				return FightResult.Draw;
 			}
 
-			return CardSpecialty.None;
+			// fight including spells
+			float elementalDamagePlayer1 = damagePlayer1 * player1.GetElementalFactorAgainst(player2);
+			float elementalDamagePlayer2 = damagePlayer2 * player2.GetElementalFactorAgainst(player1);
+
+			if (elementalDamagePlayer1 > elementalDamagePlayer2)
+			{
+				log.Append($"{player1.Name} wins");
+				return FightResult.Player1;
+			}
+
+			if (elementalDamagePlayer1 < elementalDamagePlayer2)
+			{
+				log.Append($"{player2.Name} wins");
+				return FightResult.Player2;
+			}
+
+			log.Append("Draw (no action)");
+			return FightResult.Draw;
 		}
 
-		public static int GetRandomCard(List<Card> deck)
+		public static int GetRandomCard(List<ICard> deck)
 		{
 			var random = new Random();
 			return random.Next(deck.Count);
 		}
 
-		public static bool IsPureMonsterFight(Card cardA, Card cardB)
+		public static bool IsPureMonsterFight(ICard player1, ICard player2)
 		{
-			if (cardA.Type == CardType.Spell || cardB.Type == CardType.Spell)
+			if (player1.Type == CardType.Spell || player2.Type == CardType.Spell)
 			{
 				return false;
 			}
 			return true;
 		}
 
-		/// <summary>
-		/// Checks if card A's damage changes somehow, based on specialties and effects regarding card B.
-		/// </summary>
-		/// <param name="cardA"></param>
-		/// <param name="cardB"></param>
-		/// <returns>Returns card A's final calculated damage. (-1: Dies, 0: Can't attack, Other: calculated Damage)</returns>
-		public static float CalculateDamage(Card cardA, Card cardB)
+		private static void TransferCardToWinner(List<ICard> loser, List<ICard> winner, ICard card)
 		{
-			// specialty check
-			var specialty = CheckSpecialty(cardA, cardB);
-			switch (specialty)
-			{
-				case CardSpecialty.CantAttack:
-					return 0;
-				case CardSpecialty.Dies:
-					return -1;
-			}
-
-			// fight based on elements (at least one spell)
-			if (!IsPureMonsterFight(cardA, cardB))
-			{
-				var effect = CheckElementEffectiveness(cardA, cardB);
-				switch (effect)
-				{
-					case SpellEffect.Effective:
-						return cardA.Damage * Constants.EffectiveMultiplier;
-					case SpellEffect.NotEffective:
-						return cardA.Damage * Constants.NotEffectiveMultiplier;
-				}
-			}
-
-			// pure monster fight or no effect
-			return cardA.Damage;
-		}
-
-		private static void TransferCardToWinner(Player loser, Player winner, Card card)
-		{
-			loser.Deck.Remove(card);
-			winner.Deck.Add(card);
+			loser.Remove(card);
+			winner.Add(card);
 		}
 	}
 }

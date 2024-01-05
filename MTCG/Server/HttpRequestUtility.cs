@@ -1,6 +1,7 @@
 ﻿using MTCG.Cards;
 using MTCG.Database;
 using MTCG.Database.Schemas;
+using MTCG.Interfaces.ICard;
 using Newtonsoft.Json;
 using Npgsql;
 
@@ -102,9 +103,9 @@ namespace MTCG.Server
 			return (string)command.ExecuteScalar();
 		}
 
-		public static List<Cards.Card> RetrieveUserCards(string userName, string tableName, NpgsqlConnection dbConnection)
+		public static List<ICard> RetrieveUserCards(string userName, string tableName, NpgsqlConnection dbConnection)
 		{
-			List<Cards.Card> cardList = new();
+			List<ICard> cardList = new();
 
 			using NpgsqlCommand command = new(
 				@$"SELECT cards.id, cards.name, cards.damage
@@ -119,7 +120,7 @@ namespace MTCG.Server
 
 			while (reader.Read())
 			{
-				Cards.Card card = (Cards.Card)Cards.Card.CreateInstance(reader.GetGuid(0), reader.GetString(1), (float)reader.GetDouble(2));
+				ICard card = (ICard)Cards.Card.CreateInstance(reader.GetGuid(0), reader.GetString(1), (float)reader.GetDouble(2));
 
 				if (card is null)
 				{

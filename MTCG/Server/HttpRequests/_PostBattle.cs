@@ -1,7 +1,7 @@
 ﻿using MTCG.Battle;
 using MTCG.Database;
+using MTCG.Interfaces.ICard;
 using MTCG.Interfaces.IHttpRequest;
-using Npgsql;
 
 namespace MTCG.Server.HttpRequests
 {
@@ -19,31 +19,18 @@ namespace MTCG.Server.HttpRequests
 			var dbConnection = DBManager.GetDbConnection();
 			dbConnection.Open();
 
-			using (NpgsqlCommand command = new(
-				@"SELECT cards.name, cards.cardtype, cards.element, cards.damage
-					FROM decks
-					JOIN cards ON decks.cardid = cards.id
-					JOIN users ON decks.userId = users.id
-					WHERE username = @username;", dbConnection))
-			{
-				using NpgsqlDataReader reader = command.ExecuteReader();
-
-				while (reader.Read())
-				{
-
-				}
-			}
-
+			List<ICard> deck = HttpRequestUtility.RetrieveUserCards(username, "decks", dbConnection);
 
 			dbConnection.Close();
 
+			if (deck.Count <= 0)
+			{
+				return string.Format(Text.HttpResponse_204_NoContent, Text.Description_GetDeck_204);
+			}
 
+			Player player = new(username, deck);
 
-			// create Player object from user deck/userdata
-			Player player = new();
-
-
-			return BattleManager.HandleBattle(player);
+			return string.Format(Text.HttpResponse_200_OK_WithContent, Text.Description_PostBattle_200, BattleManager.HandleBattle(player));
 		}
 	}
 }

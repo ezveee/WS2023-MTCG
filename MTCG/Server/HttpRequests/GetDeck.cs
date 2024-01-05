@@ -1,5 +1,6 @@
 ﻿using MTCG.Cards;
 using MTCG.Database;
+using MTCG.Interfaces.ICard;
 using MTCG.Interfaces.IHttpRequest;
 using Newtonsoft.Json;
 using Npgsql;
@@ -35,25 +36,10 @@ namespace MTCG.Server.HttpRequests
 
 			string username = HttpRequestUtility.RetrieveUsernameFromToken(authToken);
 
-			// TODO: see if description is even necessary
-			//string? description;
-			//using (NpgsqlCommand command = new(
-			//	@"SELECT description FROM decks
-			//	JOIN users ON decks.userid = users.id
-			//	WHERE users.username = @user;", dbConnection))
-			//{
-			//	command.Parameters.AddWithValue("user", username);
-
-			//	object? obj = command.ExecuteScalar();
-			//	description = (obj is null) ? string.Empty : obj.ToString();
-			//}
-
-			List<Card> cardList = HttpRequestUtility.RetrieveUserCards(username, "decks", dbConnection);
+			List<ICard> cardList = HttpRequestUtility.RetrieveUserCards(username, "decks", dbConnection);
 
 			if (cardList.Count <= 0)
 			{
-				// TODO: check why 204 didn't work
-				// temporarily used 404
 				return string.Format(Text.HttpResponse_204_NoContent, Text.Description_GetDeck_204);
 			}
 

@@ -1,5 +1,6 @@
 ﻿using MTCG.Cards;
 using MTCG.Database;
+using MTCG.Interfaces.ICard;
 using MTCG.Interfaces.IHttpRequest;
 using Newtonsoft.Json;
 using Npgsql;
@@ -34,7 +35,7 @@ namespace MTCG.Server.HttpRequests
 			dbConnection.Open();
 
 			string username = HttpRequestUtility.RetrieveUsernameFromToken(authToken);
-			List<Card> cardList = HttpRequestUtility.RetrieveUserCards(username, "stacks", dbConnection);
+			List<ICard> cardList = HttpRequestUtility.RetrieveUserCards(username, "stacks", dbConnection);
 
 			if (cardList.Count <= 0)
 			{
