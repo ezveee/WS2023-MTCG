@@ -1,6 +1,7 @@
-﻿using MTCG.Database.Schemas;
+﻿using MTCG.Battle;
 using MTCG.Interfaces.ICard;
 using System.Collections.Immutable;
+using System.Text;
 
 namespace MTCG.Cards
 {
@@ -56,6 +57,59 @@ namespace MTCG.Cards
 			card.Element = cardCategories[name].ElementType;
 
 			return card;
+		}
+
+		// TODO: put in BattleManager ?
+		public static FightResult CompareCards(ICard player1, ICard player2, StringBuilder log)
+		{
+			// TODO: change to actual usernames
+			// changed fightlog a bit; original didn't show damage change in pure monster fight
+			// used spell fight template for monsters as well in account of specifications
+			log.Append($"Player1: {player1.Name} ({player1.Damage} Damage) vs Player2: {player2.Name} ({player2.Damage} Damage) => ");
+			log.Append($"Player1: {player1.Name} ({player1.Damage} Damage) vs Player2: {player2.Name} ({player2.Damage} Damage) => ");
+
+			float damagePlayer1 = player1.GetDamageAgainst(player2);
+			float damagePlayer2 = player2.GetDamageAgainst(player1);
+
+			log.Append($"{player1.Damage} VS {player2.Damage} -> {damagePlayer1} VS {damagePlayer2} => ");
+
+			// pure monster fight
+			if (player1.Type != CardType.Spell && player2.Type != CardType.Spell)
+			{
+				if (damagePlayer1 > damagePlayer2)
+				{
+					log.Append($"{player1.Name} defeats {player2.Name}");
+					return FightResult.Player1;
+				}
+
+				if (damagePlayer1 < damagePlayer2)
+				{
+					log.Append($"{player2.Name} defeats {player1.Name}");
+					return FightResult.Player2;
+				}
+
+				log.Append("Draw (no action)");
+				return FightResult.Draw;
+			}
+
+			// fight including spells
+			float elementalDamagePlayer1 = damagePlayer1 * player1.GetElementalFactorAgainst(player2);
+			float elementalDamagePlayer2 = damagePlayer2 * player2.GetElementalFactorAgainst(player1);
+
+			if (elementalDamagePlayer1 > elementalDamagePlayer2)
+			{
+				log.Append($"{player1.Name} wins");
+				return FightResult.Player1;
+			}
+
+			if (elementalDamagePlayer1 < elementalDamagePlayer2)
+			{
+				log.Append($"{player2.Name} wins");
+				return FightResult.Player2;
+			}
+
+			log.Append("Draw (no action)");
+			return FightResult.Draw;
 		}
 
 		public virtual float GetDamageAgainst(ICard card)

@@ -20,5 +20,6 @@ namespace MTCG.Interfaces.ICard
 		public ElementType Element { get; }
 
 		float GetDamageAgainst(ICard card);
+		float GetElementalFactorAgainst(ICard card);
 	}
 }

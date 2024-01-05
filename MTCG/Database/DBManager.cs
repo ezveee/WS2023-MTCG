@@ -247,7 +247,9 @@ namespace MTCG.Database
 			dbConnection.Open();
 
 			foreach (var entry in dbObjectInitCommands)
+			{
 				InitDbObject(dbConnection, entry.Key, entry.Value.Item1, entry.Value.Item2);
+			}
 
 			dbConnection.Close();
 		}
