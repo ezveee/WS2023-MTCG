@@ -1,6 +1,7 @@
 ﻿using MTCG.Cards;
+using MTCG.Database;
 using MTCG.Interfaces.ICard;
-using System.Numerics;
+using Npgsql;
 using System.Text;
 
 namespace MTCG.Battle
@@ -17,8 +18,6 @@ namespace MTCG.Battle
 				return _instance;
 			}
 		}
-
-		// private static List<Player> battleLobby = new();
 
 		private static Player? queuedPlayer;
 		private static Dictionary<string, string?> resultCache = new();
@@ -44,11 +43,64 @@ namespace MTCG.Battle
 			}
 
 			StringBuilder log = new();
-			Battle(player1, player2, log);
+			Battle(player1, player2, log, out FightResult result);
 
-			resultCache[player2.Username] = log.ToString();
+			if (result != FightResult.Draw)
+			{
+				string winner = result == FightResult.Player1 ? player1.Username : player2.Username;
+				string loser = result == FightResult.Player1 ? player2.Username : player1.Username;
+				UpdateUserStats(winner, loser);
+			}
 
-			return log.ToString();
+			string finalLog = string.Format(log.ToString(), player1.Username, player2.Username);
+			resultCache[player2.Username] = finalLog;
+
+			return finalLog;
+		}
+
+		private static void UpdateUserStats(string winner, string loser)
+		{
+			using var dbConnection = DBManager.GetDbConnection();
+			dbConnection.Open();
+
+			using var transaction = dbConnection.BeginTransaction();
+
+			try
+			{
+				using (var command = new NpgsqlCommand())
+				{
+					command.Connection = dbConnection;
+					command.Transaction = transaction;
+
+					command.CommandText =
+						@"UPDATE userstats
+							SET elo = elo - 5, losses = losses + 1
+							FROM users
+							WHERE userstats.userid = users.id AND users.username = @loser";
+					command.Parameters.AddWithValue("loser", loser);
+					command.ExecuteNonQuery();
+
+					command.Parameters.Clear();
+
+					command.CommandText =
+						@"UPDATE userstats
+							SET elo = elo + 3, wins = wins + 1
+							FROM users
+							WHERE userstats.userid = users.id AND users.username = @winner";
+					command.Parameters.AddWithValue("winner", winner);
+					command.ExecuteNonQuery();
+				}
+
+				transaction.Commit();
+				Console.WriteLine("Transaction committed successfully");
+			}
+			catch (Exception ex)
+			{
+				transaction.Rollback();
+				Console.WriteLine("Transaction rolled back due to exception: " + ex.Message);
+			}
+
+			dbConnection.Close();
 		}
 
 		private static string CheckIfResultIsAvailable(string username)
@@ -59,18 +111,31 @@ namespace MTCG.Battle
 			return log;
 		}
 
-		public static void Battle(Player player1, Player player2, StringBuilder log)
+		public static void Battle(Player player1, Player player2, StringBuilder log, out FightResult battleResult)
 		{
-			for (int roundCounter = 0; roundCounter < Constants.MaxRounds; ++roundCounter)
+			for (int roundCounter = 1; roundCounter < Constants.MaxRounds + 1; ++roundCounter)
 			{
+				log.AppendLine($"===== ROUND {roundCounter} =====");
+
 				PlayRound(player1.Deck, player2.Deck, log);
-				if (!player1.Deck.Any() || !player2.Deck.Any())
+				if (!player1.Deck.Any())
 				{
+					battleResult = FightResult.Player2;
+					log.AppendLine("{1} has won the battle!");
+					return;
+				}
+
+				if (!player2.Deck.Any())
+				{
+					battleResult = FightResult.Player1;
+					log.AppendLine("{0} has won the battle!");
 					return;
 				}
 			}
-		}
 
+			log.AppendLine("The battle has resulted in a draw.");
+			battleResult = FightResult.Draw;
+		}
 
 		public static void PlayRound(List<ICard> player1Deck, List<ICard> player2Deck, StringBuilder log)
 		{
@@ -82,11 +147,12 @@ namespace MTCG.Battle
 			if (result == FightResult.Player1)
 			{
 				TransferCardToWinner(player2Deck, player1Deck, player2);
+				return;
 			}
 
 			if (result == FightResult.Player2)
 			{
-				TransferCardToWinner(player1Deck, player1Deck, player1);
+				TransferCardToWinner(player1Deck, player2Deck, player1);
 			}
 		}
 
@@ -95,28 +161,28 @@ namespace MTCG.Battle
 			// TODO: change to actual usernames
 			// changed fightlog a bit; original didn't show damage change in pure monster fight
 			// used spell fight template for monsters as well in account of specifications
-			log.Append($"Player1: {player1.Name} ({player1.Damage} Damage) vs Player2: {player2.Name} ({player2.Damage} Damage) => ");
+			log.Append($"{{0}}: {player1.Name} ({player1.Damage} Damage) vs {{1}}: {player2.Name} ({player2.Damage} Damage) => {player1.Damage} VS {player2.Damage} -> ");
 
 			float damagePlayer1 = player1.GetDamageAgainst(player2);
 			float damagePlayer2 = player2.GetDamageAgainst(player1);
 
-			log.Append($"{player1.Damage} VS {player2.Damage} -> {damagePlayer1} VS {damagePlayer2} => ");
-
 			if (IsPureMonsterFight(player1, player2))
 			{
+				log.Append($"{damagePlayer1} VS {damagePlayer2} => ");
+
 				if (damagePlayer1 > damagePlayer2)
 				{
-					log.Append($"{player1.Name} defeats {player2.Name}");
+					log.AppendLine($"{player1.Name} defeats {player2.Name}");
 					return FightResult.Player1;
 				}
 
 				if (damagePlayer1 < damagePlayer2)
 				{
-					log.Append($"{player2.Name} defeats {player1.Name}");
+					log.AppendLine($"{player2.Name} defeats {player1.Name}");
 					return FightResult.Player2;
 				}
 
-				log.Append("Draw (no action)");
+				log.AppendLine("Draw (no action)");
 				return FightResult.Draw;
 			}
 
@@ -124,19 +190,21 @@ namespace MTCG.Battle
 			float elementalDamagePlayer1 = damagePlayer1 * player1.GetElementalFactorAgainst(player2);
 			float elementalDamagePlayer2 = damagePlayer2 * player2.GetElementalFactorAgainst(player1);
 
+			log.Append($"{elementalDamagePlayer1} VS {elementalDamagePlayer2} => ");
+
 			if (elementalDamagePlayer1 > elementalDamagePlayer2)
 			{
-				log.Append($"{player1.Name} wins");
+				log.AppendLine($"{player1.Name} wins");
 				return FightResult.Player1;
 			}
 
 			if (elementalDamagePlayer1 < elementalDamagePlayer2)
 			{
-				log.Append($"{player2.Name} wins");
+				log.AppendLine($"{player2.Name} wins");
 				return FightResult.Player2;
 			}
 
-			log.Append("Draw (no action)");
+			log.AppendLine("Draw (no action)");
 			return FightResult.Draw;
 		}
 
