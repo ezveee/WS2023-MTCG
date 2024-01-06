@@ -1,5 +1,5 @@
-﻿using MTCG.Battle;
-using MTCG.Database;
+﻿using MTCG.Database;
+using MTCG.Interfaces;
 using MTCG.Server;
 
 namespace MTCG
@@ -8,9 +8,11 @@ namespace MTCG
 	{
 		static void Main(string[] args)
 		{
-			DBManager dbManager = DBManager.Instance;
-			HttpServer server = HttpServer.Instance;
-			BattleManager battleManager = BattleManager.Instance;
+			IDataAccess dataAccess = new DataAccess();
+			dataAccess.DbSetup();
+
+			//DBManager dbManager = new(dataAccess);
+			HttpServer server = new(dataAccess);
 
 			try
 			{
@@ -19,7 +21,7 @@ namespace MTCG
 			finally
 			{
 				server.Stop();
-				dbManager.CloseConnection();
+				dataAccess.CloseConnection();
 			}
 		}
 	}

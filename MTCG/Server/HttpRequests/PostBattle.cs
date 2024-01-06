@@ -1,27 +1,26 @@
 ﻿using MTCG.Battle;
-using MTCG.Database;
-using MTCG.Interfaces.ICard;
-using MTCG.Interfaces.IHttpRequest;
+using MTCG.Interfaces;
 
 namespace MTCG.Server.HttpRequests
 {
 	public class PostBattle : IHttpRequest
 	{
+		readonly IDataAccess _dataAccess;
+		public PostBattle(IDataAccess dataAccess)
+		{
+			_dataAccess = dataAccess ?? throw new ArgumentNullException(nameof(dataAccess));
+		}
+
 		public string GetResponse(string request)
 		{
-			if (!HttpRequestUtility.IsUserAccessValid(request, out string? authToken))
+			if (!HttpRequestUtility.IsUserAccessValid(_dataAccess, request, out string? authToken))
 			{
 				return string.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
 			}
 
-			string username = HttpRequestUtility.RetrieveUsernameFromToken(authToken!);
+			string username = _dataAccess.RetrieveUsernameFromToken(authToken!);
 
-			var dbConnection = DBManager.GetDbConnection();
-			dbConnection.Open();
-
-			List<ICard> deck = HttpRequestUtility.RetrieveUserCards(username, "decks", dbConnection);
-
-			dbConnection.Close();
+			List<ICard> deck = _dataAccess.RetrieveUserCards(username, "decks");
 
 			if (deck.Count <= 0)
 			{
@@ -29,8 +28,9 @@ namespace MTCG.Server.HttpRequests
 			}
 
 			Player player = new(username, deck);
+			BattleManager battleManager = new(_dataAccess);
 
-			return string.Format(Text.HttpResponse_200_OK_WithContent, Text.Description_PostBattle_200, BattleManager.HandleBattle(player));
+			return string.Format(Text.HttpResponse_200_OK_WithContent, Text.Description_PostBattle_200, battleManager.HandleBattle(player));
 		}
 	}
 }

@@ -1,73 +1,48 @@
-﻿using MTCG.Database;
-using MTCG.Interfaces.IHttpRequest;
-using Npgsql;
+﻿using MTCG.Interfaces;
 
 namespace MTCG.Server.HttpRequests
 {
 	public class PostCampfire : IHttpRequest
 	{
+		readonly IDataAccess _dataAccess;
+		public PostCampfire(IDataAccess dataAccess)
+		{
+			_dataAccess = dataAccess ?? throw new ArgumentNullException(nameof(dataAccess));
+		}
+
 		public string GetResponse(string request)
 		{
-			if (!HttpRequestUtility.IsUserAccessValid(request, out string? authToken))
+			if (!HttpRequestUtility.IsUserAccessValid(_dataAccess, request, out string? authToken))
 			{
 				return string.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
 			}
 
-			string username = HttpRequestUtility.RetrieveUsernameFromToken(authToken!);
+			string username = _dataAccess.RetrieveUsernameFromToken(authToken!);
 			Guid cardId = new(HttpRequestUtility.ExtractJsonPayload(request).Trim('\"'));
 
-			if (!HttpRequestUtility.DoesCardBelongToUser(cardId, username)
-				|| HttpRequestUtility.IsCardInUserDeck(cardId, username)
-				|| HttpRequestUtility.IsCardEngagedInTrade(cardId))
+			if (!_dataAccess.DoesCardBelongToUser(cardId, username)
+				|| _dataAccess.IsCardInUserDeck(cardId, username)
+				|| _dataAccess.IsCardEngagedInTrade(cardId))
 			{
 				return string.Format(Text.HttpResponse_403_Forbidden, Text.Description_PostCampfire_403);
 			}
 
-			return UpgradeCard(cardId);
+			return ExecuteCardChange(cardId);
 		}
 
-		private static string UpgradeCard(Guid cardId)
+		private string ExecuteCardChange(Guid cardId)
 		{
-			using var dbConnection = DBManager.GetDbConnection();
-			dbConnection.Open();
-
-			using NpgsqlCommand command = dbConnection.CreateCommand();
 			if (DidUpgradeSucceed())
 			{
-				command.CommandText = "UPDATE cards SET damage = damage + @increase WHERE id = @cardId;";
-				command.Parameters.AddWithValue("increase", Constants.CampfireDamageIncrease);
-				command.Parameters.AddWithValue("cardId", cardId);
-				command.ExecuteNonQuery();
-
-				dbConnection.Close();
+				_dataAccess.CampfireUpgrade(cardId);
 				return string.Format(Text.HttpResponse_200_OK, Text.Description_PostCampfire_200_Success);
 			}
 
-			using var transaction = dbConnection.BeginTransaction();
-			try
+			if (!_dataAccess.CampfireCardLoss(cardId))
 			{
-				command.Transaction = transaction;
-
-				command.CommandText = "DELETE FROM stacks WHERE cardid = @cardId;";
-				command.Parameters.AddWithValue("cardId", cardId);
-				command.ExecuteNonQuery();
-
-				command.Parameters.Clear();
-				command.CommandText = "DELETE FROM cards WHERE id = @cardId;";
-				command.Parameters.AddWithValue("cardId", cardId);
-				command.ExecuteNonQuery();
-
-				transaction.Commit();
-				Console.WriteLine("Transaction committed successfully");
-			}
-			catch (Exception ex)
-			{
-				transaction.Rollback();
-				Console.WriteLine("Transaction rolled back due to exception: " + ex.Message);
 				return Text.HttpResponse_500_InternalServerError;
 			}
 
-			dbConnection.Close();
 			return string.Format(Text.HttpResponse_200_OK, Text.Description_PostCampfire_200_Fail);
 		}
 

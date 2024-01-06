@@ -1,28 +1,22 @@
 ﻿using MTCG.Cards;
-using MTCG.Database;
-using MTCG.Interfaces.ICard;
-using Npgsql;
+using MTCG.Interfaces;
 using System.Text;
 
 namespace MTCG.Battle
 {
 	public class BattleManager
 	{
-		private static BattleManager _instance;
+		readonly IDataAccess _dataAccess;
 
-		public static BattleManager Instance
+		public BattleManager(IDataAccess dataAccess)
 		{
-			get
-			{
-				_instance ??= new BattleManager();
-				return _instance;
-			}
+			_dataAccess = dataAccess;
 		}
 
 		private static Player? queuedPlayer;
 		private static Dictionary<string, string?> resultCache = new();
 
-		public static string HandleBattle(Player player)
+		public string HandleBattle(Player player)
 		{
 			if (queuedPlayer is null)
 			{
@@ -49,7 +43,7 @@ namespace MTCG.Battle
 			{
 				string winner = result == FightResult.Player1 ? player1.Username : player2.Username;
 				string loser = result == FightResult.Player1 ? player2.Username : player1.Username;
-				UpdateUserStats(winner, loser);
+				_dataAccess.UpdateUserStats(winner, loser);
 			}
 
 			string finalLog = string.Format(log.ToString(), player1.Username, player2.Username);
@@ -58,55 +52,13 @@ namespace MTCG.Battle
 			return finalLog;
 		}
 
-		private static void UpdateUserStats(string winner, string loser)
-		{
-			using var dbConnection = DBManager.GetDbConnection();
-			dbConnection.Open();
-
-			using var transaction = dbConnection.BeginTransaction();
-
-			try
-			{
-				using (var command = new NpgsqlCommand())
-				{
-					command.Connection = dbConnection;
-					command.Transaction = transaction;
-
-					command.CommandText =
-						@"UPDATE userstats
-							SET elo = elo - 5, losses = losses + 1
-							FROM users
-							WHERE userstats.userid = users.id AND users.username = @loser";
-					command.Parameters.AddWithValue("loser", loser);
-					command.ExecuteNonQuery();
-
-					command.Parameters.Clear();
-
-					command.CommandText =
-						@"UPDATE userstats
-							SET elo = elo + 3, wins = wins + 1
-							FROM users
-							WHERE userstats.userid = users.id AND users.username = @winner";
-					command.Parameters.AddWithValue("winner", winner);
-					command.ExecuteNonQuery();
-				}
-
-				transaction.Commit();
-				Console.WriteLine("Transaction committed successfully");
-			}
-			catch (Exception ex)
-			{
-				transaction.Rollback();
-				Console.WriteLine("Transaction rolled back due to exception: " + ex.Message);
-			}
-
-			dbConnection.Close();
-		}
-
 		private static string CheckIfResultIsAvailable(string username)
 		{
-			while (resultCache[username] is null) ;
-			string log = resultCache[username];
+			while (resultCache[username] is null)
+			{
+				// wait until battle log is put into result cache
+			}
+			string log = resultCache[username]!;
 			resultCache.Remove(username);
 			return log;
 		}

@@ -1,4 +1,4 @@
-﻿using MTCG.Interfaces.ICard;
+﻿using MTCG.Interfaces;
 
 namespace MTCG.Battle
 {
@@ -10,8 +10,8 @@ namespace MTCG.Battle
 			_deck = deck;
 		}
 
-		private string _username;
-		private List<ICard> _deck = new();
+		private readonly string _username;
+		private readonly List<ICard> _deck;
 
 		public string Username { get { return _username; } }
 		public List<ICard> Deck { get { return _deck; } }

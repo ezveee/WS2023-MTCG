@@ -1,14 +1,16 @@
-﻿using MTCG.Cards;
-using MTCG.Database;
-using MTCG.Interfaces.ICard;
-using MTCG.Interfaces.IHttpRequest;
+﻿using MTCG.Interfaces;
 using Newtonsoft.Json;
-using Npgsql;
 
 namespace MTCG.Server.HttpRequests
 {
 	public class GetDeck : IHttpRequest
 	{
+		readonly IDataAccess _dataAccess;
+		public GetDeck(IDataAccess dataAccess)
+		{
+			_dataAccess = dataAccess ?? throw new ArgumentNullException(nameof(dataAccess));
+		}
+
 		public string GetResponse(string request)
 		{
 			string response;
@@ -24,19 +26,16 @@ namespace MTCG.Server.HttpRequests
 			return response;
 		}
 
-		private static string RetrieveDeck(string authToken)
+		private string RetrieveDeck(string authToken)
 		{
-			if (!HttpRequestUtility.IsTokenValid(authToken))
+			if (!_dataAccess.IsTokenValid(authToken))
 			{
 				return string.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
 			}
 
-			var dbConnection = DBManager.GetDbConnection();
-			dbConnection.Open();
+			string username = _dataAccess.RetrieveUsernameFromToken(authToken);
 
-			string username = HttpRequestUtility.RetrieveUsernameFromToken(authToken);
-
-			List<ICard> cardList = HttpRequestUtility.RetrieveUserCards(username, "decks", dbConnection);
+			List<ICard> cardList = _dataAccess.RetrieveUserCards(username, "decks");
 
 			if (cardList.Count <= 0)
 			{

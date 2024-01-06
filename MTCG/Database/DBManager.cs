@@ -1,306 +1,64 @@
-﻿using Npgsql;
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿//using MTCG.Interfaces;
+//using Npgsql;
 
-namespace MTCG.Database
-{
-	public class DBManager
-	{
-		private static DBManager _instance;
+//namespace MTCG.Database;
 
-		private DBManager()
-		{
-			Console.WriteLine("DB setup start.");
-			Setup();
-			Console.WriteLine("DB setup finished.\n");
-		}
+//public class DBManager
+//{
+//	readonly IDataAccess _dataAccess;
 
-		public static DBManager Instance
-		{
-			get
-			{
-				_instance ??= new DBManager();
-				return _instance;
-			}
-		}
+//	public DBManager(IDataAccess dataAccess)
+//	{
+//		_dataAccess = dataAccess ?? throw new ArgumentNullException(nameof(dataAccess));
 
-		private static readonly string connectionString = "Host=localhost;Username=vee;Password=1234";
-		private readonly NpgsqlConnection connection = new(connectionString);
+//		Console.WriteLine("DB setup start.");
+//		Setup();
+//		Console.WriteLine("DB setup finished.\n");
+//	}
 
-		// 'create' and 'insert' statements for start of program
-		// @"" ... verbatim string (escape sequences interpreted as literal characters)
-		private readonly Dictionary<string, (string, string?)> dbObjectInitCommands = new()
-		{
-			{
-				"cardtypes",
-				(
-					@"CREATE TABLE IF NOT EXISTS cardtypes (
-						id INTEGER PRIMARY KEY,
-						type VARCHAR(25)
-					);",
+//	private static readonly string connectionString = "Host=localhost;Username=vee;Password=1234";
+//	private readonly NpgsqlConnection connection = new(connectionString);
 
-					@"INSERT INTO cardtypes (id, type) VALUES
-						(1, 'Spell'),
-						(2, 'Goblin'),
-						(3, 'Dragon'),
-						(4, 'Wizard'),
-						(5, 'Ork'),
-						(6, 'Knight'),
-						(7, 'Kraken'),
-						(8, 'Elf'),
-						(9, 'Troll');"
-				)
-			},
+//	private void Setup()
+//	{
+//		connection.Open();
 
-			{
-				"elements",
-				(
-					@"CREATE TABLE IF NOT EXISTS elements (
-						id INTEGER PRIMARY KEY,
-						element VARCHAR(25)
-					);",
+//		NpgsqlConnection dbConnection = GetDbConnection();
+//		dbConnection.Open();
 
-					@"INSERT INTO elements (id, element) VALUES
-						(1, 'Fire'),
-						(2, 'Water'),
-						(3, 'Regular');"
-				)
-			},
+//		foreach (KeyValuePair<string, (string, string?)> entry in dbObjectInitCommands)
+//		{
+//			InitDbObject(dbConnection, entry.Key, entry.Value.Item1, entry.Value.Item2);
+//		}
 
-			{
-				"cardcategories",
-				(
-					@"CREATE TABLE IF NOT EXISTS cardcategories (
-						id SERIAL PRIMARY KEY,
-						name VARCHAR(50) UNIQUE,
-						cardtype INTEGER REFERENCES cardtypes(id),
-						element INTEGER REFERENCES elements(id),
-						CHECK (cardtype BETWEEN 1 AND 9),
-						CHECK (element BETWEEN 1 AND 3)
-					);",
+//		dbConnection.Close();
+//	}
 
-					@"INSERT INTO cardcategories (name, cardtype, element) VALUES
-					('FireSpell', 1, 1),
-					('WaterSpell', 1, 2),
-					('RegularSpell', 1, 2),
-					('FireGoblin', 2, 1),
-					('WaterGoblin', 2, 2),
-					('RegularGoblin', 2, 3),
-					('Dragon', 3, 1),
-					('Wizard', 4, 3),
-					('Ork', 5, 3),
-					('Knight', 6, 3),
-					('Kraken', 7, 2),
-					('FireElf', 8, 1),
-					('WaterElf', 8, 2),
-					('RegularElf', 8, 3),
-					('FireTroll', 9, 1),
-					('WaterTroll', 9, 2),
-					('RegularTroll', 9, 3);"
-				)
-			},
+//	public static NpgsqlConnection GetDbConnection()
+//	{
+//		return new NpgsqlConnection(connectionString + "; Database=mtcg");
+//	}
 
-			{
-				"packageids",
-				(
-					@"CREATE SEQUENCE IF NOT EXISTS packageids;",
+//	public void CloseConnection()
+//	{
+//		connection?.Close();
+//	}
 
-					null
-				)
-			},
+//	// initial db object creation
+//	private void InitDbObject(NpgsqlConnection connection, string tableName, string createStatement, string? insertStatement)
+//	{
+//		bool tableExists = _dataAccess.TableExists(connection, tableName);
 
-			{
-				"users",
-				(
-					@"CREATE TABLE IF NOT EXISTS users (
-						id SERIAL PRIMARY KEY,
-						username VARCHAR(50) UNIQUE,
-						password VARCHAR(255),
-						coins INTEGER
-					);",
+//		if (tableExists)
+//		{
+//			Console.WriteLine($"Database object '{tableName}' already exists.");
+//			return;
+//		}
 
-					null
-				)
-			},
-
-			{
-				"userdata",
-				(
-					@"CREATE TABLE IF NOT EXISTS userdata (
-						userid INTEGER PRIMARY KEY,
-						name VARCHAR(50),
-						image VARCHAR(50),
-						bio VARCHAR(255)
-					);",
-
-					null
-				)
-			},
-
-			{
-				"userstats",
-				(
-					@"CREATE TABLE IF NOT EXISTS userstats (
-						userid INTEGER PRIMARY KEY,
-						elo INTEGER,
-						wins INTEGER,
-						losses INTEGER
-					);",
-
-					null
-				)
-			},
-
-			{
-				"packages",
-				(
-					@"CREATE TABLE IF NOT EXISTS packages (
-						id INTEGER,
-						cardid uuid
-					);",
-
-					null
-				)
-			},
-
-			{
-				"trades",
-				(
-					@"CREATE TABLE IF NOT EXISTS trades (
-						id uuid PRIMARY KEY,
-						cardid uuid UNIQUE,
-						type VARCHAR(20),
-						minimumDamage FLOAT
-					);",
-
-					null
-				)
-			},
-
-			{
-				"sessions",
-				(
-					@"CREATE TABLE IF NOT EXISTS sessions (
-						id SERIAL PRIMARY KEY,
-						username VARCHAR(50),
-						token varchar(100),
-						valid_until TIMESTAMP
-					);",
-
-					null
-				)
-			},
-
-			{
-				"cards",
-				(
-					@"CREATE TABLE IF NOT EXISTS cards (
-						id uuid PRIMARY KEY,
-						name VARCHAR(50),
-						cardtype INTEGER REFERENCES cardtypes(id),
-						element INTEGER REFERENCES elements(id),
-						damage FLOAT,
-						CHECK (cardtype BETWEEN 1 AND 9),
-						CHECK (element BETWEEN 1 AND 3)
-					);",
-
-					null
-				)
-			},
-
-			{
-				"stacks",
-				(
-					@"CREATE TABLE IF NOT EXISTS stacks (
-						id SERIAL PRIMARY KEY,
-						userid INTEGER,
-						cardid uuid UNIQUE
-					);",
-
-					null
-				)
-			},
-
-			{
-				"decks",
-				(
-					@"CREATE TABLE IF NOT EXISTS decks (
-						id SERIAL PRIMARY KEY,
-						userid INTEGER,
-						cardid uuid UNIQUE
-					);",
-
-					null
-				)
-			}
-		};
-
-		private void Setup()
-		{
-			connection.Open();
-
-			var dbConnection = GetDbConnection();
-			dbConnection.Open();
-
-			foreach (var entry in dbObjectInitCommands)
-			{
-				InitDbObject(dbConnection, entry.Key, entry.Value.Item1, entry.Value.Item2);
-			}
-
-			dbConnection.Close();
-		}
-
-		public static NpgsqlConnection GetDbConnection()
-		{
-			return new NpgsqlConnection(connectionString + "; Database=mtcg");
-		}
-
-		public void CloseConnection()
-		{
-			connection?.Close();
-		}
-
-		// initial db object creation
-		static void InitDbObject(NpgsqlConnection connection, string tableName, string createStatement, string? insertStatement)
-		{
-			bool tableExists = TableExists(connection, tableName);
-
-			if (tableExists)
-			{
-				Console.WriteLine($"Database object '{tableName}' already exists.");
-				return;
-			}
-
-			CreateDbObject(connection, tableName, createStatement);
-			if (insertStatement != null)
-			{
-				InsertValues(connection, tableName, insertStatement);
-			}
-		}
-
-		static bool TableExists(NpgsqlConnection connection, string tableName)
-		{
-			// (googled) check if table exists by using select statement
-			using NpgsqlCommand command = new($"SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = '{tableName}')", connection);
-			return (bool)command.ExecuteScalar();
-		}
-
-		static void CreateDbObject(NpgsqlConnection connection, string tableName, string createStatement)
-		{
-			using NpgsqlCommand command = new(createStatement, connection);
-			command.ExecuteNonQuery();
-			Console.WriteLine($"Database Object '{tableName}' created successfully.");
-		}
-
-		static void InsertValues(NpgsqlConnection connection, string tableName, string insertStatement)
-		{
-			using NpgsqlCommand command = new(insertStatement, connection);
-			command.ExecuteNonQuery();
-			Console.WriteLine($"Values inserted into '{tableName}' successfully.");
-		}
-	}
-}
+//		_dataAccess.CreateDbObject(connection, tableName, createStatement);
+//		if (insertStatement != null)
+//		{
+//			_dataAccess.InsertValues(connection, tableName, insertStatement);
+//		}
+//	}
+//}

@@ -1,4 +1,4 @@
-﻿using MTCG.Interfaces.IHttpRequest;
+﻿using MTCG.Interfaces;
 using MTCG.Server.HttpRequests;
 using System.Net;
 using System.Net.Sockets;
@@ -8,43 +8,35 @@ namespace MTCG.Server
 {
 	public class HttpServer
 	{
-		private static HttpServer _instance;
 		private readonly TcpListener listener;
+		readonly IDataAccess _dataAccess;
 		private static readonly Dictionary<string, IHttpRequest> routeTable = new();
 
-		private HttpServer()
+		public HttpServer(IDataAccess dataAccess)
 		{
+			_dataAccess = dataAccess ?? throw new ArgumentNullException(nameof(dataAccess));
 			listener = new TcpListener(IPAddress.Loopback, Constants.HttpServerPort);
 			InitializRoutes();
 		}
 
-		public static HttpServer Instance
+		private void InitializRoutes()
 		{
-			get
-			{
-				_instance ??= new HttpServer();
-				return _instance;
-			}
-		}
-
-		private static void InitializRoutes()
-		{
-			routeTable["POST /users"] = new PostUser();
-			routeTable["POST /sessions"] = new PostSession();
-			routeTable["POST /packages"] = new PostPackage();
-			routeTable["GET /users"] = new GetUser();
-			routeTable["PUT /users"] = new PutUser();
-			routeTable["POST /transactions"] = new PostTransaction();
-			routeTable["GET /cards"] = new GetStack();
-			routeTable["GET /deck"] = new GetDeck();
-			routeTable["PUT /deck"] = new PutDeck();
-			routeTable["GET /stats"] = new GetStats();
-			routeTable["GET /scoreboard"] = new GetScoreboard();
-			routeTable["POST /battles"] = new PostBattle();
-			routeTable["GET /tradings"] = new GetTradings();
-			routeTable["POST /tradings"] = new PostTrading();
-			routeTable["DELETE /tradings"] = new DeleteTrading();
-			routeTable["POST /campfire"] = new PostCampfire(); // mandatory unique feature
+			routeTable["POST /users"] = new PostUser(_dataAccess);
+			routeTable["POST /sessions"] = new PostSession(_dataAccess);
+			routeTable["POST /packages"] = new PostPackage(_dataAccess);
+			routeTable["GET /users"] = new GetUser(_dataAccess);
+			routeTable["PUT /users"] = new PutUser(_dataAccess);
+			routeTable["POST /transactions"] = new PostTransaction(_dataAccess);
+			routeTable["GET /cards"] = new GetStack(_dataAccess);
+			routeTable["GET /deck"] = new GetDeck(_dataAccess);
+			routeTable["PUT /deck"] = new PutDeck(_dataAccess);
+			routeTable["GET /stats"] = new GetStats(_dataAccess);
+			routeTable["GET /scoreboard"] = new GetScoreboard(_dataAccess);
+			routeTable["POST /battles"] = new PostBattle(_dataAccess);
+			routeTable["GET /tradings"] = new GetTradings(_dataAccess);
+			routeTable["POST /tradings"] = new PostTrading(_dataAccess);
+			routeTable["DELETE /tradings"] = new DeleteTrading(_dataAccess);
+			routeTable["POST /campfire"] = new PostCampfire(_dataAccess); // mandatory unique feature
 		}
 
 		public void Start()
@@ -132,7 +124,5 @@ namespace MTCG.Server
 
 			return method + " /" + pathComponents[1];
 		}
-
 	}
-
 }

@@ -1,4 +1,4 @@
-﻿using MTCG.Interfaces.ICard;
+﻿using MTCG.Interfaces;
 
 namespace MTCG.Cards
 {

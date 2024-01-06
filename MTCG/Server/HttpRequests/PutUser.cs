@@ -1,32 +1,38 @@
-﻿using MTCG.Database;
-using MTCG.Database.Schemas;
-using MTCG.Interfaces.IHttpRequest;
+﻿using MTCG.Database.Schemas;
+using MTCG.Interfaces;
 using Newtonsoft.Json;
-using Npgsql;
 
 namespace MTCG.Server.HttpRequests
 {
 	public class PutUser : IHttpRequest
 	{
+		readonly IDataAccess _dataAccess;
+		public PutUser(IDataAccess dataAccess)
+		{
+			_dataAccess = dataAccess ?? throw new ArgumentNullException(nameof(dataAccess));
+		}
+
 		public string GetResponse(string request)
 		{
-			if (!HttpRequestUtility.IsUserAccessValid(request, out string? authToken))
+			if (!HttpRequestUtility.IsUserAccessValid(_dataAccess, request, out string? authToken))
 			{
 				return string.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
 			}
 
 			string? user;
 			if ((user = HttpRequestUtility.ExtractPathAddOns(request)) is null)
+			{
 				return Text.HttpResponse_400_BadRequest;
+			}
 
-			string tokenUser = HttpRequestUtility.RetrieveUsernameFromToken(authToken!);
+			string tokenUser = _dataAccess.RetrieveUsernameFromToken(authToken!);
 			if (tokenUser != "admin" && tokenUser != user)
 			{
 				return string.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
 			}
 
 			// admin authorized but user not in db
-			if (!DoesUserExist(user))
+			if (!_dataAccess.DoesUserExist(user))
 			{
 				return string.Format(Text.HttpResponse_404_NotFound, Text.Description_Default_404_User);
 			}
@@ -45,44 +51,7 @@ namespace MTCG.Server.HttpRequests
 				return Text.HttpResponse_400_BadRequest;
 			}
 
-			return InsertUserData(user, userData);
-		}
-
-		private static string InsertUserData(string username, UserData userData)
-		{
-			var dbConnection = DBManager.GetDbConnection();
-			dbConnection.Open();
-
-			NpgsqlCommand command = new("UPDATE userdata SET name = @name, bio = @bio, image = @image FROM users WHERE userdata.userid = users.id AND users.username = @username;", dbConnection);
-			command.Parameters.AddWithValue("name", userData.Name);
-			command.Parameters.AddWithValue("bio", userData.Bio);
-			command.Parameters.AddWithValue("image", userData.Image);
-			command.Parameters.AddWithValue("username", username);
-			command.ExecuteNonQuery();
-
-			dbConnection.Close();
-
-			string userDataJson = JsonConvert.SerializeObject(userData, Formatting.Indented);
-			return string.Format(Text.HttpResponse_200_OK, Text.Description_PutUser_200);
-		}
-
-		// TODO: db layer?
-		private static bool DoesUserExist(string username)
-		{
-			var dbConnection = DBManager.GetDbConnection();
-			dbConnection.Open();
-
-			using NpgsqlCommand command = new("SELECT COUNT(*) FROM users WHERE username = @username", dbConnection);
-			command.Parameters.AddWithValue("username", username);
-
-			if (Convert.ToInt32(command.ExecuteScalar()) <= 0)
-			{
-				dbConnection.Close();
-				return false;
-			}
-
-			dbConnection.Close();
-			return true;
+			return _dataAccess.InsertUserData(user, userData);
 		}
 	}
 }

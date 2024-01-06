@@ -1,7 +1,5 @@
-﻿using MTCG.Battle;
-using MTCG.Interfaces.ICard;
+﻿using MTCG.Interfaces;
 using System.Collections.Immutable;
-using System.Text;
 
 namespace MTCG.Cards
 {
