@@ -1,38 +1,32 @@
 ﻿using MTCG.Interfaces;
 using Newtonsoft.Json;
 
-namespace MTCG.Server.HttpRequests
+namespace MTCG.Server.HttpRequests;
+
+public class PostPackage : IHttpRequest
 {
-	public class PostPackage : IHttpRequest
+	private readonly IDataAccess _dataAccess;
+	public PostPackage(IDataAccess dataAccess)
 	{
-		readonly IDataAccess _dataAccess;
-		public PostPackage(IDataAccess dataAccess)
+		_dataAccess = dataAccess ?? throw new ArgumentNullException(nameof(dataAccess));
+	}
+
+	public string GetResponse(string request)
+	{
+		if (!HttpRequestUtility.IsUserAccessValid(_dataAccess, request, out string? authToken))
 		{
-			_dataAccess = dataAccess ?? throw new ArgumentNullException(nameof(dataAccess));
+			return string.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
 		}
 
-		public string GetResponse(string request)
+		string jsonPayload = HttpRequestUtility.ExtractJsonPayload(request);
+
+		if (jsonPayload == null)
 		{
-			if (!HttpRequestUtility.IsUserAccessValid(_dataAccess, request, out string? authToken))
-			{
-				return string.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
-			}
-
-			string jsonPayload = HttpRequestUtility.ExtractJsonPayload(request);
-
-			if (jsonPayload == null)
-			{
-				return Text.HttpResponse_400_BadRequest;
-			}
-
-			List<Database.Schemas.Card>? package = JsonConvert.DeserializeObject<List<Database.Schemas.Card>>(jsonPayload);
-
-			if (package == null || package.Count != 5)
-			{
-				return Text.HttpResponse_400_BadRequest;
-			}
-
-			return _dataAccess.CreatePackage(package, authToken!);
+			return Text.HttpResponse_400_BadRequest;
 		}
+
+		List<Database.Schemas.Card>? package = JsonConvert.DeserializeObject<List<Database.Schemas.Card>>(jsonPayload);
+
+		return package == null || package.Count != 5 ? Text.HttpResponse_400_BadRequest : _dataAccess.CreatePackage(package, authToken!);
 	}
 }

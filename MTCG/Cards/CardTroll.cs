@@ -1,7 +1,6 @@
-﻿namespace MTCG.Cards
+﻿namespace MTCG.Cards;
+
+public class CardTroll : Card
 {
-	public class CardTroll : Card
-	{
-		// NYI
-	}
+	// NYI
 }

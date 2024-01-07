@@ -1,9 +1,8 @@
-﻿namespace MTCG.Cards
+﻿namespace MTCG.Cards;
+
+public enum CardSpecialty
 {
-	public enum CardSpecialty
-	{
-		CantAttack,
-		Dies,
-		None
-	}
+	CantAttack,
+	Dies,
+	None
 }

@@ -1,28 +1,24 @@
 ﻿using MTCG.Interfaces;
 
-namespace MTCG.Server.HttpRequests
+namespace MTCG.Server.HttpRequests;
+
+public class PostTransaction : IHttpRequest
 {
-	public class PostTransaction : IHttpRequest
+	private readonly IDataAccess _dataAccess;
+	public PostTransaction(IDataAccess dataAccess)
 	{
-		readonly IDataAccess _dataAccess;
-		public PostTransaction(IDataAccess dataAccess)
+		_dataAccess = dataAccess ?? throw new ArgumentNullException(nameof(dataAccess));
+	}
+
+	public string GetResponse(string request)
+	{
+		if (!HttpRequestUtility.IsUserAccessValid(_dataAccess, request, out string? authToken))
 		{
-			_dataAccess = dataAccess ?? throw new ArgumentNullException(nameof(dataAccess));
+			return string.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
 		}
 
-		public string GetResponse(string request)
-		{
-			if (!HttpRequestUtility.IsUserAccessValid(_dataAccess, request, out string? authToken))
-			{
-				return string.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
-			}
-
-			if (HttpRequestUtility.ExtractPathAddOns(request) != "packages")
-			{
-				return string.Format(Text.HttpResponse_400_BadRequest);
-			}
-
-			return _dataAccess.AquirePackage(authToken!);
-		}
+		return HttpRequestUtility.ExtractPathAddOns(request) != "packages"
+			? string.Format(Text.HttpResponse_400_BadRequest)
+			: _dataAccess.AquirePackage(authToken!);
 	}
 }

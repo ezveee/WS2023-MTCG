@@ -2,27 +2,24 @@
 using MTCG.Interfaces;
 using MTCG.Server;
 
-namespace MTCG
+namespace MTCG;
+
+public static class Program
 {
-	public static class Program
+	private static void Main(string[] args)
 	{
-		static void Main(string[] args)
+		IDataAccess dataAccess = new DataAccess();
+		dataAccess.DbSetup();
+		HttpServer server = new(dataAccess);
+
+		try
 		{
-			IDataAccess dataAccess = new DataAccess();
-			dataAccess.DbSetup();
-
-			//DBManager dbManager = new(dataAccess);
-			HttpServer server = new(dataAccess);
-
-			try
-			{
-				server.Start();
-			}
-			finally
-			{
-				server.Stop();
-				dataAccess.CloseConnection();
-			}
+			server.Start();
+		}
+		finally
+		{
+			server.Stop();
+			dataAccess.CloseConnection();
 		}
 	}
 }

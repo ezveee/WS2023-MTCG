@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace MTCG.Cards;
 
-namespace MTCG.Cards
+public enum SpellEffect
 {
-	public enum SpellEffect
-	{
-		Effective,
-		NotEffective,
-		NoEffect
-	}
+	Effective,
+	NotEffective,
+	NoEffect
 }

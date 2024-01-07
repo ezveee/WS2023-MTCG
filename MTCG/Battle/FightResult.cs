@@ -1,10 +1,9 @@
 ﻿
-namespace MTCG.Battle
+namespace MTCG.Battle;
+
+public enum FightResult
 {
-	public enum FightResult
-	{
-		Player1,
-		Player2,
-		Draw
-	}
+	Player1,
+	Player2,
+	Draw
 }

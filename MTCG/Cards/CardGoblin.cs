@@ -1,17 +1,11 @@
 ﻿using MTCG.Interfaces;
 
-namespace MTCG.Cards
-{
-	public class CardGoblin : Card
-	{
-		public override float GetDamageAgainst(ICard card)
-		{
-			if (card.Type == CardType.Dragon)
-			{
-				return 0;
-			}
+namespace MTCG.Cards;
 
-			return base.GetDamageAgainst(card);
-		}
+public class CardGoblin : Card
+{
+	public override float GetDamageAgainst(ICard card)
+	{
+		return card.Type == CardType.Dragon ? 0 : base.GetDamageAgainst(card);
 	}
 }

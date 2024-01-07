@@ -1,17 +1,11 @@
 ﻿using MTCG.Interfaces;
 
-namespace MTCG.Cards
-{
-	public class CardKnight : Card
-	{
-		public override float GetDamageAgainst(ICard card)
-		{
-			if (card.Type == CardType.Spell && card.Element == ElementType.Water)
-			{
-				return -1;
-			}
+namespace MTCG.Cards;
 
-			return base.GetDamageAgainst(card);
-		}
+public class CardKnight : Card
+{
+	public override float GetDamageAgainst(ICard card)
+	{
+		return card.Type == CardType.Spell && card.Element == ElementType.Water ? -1 : base.GetDamageAgainst(card);
 	}
 }

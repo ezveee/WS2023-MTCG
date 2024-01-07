@@ -17,7 +17,6 @@ public interface IDataAccess
 	string CreatePackage(List<Database.Schemas.Card> package, string authToken);
 	bool DoCardsAlreadyExist(List<Database.Schemas.Card> package);
 	bool IsAdmin(string authToken);
-	void InsertIntoCardsTable(List<Database.Schemas.Card> package);
 	UserStats? RetrieveUserStats(string username);
 	string RetrieveScoreboard(string username);
 	string DeleteTrade(Guid tradeId, string username);

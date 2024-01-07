@@ -1,5 +1,6 @@
 ﻿using MTCG.Cards;
 using MTCG.Database.Schemas;
+using MTCG.Exceptions;
 using MTCG.Interfaces;
 using Newtonsoft.Json;
 using Npgsql;
@@ -51,14 +52,14 @@ public class DataAccess : IDataAccess
 
 	public void UpdateUserStats(string winner, string loser)
 	{
-		using var dbConnection = GetDbConnection();
+		using NpgsqlConnection dbConnection = GetDbConnection();
 		dbConnection.Open();
 
-		using var transaction = dbConnection.BeginTransaction();
+		using NpgsqlTransaction transaction = dbConnection.BeginTransaction();
 
 		try
 		{
-			using (var command = new NpgsqlCommand())
+			using (NpgsqlCommand command = new())
 			{
 				command.Connection = dbConnection;
 				command.Transaction = transaction;
@@ -108,7 +109,6 @@ public class DataAccess : IDataAccess
 
 		dbConnection.Close();
 
-		string userDataJson = JsonConvert.SerializeObject(userData, Formatting.Indented);
 		return string.Format(Text.HttpResponse_200_OK, Text.Description_PutUser_200);
 	}
 
@@ -130,11 +130,11 @@ public class DataAccess : IDataAccess
 			}
 		}
 
-		using var transaction = dbConnection.BeginTransaction();
+		using NpgsqlTransaction transaction = dbConnection.BeginTransaction();
 
 		try
 		{
-			using (var command = new NpgsqlCommand())
+			using (NpgsqlCommand command = new())
 			{
 				command.Connection = dbConnection;
 				command.Transaction = transaction;
@@ -168,12 +168,9 @@ public class DataAccess : IDataAccess
 		return string.Format(Text.HttpResponse_200_OK, Text.Description_PutDeck_200);
 	}
 
-	// TODO:	when trying to insert user with preexisting username, it doesn't create a new entry
-	//			but the id goes up. find problem and fix
-	//			possible solution: do query to check if exists if not -> insert
 	public bool CreateDbUser(UserCredentials user)
 	{
-		var dbConnection = GetDbConnection();
+		NpgsqlConnection dbConnection = GetDbConnection();
 		dbConnection.Open();
 
 		using NpgsqlCommand command = new();
@@ -218,7 +215,7 @@ public class DataAccess : IDataAccess
 
 	public string AquirePackage(string authToken)
 	{
-		var dbConnection = GetDbConnection();
+		NpgsqlConnection dbConnection = GetDbConnection();
 		dbConnection.Open();
 
 		string username = RetrieveUsernameFromToken(authToken);
@@ -244,12 +241,12 @@ public class DataAccess : IDataAccess
 			}
 		}
 
-		using var transaction = dbConnection.BeginTransaction();
+		using NpgsqlTransaction transaction = dbConnection.BeginTransaction();
 		List<ICard> cardList = new();
 
 		try
 		{
-			using (var command = new NpgsqlCommand())
+			using (NpgsqlCommand command = new())
 			{
 				command.Connection = dbConnection;
 				command.Transaction = transaction;
@@ -259,7 +256,8 @@ public class DataAccess : IDataAccess
 
 				command.CommandText = "SELECT id FROM users WHERE username = @username";
 				command.Parameters.AddWithValue("username", username);
-				int userId = (int)command.ExecuteScalar();
+				object? result = command.ExecuteScalar() ?? throw new InvalidQueryResultException();
+				int userId = (int)result;
 
 				command.CommandText = @"SELECT cards.id, cards.name, cards.damage
 						FROM packages
@@ -272,7 +270,7 @@ public class DataAccess : IDataAccess
 				{
 					while (reader.Read())
 					{
-						ICard card = Cards.Card.CreateInstance(reader.GetGuid(0), reader.GetString(1), (float)reader.GetDouble(2));
+						ICard? card = Cards.Card.CreateInstance(reader.GetGuid(0), reader.GetString(1), (float)reader.GetDouble(2));
 
 						if (card is null)
 						{
@@ -319,10 +317,10 @@ public class DataAccess : IDataAccess
 
 	public string CreateTrade(TradingDeal trade, string username)
 	{
-		using var dbConnection = GetDbConnection();
+		using NpgsqlConnection dbConnection = GetDbConnection();
 		dbConnection.Open();
 
-		using var transaction = dbConnection.BeginTransaction();
+		using NpgsqlTransaction transaction = dbConnection.BeginTransaction();
 
 		try
 		{
@@ -420,7 +418,7 @@ public class DataAccess : IDataAccess
 
 	public int DoUserAndPasswordExist(UserCredentials user)
 	{
-		var dbConnection = GetDbConnection();
+		NpgsqlConnection dbConnection = GetDbConnection();
 		dbConnection.Open();
 
 		using NpgsqlCommand command = new(@"SELECT COUNT(*) FROM users WHERE username = @username AND password = @password;", dbConnection);
@@ -434,7 +432,7 @@ public class DataAccess : IDataAccess
 
 	public string CreatePackage(List<Database.Schemas.Card> package, string authToken)
 	{
-		var dbConnection = GetDbConnection();
+		NpgsqlConnection dbConnection = GetDbConnection();
 		dbConnection.Open();
 
 		if (DoCardsAlreadyExist(package))
@@ -455,7 +453,7 @@ public class DataAccess : IDataAccess
 			return string.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
 		}
 
-		using var transaction = dbConnection.BeginTransaction();
+		using NpgsqlTransaction transaction = dbConnection.BeginTransaction();
 
 		try
 		{
@@ -478,7 +476,7 @@ public class DataAccess : IDataAccess
 				}
 
 
-				foreach (var card in package)
+				foreach (Schemas.Card card in package)
 				{
 					command.CommandText = $@"INSERT INTO cards (id, name, cardtype, element, damage) VALUES (@id, @name, @cardtype, @element, @damage);";
 
@@ -491,10 +489,6 @@ public class DataAccess : IDataAccess
 
 					command.ExecuteNonQuery();
 				}
-
-
-
-				//InsertIntoCardsTable(package);
 			}
 
 			transaction.Commit();
@@ -532,11 +526,12 @@ public class DataAccess : IDataAccess
 
 	public bool IsAdmin(string authToken)
 	{
-		var dbConnection = GetDbConnection();
+		NpgsqlConnection dbConnection = GetDbConnection();
 		dbConnection.Open();
 
 		using NpgsqlCommand command = new($@"SELECT username FROM sessions WHERE token = '{authToken}';", dbConnection);
-		string username = (string)command.ExecuteScalar();
+		object? result = command.ExecuteScalar() ?? throw new InvalidQueryResultException();
+		string username = (string)result;
 
 		if (username != "admin")
 		{
@@ -548,34 +543,11 @@ public class DataAccess : IDataAccess
 		return true;
 	}
 
-	// TODO: remove
-	public void InsertIntoCardsTable(List<Database.Schemas.Card> package)
-	{
-		NpgsqlConnection dbConnection = GetDbConnection();
-		dbConnection.Open();
-
-		using NpgsqlCommand command = dbConnection.CreateCommand();
-		foreach (var card in package)
-		{
-			command.CommandText = $@"INSERT INTO cards (id, name, cardtype, element, damage) VALUES (@id, @name, @cardtype, @element, @damage);";
-
-			command.Parameters.AddWithValue("id", card.Id);
-			command.Parameters.AddWithValue("name", card.Name);
-			command.Parameters.AddWithValue("cardtype", (int)Cards.Card.GetCardTypeByName(card.Name));
-			command.Parameters.AddWithValue("element", (int)Cards.Card.GetElementTypeByName(card.Name));
-			command.Parameters.AddWithValue("damage", card.Damage);
-
-			command.ExecuteNonQuery();
-		}
-
-		dbConnection.Open();
-	}
-
 	public UserStats? RetrieveUserStats(string username)
 	{
 		UserStats? stats = null;
 
-		var dbConnection = GetDbConnection();
+		NpgsqlConnection dbConnection = GetDbConnection();
 		dbConnection.Open();
 
 		using (NpgsqlCommand command = new("SELECT userdata.name, userstats.elo, userstats.wins, userstats.losses FROM users INNER JOIN userstats ON userstats.userid = users.id INNER JOIN userdata ON userdata.userid = users.id WHERE users.username = @username;", dbConnection))
@@ -601,7 +573,7 @@ public class DataAccess : IDataAccess
 
 	public string RetrieveScoreboard(string username)
 	{
-		var dbConnection = GetDbConnection();
+		NpgsqlConnection dbConnection = GetDbConnection();
 		dbConnection.Open();
 
 		List<UserStats> statList = new();
@@ -632,11 +604,10 @@ public class DataAccess : IDataAccess
 
 	public string DeleteTrade(Guid tradeId, string username)
 	{
-		var dbConnection = GetDbConnection();
+		NpgsqlConnection dbConnection = GetDbConnection();
 		dbConnection.Open();
 
-		// TODO: snapshot?
-		using (var transaction = dbConnection.BeginTransaction())
+		using (NpgsqlTransaction transaction = dbConnection.BeginTransaction())
 		{
 			try
 			{
@@ -684,15 +655,14 @@ public class DataAccess : IDataAccess
 
 	public string ExecuteTrade(Guid tradeId, Guid offeredCardId, string username)
 	{
-		var dbConnection = GetDbConnection();
+		NpgsqlConnection dbConnection = GetDbConnection();
 		dbConnection.Open();
 
-		// TODO: snapshot?
-		using var transaction = dbConnection.BeginTransaction();
+		using NpgsqlTransaction transaction = dbConnection.BeginTransaction();
 
 		try
 		{
-			using (var command = new NpgsqlCommand())
+			using (NpgsqlCommand command = new())
 			{
 				command.Connection = dbConnection;
 				command.Transaction = transaction;
@@ -746,7 +716,7 @@ public class DataAccess : IDataAccess
 
 	public Tuple<string, float> GetTradeRequirements(Guid tradeId)
 	{
-		var dbConnection = GetDbConnection();
+		NpgsqlConnection dbConnection = GetDbConnection();
 		dbConnection.Open();
 
 		using NpgsqlCommand command = new("SELECT type, minimumDamage FROM trades WHERE id = @tradeId;", dbConnection);
@@ -763,7 +733,7 @@ public class DataAccess : IDataAccess
 
 	public Tuple<string, float> GetCardRequirements(Guid cardId)
 	{
-		var dbConnection = GetDbConnection();
+		NpgsqlConnection dbConnection = GetDbConnection();
 		dbConnection.Open();
 
 		using NpgsqlCommand command = new("SELECT cardtype, damage FROM cards WHERE id = @cardId;", dbConnection);
@@ -785,7 +755,7 @@ public class DataAccess : IDataAccess
 		dbConnection.Open();
 
 		using NpgsqlCommand command = dbConnection.CreateCommand();
-		using var transaction = dbConnection.BeginTransaction();
+		using NpgsqlTransaction transaction = dbConnection.BeginTransaction();
 		try
 		{
 			command.Transaction = transaction;
@@ -815,7 +785,7 @@ public class DataAccess : IDataAccess
 
 	public UserData RetrieveUserData(string username)
 	{
-		var dbConnection = GetDbConnection();
+		NpgsqlConnection dbConnection = GetDbConnection();
 		dbConnection.Open();
 
 		NpgsqlCommand command = new("SELECT name, bio, image FROM userdata INNER JOIN users ON users.id = userdata.userid WHERE users.username = @username;", dbConnection);
@@ -980,7 +950,9 @@ public class DataAccess : IDataAccess
 		using NpgsqlCommand command = new($@"SELECT username FROM sessions WHERE token = @token;", dbConnection);
 		command.Parameters.AddWithValue("token", authToken);
 
-		return (string)command.ExecuteScalar();
+		object? result = command.ExecuteScalar() ?? throw new InvalidQueryResultException();
+		dbConnection.Close();
+		return (string)result;
 	}
 
 	public List<ICard> RetrieveUserCards(string userName, string tableName)

@@ -1,34 +1,29 @@
 ﻿using MTCG.Interfaces;
 
-namespace MTCG.Server.HttpRequests
+namespace MTCG.Server.HttpRequests;
+
+public class DeleteTrading : IHttpRequest
 {
-	public class DeleteTrading : IHttpRequest
+	private readonly IDataAccess _dataAccess;
+	public DeleteTrading(IDataAccess dataAccess)
 	{
-		readonly IDataAccess _dataAccess;
-		public DeleteTrading(IDataAccess dataAccess)
+		_dataAccess = dataAccess ?? throw new ArgumentNullException(nameof(dataAccess));
+	}
+
+	public string GetResponse(string request)
+	{
+		if (!HttpRequestUtility.IsUserAccessValid(_dataAccess, request, out string? authToken))
 		{
-			_dataAccess = dataAccess ?? throw new ArgumentNullException(nameof(dataAccess));
+			return string.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
 		}
 
-		public string GetResponse(string request)
+		string? result = HttpRequestUtility.ExtractPathAddOns(request);
+		if (result is null)
 		{
-			if (!HttpRequestUtility.IsUserAccessValid(_dataAccess, request, out string? authToken))
-			{
-				return string.Format(Text.HttpResponse_401_Unauthorized, Text.Description_Default_401);
-			}
-
-			Guid tradeId;
-			try
-			{
-				tradeId = new(HttpRequestUtility.ExtractPathAddOns(request));
-			}
-			catch
-			{
-				// TODO: maybe change to just text. ... cause no description is needed
-				return string.Format(Text.HttpResponse_400_BadRequest);
-			}
-
-			return _dataAccess.DeleteTrade(tradeId, _dataAccess.RetrieveUsernameFromToken(authToken!));
+			return string.Format(Text.HttpResponse_400_BadRequest);
 		}
+		Guid tradeId = Guid.Parse(result);
+
+		return _dataAccess.DeleteTrade(tradeId, _dataAccess.RetrieveUsernameFromToken(authToken!));
 	}
 }

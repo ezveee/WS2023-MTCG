@@ -6,7 +6,7 @@ namespace MTCG.Server.HttpRequests;
 
 public class GetTradings : IHttpRequest
 {
-	readonly IDataAccess _dataAccess;
+	private readonly IDataAccess _dataAccess;
 	public GetTradings(IDataAccess dataAccess)
 	{
 		_dataAccess = dataAccess ?? throw new ArgumentNullException(nameof(dataAccess));

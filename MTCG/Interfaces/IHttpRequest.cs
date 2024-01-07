@@ -1,7 +1,6 @@
-﻿namespace MTCG.Interfaces
+﻿namespace MTCG.Interfaces;
+
+public interface IHttpRequest
 {
-	interface IHttpRequest
-	{
-		string GetResponse(string request);
-	}
+	string GetResponse(string request);
 }
