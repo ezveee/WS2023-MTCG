@@ -2,18 +2,20 @@ using Moq;
 using MTCG.Database.Schemas;
 using MTCG.Interfaces;
 using MTCG.Server;
-using T = System.String;
 
 namespace MTCG_UnitTests.Server;
-/// <summary>
-/// Unit tests for the type <see cref="HttpRequestUtility"/>.
-/// </summary>
+
 [TestFixture]
-public static class HttpRequestUtilityTests
+public class HttpRequestUtilityTests
 {
-	/// <summary>
-	/// Checks that the DeserializeJson method functions correctly.
-	/// </summary>
+	private Mock<IDataAccess> _dataAccess;
+
+	[SetUp]
+	public void SetUp()
+	{
+		_dataAccess = new Mock<IDataAccess>();
+	}
+
 	[Test]
 	public static void CanCallDeserializeJson()
 	{
@@ -26,9 +28,13 @@ public static class HttpRequestUtilityTests
 			Type = "monster"
 		};
 
-		string request = "POST /tradings HTTP/1.1\r\nContent-Type: application/json\r\nAuthorization: Bearer kienboec-mtcgToken\r\n" +
-			"User-Agent: PostmanRuntime/7.36.0\r\nAccept: */*\r\nPostman-Token: 02a18fab-d686-419f-9ab7-828347ecab46\r\n" +
-			"Host: localhost:10001\r\nAccept-Encoding: gzip, deflate, br\r\nConnection: keep-alive\r\nContent-Length: 141\r\n\r\n" +
+		string request = "POST /tradings HTTP/1.1\r\n" +
+			"Content-Type: application/json\r\n" +
+			"Authorization: Bearer kienboec-mtcgToken\r\n" +
+			"User-Agent: PostmanRuntime/7.36.0\r\nAccept: */*\r\n" +
+			"Postman-Token: 02a18fab-d686-419f-9ab7-828347ecab46\r\n" +
+			"Host: localhost:10001\r\nAccept-Encoding: gzip, deflate, br\r\n" +
+			"Connection: keep-alive\r\nContent-Length: 141\r\n\r\n" +
 			"{\"Id\": \"" + expected.Id + "\", \"CardToTrade\": \"" + expected.CardToTrade + "\", \"Type\": \"" + expected.Type + "\", \"MinimumDamage\": " + expected.MinimumDamage + "}\r\n\r\n";
 
 		// Act
@@ -44,38 +50,31 @@ public static class HttpRequestUtilityTests
 		});
 	}
 
-	/// <summary>
-	/// Checks that the DeserializeJson method throws when the request parameter is null, empty or white space.
-	/// </summary>
-	/// <param name="value">The parameter that receives the test case values.</param>
 	[TestCase(null)]
 	[TestCase("")]
 	[TestCase("   ")]
 	public static void CannotCallDeserializeJsonWithInvalidRequest(string value)
 	{
-		Assert.Throws<ArgumentNullException>(() => HttpRequestUtility.DeserializeJson<T>(value));
+		Assert.Throws<ArgumentNullException>(() => HttpRequestUtility.DeserializeJson<string>(value));
 	}
 
-	/// <summary>
-	/// Checks that the ExtractJsonPayload method functions correctly.
-	/// </summary>
 	[Test]
 	public static void CanCallExtractJsonPayload()
 	{
 		// Arrange
-		string request = "TestValue1648038943";
+		string expected = "{\"Id\": \"abcd-efgh\", \"Name\": \"test\", \"Password\": \"1234\"}";
+
+		string request = "HTTPMETHOD /path HTTP/1.1\r\n" +
+			"Content-Type: application/json\r\n\r\n" +
+			expected;
 
 		// Act
 		string result = HttpRequestUtility.ExtractJsonPayload(request);
 
 		// Assert
-		Assert.Fail("Create or modify test");
+		Assert.That(result, Is.EqualTo(expected));
 	}
 
-	/// <summary>
-	/// Checks that the ExtractJsonPayload method throws when the request parameter is null, empty or white space.
-	/// </summary>
-	/// <param name="value">The parameter that receives the test case values.</param>
 	[TestCase(null)]
 	[TestCase("")]
 	[TestCase("   ")]
@@ -84,26 +83,33 @@ public static class HttpRequestUtilityTests
 		Assert.Throws<ArgumentNullException>(() => HttpRequestUtility.ExtractJsonPayload(value));
 	}
 
-	/// <summary>
-	/// Checks that the ExtractPathAddOns method functions correctly.
-	/// </summary>
 	[Test]
 	public static void CanCallExtractPathAddOns()
 	{
 		// Arrange
-		string request = "TestValue1418664328";
+		string request = "HTTPMETHOD /path/addon";
+		string expected = "addon";
 
 		// Act
 		string? result = HttpRequestUtility.ExtractPathAddOns(request);
 
 		// Assert
-		Assert.Fail("Create or modify test");
+		Assert.That(result, Is.EqualTo(expected));
 	}
 
-	/// <summary>
-	/// Checks that the ExtractPathAddOns method throws when the request parameter is null, empty or white space.
-	/// </summary>
-	/// <param name="value">The parameter that receives the test case values.</param>
+	[Test]
+	public static void CanCallExtractPathAddOns_ShouldReturnNull()
+	{
+		// Arrange
+		string request = "HTTPMETHOD /path/";
+
+		// Act
+		string? result = HttpRequestUtility.ExtractPathAddOns(request);
+
+		// Assert
+		Assert.That(result, Is.Null);
+	}
+
 	[TestCase(null)]
 	[TestCase("")]
 	[TestCase("   ")]
@@ -112,26 +118,71 @@ public static class HttpRequestUtilityTests
 		Assert.Throws<ArgumentNullException>(() => HttpRequestUtility.ExtractPathAddOns(value));
 	}
 
-	/// <summary>
-	/// Checks that the ExtractBearerToken method functions correctly.
-	/// </summary>
 	[Test]
 	public static void CanCallExtractBearerToken()
 	{
 		// Arrange
-		string request = "TestValue1880331100";
+		string expected = "token";
+		string request = "HTTPMETHOD /path\r\n" +
+			"Authorization: Bearer " + expected +
+			"\r\n\r\n";
 
 		// Act
 		string result = HttpRequestUtility.ExtractBearerToken(request);
 
 		// Assert
-		Assert.Fail("Create or modify test");
+		Assert.That(result, Is.EqualTo(expected));
 	}
 
-	/// <summary>
-	/// Checks that the ExtractBearerToken method throws when the request parameter is null, empty or white space.
-	/// </summary>
-	/// <param name="value">The parameter that receives the test case values.</param>
+	[Test]
+	public static void CannotCallExtractBearerToken_NoAuthorizationHeader_ThrowsInvalidOperationException()
+	{
+		// Arrange
+		string request = "HTTPMETHOD /path\r\n" +
+			"Content-Type: json/application" +
+			"\r\n\r\n";
+
+		// Act & Assert
+		Assert.Throws<InvalidOperationException>(() => HttpRequestUtility.ExtractBearerToken(request));
+	}
+
+	[TestCase(null)]
+	[TestCase("")]
+	[TestCase("   ")]
+	public static void CannotCallExtractBearerToken_NoAuthorizationHeaderValue_ThrowsInvalidOperationException(string value)
+	{
+		// Arrange
+		string request = "HTTPMETHOD /path\r\n" +
+			"Authorization: " + value +
+			"\r\n\r\n";
+
+		// Act & Assert
+		Assert.Throws<InvalidOperationException>(() => HttpRequestUtility.ExtractBearerToken(request));
+	}
+
+	[Test]
+	public static void CannotCallExtractBearerToken_InvalidHeaderFormatNoNewLine_ThrowsInvalidOperationException()
+	{
+		// Arrange
+		string request = "HTTPMETHOD /path\r\n" +
+			"Authorization: Bearer token";
+
+		// Act & Assert
+		Assert.Throws<InvalidOperationException>(() => HttpRequestUtility.ExtractBearerToken(request));
+	}
+
+	[Test]
+	public static void CannotCallExtractBearerToken_InvalidHeaderFormatNoBearer_ThrowsInvalidOperationException()
+	{
+		// Arrange
+		string request = "HTTPMETHOD /path\r\n" +
+			"Authorization: token" +
+			"\r\n\r\n";
+
+		// Act & Assert
+		Assert.Throws<InvalidOperationException>(() => HttpRequestUtility.ExtractBearerToken(request));
+	}
+
 	[TestCase(null)]
 	[TestCase("")]
 	[TestCase("   ")]
@@ -140,36 +191,31 @@ public static class HttpRequestUtilityTests
 		Assert.Throws<ArgumentNullException>(() => HttpRequestUtility.ExtractBearerToken(value));
 	}
 
-	/// <summary>
-	/// Checks that the IsUserAccessValid method functions correctly.
-	/// </summary>
 	[Test]
-	public static void CanCallIsUserAccessValid()
+	public void CanCallIsUserAccessValid()
 	{
 		// Arrange
-		IDataAccess dataAccess = new Mock<IDataAccess>().Object;
-		string request = "TestValue1543242818";
+		string request = "HTTPMETHOD /path\r\n" +
+			"Authorization: Bearer token" +
+			"\r\n\r\n";
+
+		_dataAccess
+			.Setup(mock => mock.IsTokenValid(It.IsAny<string>()))
+			.Returns(true);
 
 		// Act
-		bool result = HttpRequestUtility.IsUserAccessValid(dataAccess, request, out string? authToken);
+		bool result = HttpRequestUtility.IsUserAccessValid(_dataAccess.Object, request, out string? authToken);
 
 		// Assert
-		Assert.Fail("Create or modify test");
+		Assert.That(result, Is.True);
 	}
 
-	/// <summary>
-	/// Checks that the IsUserAccessValid method throws when the dataAccess parameter is null.
-	/// </summary>
 	[Test]
 	public static void CannotCallIsUserAccessValidWithNullDataAccess()
 	{
 		Assert.Throws<ArgumentNullException>(() => HttpRequestUtility.IsUserAccessValid(default, "TestValue1468502941", out _));
 	}
 
-	/// <summary>
-	/// Checks that the IsUserAccessValid method throws when the request parameter is null, empty or white space.
-	/// </summary>
-	/// <param name="value">The parameter that receives the test case values.</param>
 	[TestCase(null)]
 	[TestCase("")]
 	[TestCase("   ")]

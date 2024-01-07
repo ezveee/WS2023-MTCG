@@ -130,6 +130,17 @@ public class DataAccess : IDataAccess
 			}
 		}
 
+		using (NpgsqlCommand command = new(@"SELECT COUNT(*) FROM trades WHERE cardid = ANY(@ids);", dbConnection))
+		{
+			command.Parameters.AddWithValue("ids", cardIds.ToArray());
+			int count = Convert.ToInt32(command.ExecuteScalar());
+
+			if (count != 4)
+			{
+				return string.Format(Text.HttpResponse_403_Forbidden, Text.Description_PutDeck_403_InTrade);
+			}
+		}
+
 		using NpgsqlTransaction transaction = dbConnection.BeginTransaction();
 
 		try

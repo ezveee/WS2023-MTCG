@@ -70,6 +70,15 @@ namespace MTCG {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The provided route is not covered in the server.
+        /// </summary>
+        internal static string Description_Default_404_Route {
+            get {
+                return ResourceManager.GetString("Description_Default_404_Route", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User not found..
         /// </summary>
         internal static string Description_Default_404_User {
@@ -408,6 +417,15 @@ namespace MTCG {
         internal static string Description_PutDeck_403 {
             get {
                 return ResourceManager.GetString("Description_PutDeck_403", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to At least one of the provided cards is currently engaged in a trade..
+        /// </summary>
+        internal static string Description_PutDeck_403_InTrade {
+            get {
+                return ResourceManager.GetString("Description_PutDeck_403_InTrade", resourceCulture);
             }
         }
         

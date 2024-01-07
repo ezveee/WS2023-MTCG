@@ -116,7 +116,7 @@ public class HttpServer
 		string route = GetRoute(request);
 
 		return !_routeTable.ContainsKey(route)
-			? "HTTP/1.1 404 Not Found\r\nContent-Type: text/plain\r\n\r\n404 Not Found"
+			? string.Format(Text.HttpResponse_404_NotFound, Text.Description_Default_404_Route)
 			: _routeTable[route].GetResponse(request);
 	}
 

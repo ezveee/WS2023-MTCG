@@ -32,12 +32,8 @@ public class PutDeck : IHttpRequest
 			return Text.HttpResponse_400_BadRequest;
 		}
 
-		if (cardIds.Count != 4)
-		{
-			return string.Format(Text.HttpResponse_400_BadRequest, Text.Description_PutDeck_400);
-		}
-
-		// TODO: check if any of new cards are engaged in a trade
-		return _dataAccess.ConfigureDeck(cardIds, authToken!);
+		return cardIds.Count != 4
+			? string.Format(Text.HttpResponse_400_BadRequest, Text.Description_PutDeck_400)
+			: _dataAccess.ConfigureDeck(cardIds, authToken!);
 	}
 }

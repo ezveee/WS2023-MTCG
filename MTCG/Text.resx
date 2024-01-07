@@ -120,6 +120,9 @@
   <data name="Description_Default_401" xml:space="preserve">
     <value>Access token is missing or invalid</value>
   </data>
+  <data name="Description_Default_404_Route" xml:space="preserve">
+    <value>The provided route is not covered in the server</value>
+  </data>
   <data name="Description_Default_404_User" xml:space="preserve">
     <value>User not found.</value>
   </data>
@@ -233,6 +236,9 @@
   </data>
   <data name="Description_PutDeck_403" xml:space="preserve">
     <value>At least one of the provided cards does not belong to the user or is not available.</value>
+  </data>
+  <data name="Description_PutDeck_403_InTrade" xml:space="preserve">
+    <value>At least one of the provided cards is currently engaged in a trade.</value>
   </data>
   <data name="Description_PutUser_200" xml:space="preserve">
     <value>User sucessfully updated.</value>

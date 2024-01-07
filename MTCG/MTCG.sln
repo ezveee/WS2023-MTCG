@@ -8,13 +8,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{26CBAB1E-B616-4213-8470-A591C954B6F4}"
 	ProjectSection(SolutionItems) = preProject
 		..\docs\MonsterTradingCards.exercise.curl.bat = ..\docs\MonsterTradingCards.exercise.curl.bat
+		..\docs\MonsterTradingCards.exercise.curl.withpause.bat = ..\docs\MonsterTradingCards.exercise.curl.withpause.bat
 		..\docs\MonsterTradingCards_exercise.pdf = ..\docs\MonsterTradingCards_exercise.pdf
 		..\docs\mtcg-api.yaml = ..\docs\mtcg-api.yaml
 		..\docs\mtcg-notes.txt = ..\docs\mtcg-notes.txt
 		..\docs\MTCG_workLog.xlsx = ..\docs\MTCG_workLog.xlsx
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTCG_UnitTests", "..\MTCG_UnitTests\MTCG_UnitTests.csproj", "{8D9482C2-BA2A-45A3-A2C5-9E829598A995}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MTCG_UnitTests", "..\MTCG_UnitTests\MTCG_UnitTests.csproj", "{8D9482C2-BA2A-45A3-A2C5-9E829598A995}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
