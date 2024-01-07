@@ -135,7 +135,7 @@ public class DataAccess : IDataAccess
 			command.Parameters.AddWithValue("ids", cardIds.ToArray());
 			int count = Convert.ToInt32(command.ExecuteScalar());
 
-			if (count != 4)
+			if (count != 0)
 			{
 				return string.Format(Text.HttpResponse_403_Forbidden, Text.Description_PutDeck_403_InTrade);
 			}

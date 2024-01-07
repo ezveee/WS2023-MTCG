@@ -39,16 +39,23 @@ public abstract class Card : ICard
 
 	public static CardType GetCardTypeByName(string name)
 	{
-		return cardCategories[name].CardType;
+		return string.IsNullOrWhiteSpace(name) ? throw new ArgumentNullException(nameof(name)) : cardCategories[name].CardType;
 	}
 
 	public static ElementType GetElementTypeByName(string name)
 	{
-		return cardCategories[name].ElementType;
+		return string.IsNullOrWhiteSpace(name) ? throw new ArgumentNullException(nameof(name)) : cardCategories[name].ElementType;
 	}
 
 	public static ICard? CreateInstance(Guid id, string name, float damage)
 	{
+		ArgumentNullException.ThrowIfNull(id);
+		if (string.IsNullOrWhiteSpace(name))
+		{
+			throw new ArgumentNullException(nameof(name));
+		}
+		ArgumentNullException.ThrowIfNull(damage);
+
 		Type cardType = cardCategories[name].ObjectType;
 		if (Activator.CreateInstance(cardType) is not Card card)
 		{
@@ -65,11 +72,14 @@ public abstract class Card : ICard
 
 	public virtual float GetDamageAgainst(ICard card)
 	{
+		ArgumentNullException.ThrowIfNull(card);
 		return Damage;
 	}
 
 	public float GetElementalFactorAgainst(ICard card)
 	{
+		ArgumentNullException.ThrowIfNull(card);
+
 		ElementType ownType = this.Element;
 		ElementType opposingType = card.Element;
 

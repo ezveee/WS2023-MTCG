@@ -1,13 +1,8 @@
-protocol about the technical steps you made (designs, failures and selected solutions) 
-• track the time spent with the project 
-• consider that the git-history is part of the documentation (no need to copy it into the 
-protocol)
-
 MTCG PROTOCOL ------------------------------------------------------------------------------------------
 
 DESIGN:
 	The program is designed so that upon running it
-		- an IDataAccess instance gets created (gateway for all DB queries)
+		- an DataAccess instance gets created (gateway for all DB queries)
 		- the database gets set up
 			[docker container needs to run beforehand; (-e POSTGRES_USER=vee -e POSTGRES_PASSWORD=1234)]
 			(database needs to already exist with name 'mtcg')
@@ -34,7 +29,7 @@ DESIGN:
 		database layer
 		usage of interfaces for dependency injection
 		reflection for card instances
-		resource file for all responses
+		resource file for texts (e.g. all responses)
 		usage of newtonsoft for JSON de-/serialization
 		Moq framework + Nunit for unit tests
 
@@ -66,18 +61,79 @@ LESSONS LEARNED:
 				load tests
 				look more into thread safety
 				async instead of threading
+				make resource file complete (transfer all texts)
+
+	3) Set up Visual Studio code cleanup options
+		Preferably before starting a project, and not right at the end. :D
+		Good thing to do, to have a more consistent coding style.
 
 
 UNIT TEST DESIGN:
-	
-	• explain why these unit tests are chosen and why the tested code is critical 
+	[will not talk about all unit tests, since there are 257,
+	(only amounted to that many because of functions with immense
+	amounts of test cases) but only the ones i deem most important]
 
+	I tested 4 different classes with my unit tests.
+		- BattleManager
+		- Card
+		- PostTrading
+		- HttpRequestUtility
 
+	The reasons I chose these specific ones are:
+		BattleManager:
+			Primary reason for testing this class was to see if a draw was actually
+			possible (which it is :D).
+
+			Most relevant tests:
+				1) CallBattleWithEmptyDeck_ThrowsArgumentOutOfRangeException()
+				2) CanCallBattle_ResultInDraw()
+				3) CanCallPlayRound()
+				4) CanCallCompareCards()
+				5) CanCallIsPureMonsterFight(string card1Name, string card2Name, bool expected)
+
+		Card:
+			Specific derived classes contain overrides of GetDamageAgainst(ICard card) method,
+			which i wanted to test.
+			CreateInstance() calls functions to retrieve the correct element and type
+			for a specific card name based on the cardCategories dictionary. If the dictionary
+			were wrong, the tests would have caught this.
+
+			Most relevant tests:
+				6) CanCallGetCardTypeByName(string name, CardType expected)
+				7) CanCallGetElementTypeByName(string name, ElementType expected)
+				8) CanCallCreateInstance(string name, CardType expectedType, ElementType expectedElement)
+				9) CanCallGetDamageAgainst(string card1Name, string card2Name, float expected)
+				10) CanCallGetElementalFactorAgainst(string card1Name, string card2Name, float expected)
+
+		PostTrading:
+			Any other HttpRequest would have worked as well, since they essentially all do the
+			same thing. So tests for PostTrading would also (with some alterations) apply to most
+			other IHttpRequest derivatives.
+
+			Most relevant tests:
+				11) CannotCallGetResponse_401Unauthorized()
+				12) CanCallGetResponse()
+
+		HttpRequestUtility:
+			This class contains util functions that get called in most http request classes,
+			which makes it very important that they fucntion properly.
+
+			Most relevant tests:
+				13) CanCallDeserializeJson()
+				14) CanCallExtractJsonPayload()
+				15) CanCallExtractPathAddOns()
+				16) CanCallExtractPathAddOns_ShouldReturnNull()
+				17) CanCallExtractBearerToken()
+				18) CannotCallExtractBearerToken_NoAuthorizationHeader_ThrowsInvalidOperationException()
+				19) CannotCallExtractBearerToken_NoAuthorizationHeaderValue_ThrowsInvalidOperationException(string value)
+				20) CannotCallExtractBearerToken_InvalidHeaderFormatNoNewLine_ThrowsInvalidOperationException()
+				21) CannotCallExtractBearerToken_InvalidHeaderFormatNoBearer_ThrowsInvalidOperationException()
+				22) CanCallIsUserAccessValid()
 
 
 
 TIME SPENT:
-	The total time spent on the project was TOTAL TIME SPENT HERE !!!!!!!!!!!!!!!
+	The total time spent on the project was ~93h
 	Additional info in MTCG_workLog.xlsx
 
 

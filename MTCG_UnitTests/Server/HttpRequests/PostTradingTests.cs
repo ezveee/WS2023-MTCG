@@ -31,7 +31,9 @@ public class PostTradingTests
 	[Test]
 	public void CannotConstructWithNullDataAccess()
 	{
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
 		Assert.Throws<ArgumentNullException>(() => new PostTrading(default));
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 	}
 
 	[Test]

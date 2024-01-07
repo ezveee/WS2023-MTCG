@@ -10,7 +10,7 @@ public class BattleManager
 
 	public BattleManager(IDataAccess dataAccess)
 	{
-		_dataAccess = dataAccess;
+		_dataAccess = dataAccess ?? throw new ArgumentNullException(nameof(dataAccess));
 	}
 
 	private static Player? queuedPlayer;
@@ -18,6 +18,8 @@ public class BattleManager
 
 	public string HandleBattle(Player player)
 	{
+		ArgumentNullException.ThrowIfNull(player);
+
 		if (queuedPlayer is null)
 		{
 			queuedPlayer = player;
@@ -65,6 +67,10 @@ public class BattleManager
 
 	public static void Battle(Player player1, Player player2, StringBuilder log, out FightResult battleResult)
 	{
+		ArgumentNullException.ThrowIfNull(player1);
+		ArgumentNullException.ThrowIfNull(player2);
+		ArgumentNullException.ThrowIfNull(log);
+
 		for (int roundCounter = 1; roundCounter < Constants.MaxRounds + 1; ++roundCounter)
 		{
 			log.AppendLine($"===== ROUND {roundCounter} =====");
@@ -91,6 +97,10 @@ public class BattleManager
 
 	public static void PlayRound(List<ICard> player1Deck, List<ICard> player2Deck, StringBuilder log)
 	{
+		ArgumentNullException.ThrowIfNull(player1Deck);
+		ArgumentNullException.ThrowIfNull(player2Deck);
+		ArgumentNullException.ThrowIfNull(log);
+
 		ICard player1 = player1Deck[GetRandomCard(player1Deck)];
 		ICard player2 = player2Deck[GetRandomCard(player2Deck)];
 
@@ -110,6 +120,10 @@ public class BattleManager
 
 	public static FightResult CompareCards(ICard player1, ICard player2, StringBuilder log)
 	{
+		ArgumentNullException.ThrowIfNull(player1);
+		ArgumentNullException.ThrowIfNull(player2);
+		ArgumentNullException.ThrowIfNull(log);
+
 		// changed fightlog a bit; original didn't show damage change in pure monster fight
 		// used spell fight template for monsters as well in account of specifications
 		log.Append($"{{0}}: {player1.Name} ({player1.Damage} Damage) vs {{1}}: {player2.Name} ({player2.Damage} Damage) => {player1.Damage} VS {player2.Damage} -> ");
@@ -161,12 +175,17 @@ public class BattleManager
 
 	public static int GetRandomCard(List<ICard> deck)
 	{
+		ArgumentNullException.ThrowIfNull(deck);
+
 		Random random = new();
 		return random.Next(deck.Count);
 	}
 
 	public static bool IsPureMonsterFight(ICard player1, ICard player2)
 	{
+		ArgumentNullException.ThrowIfNull(player1);
+		ArgumentNullException.ThrowIfNull(player2);
+
 		return player1.Type != CardType.Spell && player2.Type != CardType.Spell;
 	}
 

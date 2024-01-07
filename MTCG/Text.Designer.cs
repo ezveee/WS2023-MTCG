@@ -22,21 +22,21 @@ namespace MTCG {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Text {
+    public class Text {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Text() {
+        public Text() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MTCG.Text", typeof(Text).Assembly);
@@ -51,7 +51,7 @@ namespace MTCG {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to Access token is missing or invalid.
         /// </summary>
-        internal static string Description_Default_401 {
+        public static string Description_Default_401 {
             get {
                 return ResourceManager.GetString("Description_Default_401", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to The provided route is not covered in the server.
         /// </summary>
-        internal static string Description_Default_404_Route {
+        public static string Description_Default_404_Route {
             get {
                 return ResourceManager.GetString("Description_Default_404_Route", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to User not found..
         /// </summary>
-        internal static string Description_Default_404_User {
+        public static string Description_Default_404_User {
             get {
                 return ResourceManager.GetString("Description_Default_404_User", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to Trading deal successfully deleted.
         /// </summary>
-        internal static string Description_DeleteTrading_200 {
+        public static string Description_DeleteTrading_200 {
             get {
                 return ResourceManager.GetString("Description_DeleteTrading_200", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to The deal contains a card that is not owned by the user..
         /// </summary>
-        internal static string Description_DeleteTrading_403 {
+        public static string Description_DeleteTrading_403 {
             get {
                 return ResourceManager.GetString("Description_DeleteTrading_403", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to The provided deal ID was not found..
         /// </summary>
-        internal static string Description_DeleteTrading_404 {
+        public static string Description_DeleteTrading_404 {
             get {
                 return ResourceManager.GetString("Description_DeleteTrading_404", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to The deck has cards, the response contains these.
         /// </summary>
-        internal static string Description_GetDeck_200 {
+        public static string Description_GetDeck_200 {
             get {
                 return ResourceManager.GetString("Description_GetDeck_200", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to The request was fine, but the deck doesn&apos;t have any cards.
         /// </summary>
-        internal static string Description_GetDeck_204 {
+        public static string Description_GetDeck_204 {
             get {
                 return ResourceManager.GetString("Description_GetDeck_204", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to The scoreboard could be retrieved successfully..
         /// </summary>
-        internal static string Description_GetScoreboard_200 {
+        public static string Description_GetScoreboard_200 {
             get {
                 return ResourceManager.GetString("Description_GetScoreboard_200", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to The user has cards, the response contains these.
         /// </summary>
-        internal static string Description_GetStack_200 {
+        public static string Description_GetStack_200 {
             get {
                 return ResourceManager.GetString("Description_GetStack_200", resourceCulture);
             }
@@ -153,7 +153,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to The request was fine, but the user doesn&apos;t have any cards.
         /// </summary>
-        internal static string Description_GetStack_204 {
+        public static string Description_GetStack_204 {
             get {
                 return ResourceManager.GetString("Description_GetStack_204", resourceCulture);
             }
@@ -162,7 +162,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to The stats could be retrieved successfully..
         /// </summary>
-        internal static string Description_GetStats_200 {
+        public static string Description_GetStats_200 {
             get {
                 return ResourceManager.GetString("Description_GetStats_200", resourceCulture);
             }
@@ -171,7 +171,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to There are trading deals available, the response contains these.
         /// </summary>
-        internal static string Description_GetTradings_200 {
+        public static string Description_GetTradings_200 {
             get {
                 return ResourceManager.GetString("Description_GetTradings_200", resourceCulture);
             }
@@ -180,7 +180,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to The request was fine, but there are no trading deals available.
         /// </summary>
-        internal static string Description_GetTradings_204 {
+        public static string Description_GetTradings_204 {
             get {
                 return ResourceManager.GetString("Description_GetTradings_204", resourceCulture);
             }
@@ -189,7 +189,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to Data successfully retrieved.
         /// </summary>
-        internal static string Description_GetUser_200 {
+        public static string Description_GetUser_200 {
             get {
                 return ResourceManager.GetString("Description_GetUser_200", resourceCulture);
             }
@@ -198,7 +198,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to The battle has been carried out successfully..
         /// </summary>
-        internal static string Description_PostBattle_200 {
+        public static string Description_PostBattle_200 {
             get {
                 return ResourceManager.GetString("Description_PostBattle_200", resourceCulture);
             }
@@ -207,7 +207,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to Your creature joined the group of hungry survivors. (Card lost).
         /// </summary>
-        internal static string Description_PostCampfire_200_Fail {
+        public static string Description_PostCampfire_200_Fail {
             get {
                 return ResourceManager.GetString("Description_PostCampfire_200_Fail", resourceCulture);
             }
@@ -216,7 +216,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to The fire warmed the weary creature and it enhanced its power. (Damage increased by 5).
         /// </summary>
-        internal static string Description_PostCampfire_200_Success {
+        public static string Description_PostCampfire_200_Success {
             get {
                 return ResourceManager.GetString("Description_PostCampfire_200_Success", resourceCulture);
             }
@@ -225,7 +225,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to The deal contains a card that is not owned by the user, locked in the deck or locked in a trade..
         /// </summary>
-        internal static string Description_PostCampfire_403 {
+        public static string Description_PostCampfire_403 {
             get {
                 return ResourceManager.GetString("Description_PostCampfire_403", resourceCulture);
             }
@@ -234,7 +234,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to Package and cards successfully created.
         /// </summary>
-        internal static string Description_PostPackage_201 {
+        public static string Description_PostPackage_201 {
             get {
                 return ResourceManager.GetString("Description_PostPackage_201", resourceCulture);
             }
@@ -243,7 +243,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to Provided user is not &quot;admin&quot;.
         /// </summary>
-        internal static string Description_PostPackage_403 {
+        public static string Description_PostPackage_403 {
             get {
                 return ResourceManager.GetString("Description_PostPackage_403", resourceCulture);
             }
@@ -252,7 +252,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to At least one card in the packages already exists.
         /// </summary>
-        internal static string Description_PostPackage_409 {
+        public static string Description_PostPackage_409 {
             get {
                 return ResourceManager.GetString("Description_PostPackage_409", resourceCulture);
             }
@@ -261,7 +261,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to User login successful.
         /// </summary>
-        internal static string Description_PostSession_200 {
+        public static string Description_PostSession_200 {
             get {
                 return ResourceManager.GetString("Description_PostSession_200", resourceCulture);
             }
@@ -270,7 +270,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to Invalid username/password provided.
         /// </summary>
-        internal static string Description_PostSession_401 {
+        public static string Description_PostSession_401 {
             get {
                 return ResourceManager.GetString("Description_PostSession_401", resourceCulture);
             }
@@ -279,7 +279,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to Trading deal successfully created.
         /// </summary>
-        internal static string Description_PostTrading_201 {
+        public static string Description_PostTrading_201 {
             get {
                 return ResourceManager.GetString("Description_PostTrading_201", resourceCulture);
             }
@@ -288,7 +288,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to The deal contains a card that is not owned by the user or locked in the deck..
         /// </summary>
-        internal static string Description_PostTrading_403 {
+        public static string Description_PostTrading_403 {
             get {
                 return ResourceManager.GetString("Description_PostTrading_403", resourceCulture);
             }
@@ -297,7 +297,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to A deal with this deal ID already exists..
         /// </summary>
-        internal static string Description_PostTrading_409 {
+        public static string Description_PostTrading_409 {
             get {
                 return ResourceManager.GetString("Description_PostTrading_409", resourceCulture);
             }
@@ -306,7 +306,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to Card already engaged in another trade.
         /// </summary>
-        internal static string Description_PostTrading_409_Custom {
+        public static string Description_PostTrading_409_Custom {
             get {
                 return ResourceManager.GetString("Description_PostTrading_409_Custom", resourceCulture);
             }
@@ -315,7 +315,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to Trading deal successfully executed..
         /// </summary>
-        internal static string Description_PostTrading_CarryOutTrade_200 {
+        public static string Description_PostTrading_CarryOutTrade_200 {
             get {
                 return ResourceManager.GetString("Description_PostTrading_CarryOutTrade_200", resourceCulture);
             }
@@ -324,7 +324,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to The offered card is not owned by the user, or the requirements are not met (Type, MinimumDamage), or the offered card is locked in the deck..
         /// </summary>
-        internal static string Description_PostTrading_CarryOutTrade_403 {
+        public static string Description_PostTrading_CarryOutTrade_403 {
             get {
                 return ResourceManager.GetString("Description_PostTrading_CarryOutTrade_403", resourceCulture);
             }
@@ -333,7 +333,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to You are not allowed to trade with yourself..
         /// </summary>
-        internal static string Description_PostTrading_CarryOutTrade_403_TradeWithSelf {
+        public static string Description_PostTrading_CarryOutTrade_403_TradeWithSelf {
             get {
                 return ResourceManager.GetString("Description_PostTrading_CarryOutTrade_403_TradeWithSelf", resourceCulture);
             }
@@ -342,7 +342,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to The provided deal ID was not found..
         /// </summary>
-        internal static string Description_PostTrading_CarryOutTrade_404 {
+        public static string Description_PostTrading_CarryOutTrade_404 {
             get {
                 return ResourceManager.GetString("Description_PostTrading_CarryOutTrade_404", resourceCulture);
             }
@@ -351,7 +351,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to A package has been successfully bought.
         /// </summary>
-        internal static string Description_PostTransaction_200 {
+        public static string Description_PostTransaction_200 {
             get {
                 return ResourceManager.GetString("Description_PostTransaction_200", resourceCulture);
             }
@@ -360,7 +360,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to Not enough money for buying a card package.
         /// </summary>
-        internal static string Description_PostTransaction_403 {
+        public static string Description_PostTransaction_403 {
             get {
                 return ResourceManager.GetString("Description_PostTransaction_403", resourceCulture);
             }
@@ -369,7 +369,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to No card package available for buying.
         /// </summary>
-        internal static string Description_PostTransaction_404 {
+        public static string Description_PostTransaction_404 {
             get {
                 return ResourceManager.GetString("Description_PostTransaction_404", resourceCulture);
             }
@@ -378,7 +378,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to User successfully created.
         /// </summary>
-        internal static string Description_PostUser_201 {
+        public static string Description_PostUser_201 {
             get {
                 return ResourceManager.GetString("Description_PostUser_201", resourceCulture);
             }
@@ -387,7 +387,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to User with same username already registered.
         /// </summary>
-        internal static string Description_PostUser_409 {
+        public static string Description_PostUser_409 {
             get {
                 return ResourceManager.GetString("Description_PostUser_409", resourceCulture);
             }
@@ -396,7 +396,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to The deck has been successfully configured.
         /// </summary>
-        internal static string Description_PutDeck_200 {
+        public static string Description_PutDeck_200 {
             get {
                 return ResourceManager.GetString("Description_PutDeck_200", resourceCulture);
             }
@@ -405,7 +405,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to The provided deck did not include the required amount of cards.
         /// </summary>
-        internal static string Description_PutDeck_400 {
+        public static string Description_PutDeck_400 {
             get {
                 return ResourceManager.GetString("Description_PutDeck_400", resourceCulture);
             }
@@ -414,7 +414,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to At least one of the provided cards does not belong to the user or is not available..
         /// </summary>
-        internal static string Description_PutDeck_403 {
+        public static string Description_PutDeck_403 {
             get {
                 return ResourceManager.GetString("Description_PutDeck_403", resourceCulture);
             }
@@ -423,7 +423,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to At least one of the provided cards is currently engaged in a trade..
         /// </summary>
-        internal static string Description_PutDeck_403_InTrade {
+        public static string Description_PutDeck_403_InTrade {
             get {
                 return ResourceManager.GetString("Description_PutDeck_403_InTrade", resourceCulture);
             }
@@ -432,7 +432,7 @@ namespace MTCG {
         /// <summary>
         ///   Looks up a localized string similar to User sucessfully updated..
         /// </summary>
-        internal static string Description_PutUser_200 {
+        public static string Description_PutUser_200 {
             get {
                 return ResourceManager.GetString("Description_PutUser_200", resourceCulture);
             }
@@ -444,7 +444,7 @@ namespace MTCG {
         ///
         ///.
         /// </summary>
-        internal static string HttpResponse_200_OK {
+        public static string HttpResponse_200_OK {
             get {
                 return ResourceManager.GetString("HttpResponse_200_OK", resourceCulture);
             }
@@ -457,7 +457,7 @@ namespace MTCG {
         ///
         ///{1}.
         /// </summary>
-        internal static string HttpResponse_200_OK_WithContent {
+        public static string HttpResponse_200_OK_WithContent {
             get {
                 return ResourceManager.GetString("HttpResponse_200_OK_WithContent", resourceCulture);
             }
@@ -469,7 +469,7 @@ namespace MTCG {
         ///
         ///.
         /// </summary>
-        internal static string HttpResponse_201_Created {
+        public static string HttpResponse_201_Created {
             get {
                 return ResourceManager.GetString("HttpResponse_201_Created", resourceCulture);
             }
@@ -481,7 +481,7 @@ namespace MTCG {
         ///
         ///.
         /// </summary>
-        internal static string HttpResponse_204_NoContent {
+        public static string HttpResponse_204_NoContent {
             get {
                 return ResourceManager.GetString("HttpResponse_204_NoContent", resourceCulture);
             }
@@ -493,7 +493,7 @@ namespace MTCG {
         ///
         ///.
         /// </summary>
-        internal static string HttpResponse_400_BadRequest {
+        public static string HttpResponse_400_BadRequest {
             get {
                 return ResourceManager.GetString("HttpResponse_400_BadRequest", resourceCulture);
             }
@@ -505,7 +505,7 @@ namespace MTCG {
         ///
         ///.
         /// </summary>
-        internal static string HttpResponse_401_Unauthorized {
+        public static string HttpResponse_401_Unauthorized {
             get {
                 return ResourceManager.GetString("HttpResponse_401_Unauthorized", resourceCulture);
             }
@@ -517,7 +517,7 @@ namespace MTCG {
         ///
         ///.
         /// </summary>
-        internal static string HttpResponse_403_Forbidden {
+        public static string HttpResponse_403_Forbidden {
             get {
                 return ResourceManager.GetString("HttpResponse_403_Forbidden", resourceCulture);
             }
@@ -529,7 +529,7 @@ namespace MTCG {
         ///
         ///.
         /// </summary>
-        internal static string HttpResponse_404_NotFound {
+        public static string HttpResponse_404_NotFound {
             get {
                 return ResourceManager.GetString("HttpResponse_404_NotFound", resourceCulture);
             }
@@ -541,7 +541,7 @@ namespace MTCG {
         ///
         ///.
         /// </summary>
-        internal static string HttpResponse_409_Conflict {
+        public static string HttpResponse_409_Conflict {
             get {
                 return ResourceManager.GetString("HttpResponse_409_Conflict", resourceCulture);
             }
@@ -553,7 +553,7 @@ namespace MTCG {
         ///
         ///.
         /// </summary>
-        internal static string HttpResponse_500_InternalServerError {
+        public static string HttpResponse_500_InternalServerError {
             get {
                 return ResourceManager.GetString("HttpResponse_500_InternalServerError", resourceCulture);
             }

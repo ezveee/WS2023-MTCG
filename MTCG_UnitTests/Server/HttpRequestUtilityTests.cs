@@ -213,7 +213,9 @@ public class HttpRequestUtilityTests
 	[Test]
 	public static void CannotCallIsUserAccessValidWithNullDataAccess()
 	{
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
 		Assert.Throws<ArgumentNullException>(() => HttpRequestUtility.IsUserAccessValid(default, "TestValue1468502941", out _));
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 	}
 
 	[TestCase(null)]
