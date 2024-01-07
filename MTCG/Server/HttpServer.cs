@@ -30,6 +30,7 @@ public class HttpServer
 		_routeTable["POST /transactions"] = new PostTransaction(_dataAccess);
 		_routeTable["GET /cards"] = new GetStack(_dataAccess);
 		_routeTable["GET /deck"] = new GetDeck(_dataAccess);
+		_routeTable["GET /deck?format=plain"] = new GetDeckPlain(_dataAccess);
 		_routeTable["PUT /deck"] = new PutDeck(_dataAccess);
 		_routeTable["GET /stats"] = new GetStats(_dataAccess);
 		_routeTable["GET /scoreboard"] = new GetScoreboard(_dataAccess);

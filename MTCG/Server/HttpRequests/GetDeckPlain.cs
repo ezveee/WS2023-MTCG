@@ -1,12 +1,12 @@
 ﻿using MTCG.Interfaces;
-using Newtonsoft.Json;
+using System.Text;
 
 namespace MTCG.Server.HttpRequests;
 
-public class GetDeck : IHttpRequest
+public class GetDeckPlain : IHttpRequest
 {
 	private readonly IDataAccess _dataAccess;
-	public GetDeck(IDataAccess dataAccess)
+	public GetDeckPlain(IDataAccess dataAccess)
 	{
 		_dataAccess = dataAccess ?? throw new ArgumentNullException(nameof(dataAccess));
 	}
@@ -29,7 +29,17 @@ public class GetDeck : IHttpRequest
 			return string.Format(Text.HttpResponse_204_NoContent, Text.Description_GetDeck_204);
 		}
 
-		string cardsJson = JsonConvert.SerializeObject(cardList, Formatting.Indented);
-		return string.Format(Text.HttpResponse_200_OK_WithContent, Text.Description_GetDeck_200, cardsJson);
+		StringBuilder cards = new();
+		foreach (ICard card in cardList)
+		{
+			cards.AppendLine("----------------------------------------");
+			cards.AppendLine("Id: " + card.Id);
+			cards.AppendLine("Name: " + card.Name);
+			cards.AppendLine("Element: " + card.Element);
+			cards.AppendLine("Type: " + card.Type);
+			cards.AppendLine("Damage: " + card.Damage);
+		}
+
+		return string.Format(Text.HttpResponse_200_OK_WithContent, Text.Description_GetDeck_200, cards.ToString());
 	}
 }

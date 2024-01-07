@@ -1,0 +1,85 @@
+protocol about the technical steps you made (designs, failures and selected solutions) 
+• track the time spent with the project 
+• consider that the git-history is part of the documentation (no need to copy it into the 
+protocol)
+
+MTCG PROTOCOL ------------------------------------------------------------------------------------------
+
+DESIGN:
+	The program is designed so that upon running it
+		- an IDataAccess instance gets created (gateway for all DB queries)
+		- the database gets set up
+			[docker container needs to run beforehand; (-e POSTGRES_USER=vee -e POSTGRES_PASSWORD=1234)]
+			(database needs to already exist with name 'mtcg')
+			postgresql tables/sequences get created
+			values are inserted (if necessary)
+		- a http server instance gets created and calls Start()
+
+	Start() entails a TcpListener field accepting tcp clients,
+	and a thread calling the HandleClient function getting started for each one.
+
+	Http requests are received through a network stream, parsed and passed to the request handling method.
+
+	Request handling is done in such a way that the route, which was parsed from the request,
+	gets used as a key in the _routeTable dictionary, and the resulting value is an instance
+	of the corresponding request handling class. (e.g.: _routeTable['GET /deck'] = new GetDeck(_dataAccess))
+
+	All request handling classes are derived from the interface IHttpRequest
+	and implement the method string GetResponse(string request).
+
+	Actual execution of request is done in those classes, and GetResponse returns the final
+	http response that gets sent back to the client through stream.Write().
+
+	Technical decisions:
+		database layer
+		usage of interfaces for dependency injection
+		reflection for card instances
+		resource file for all responses
+		usage of newtonsoft for JSON de-/serialization
+		Moq framework + Nunit for unit tests
+
+
+LESSONS LEARNED:
+	1) More initial planning should have gone into the project.
+		I just started programming and eventually (kind of :'D) got to where i wanted to be,
+		but it took a lot of refactoring for things i decided to do halfway through.
+		The best example for this would be the DataAccess class.
+			Initially i just had all the queries right in the HttpRequests, but further along
+			i realized that it'd be better to compactly have them all in one place - meaning
+			i had to cut all the queries and paste them into the new DataAccess class :').
+			I'm still not entirely happy with it, since i would have prefered an entire project
+			dedicated to it, and more contextual categorization of the queries to then be further
+			split into less bloated files, but there just wasn't enough time for it in the end.
+			Which brings me to lesson 2.
+
+	2) Start. sooner.
+		... All I can say is, most of the work got done late december, early january.
+		In hindsight, I do really regret not having started sooner since I feel like I
+		could have added way more polish to the project if I had. But with this current
+		version there are still a lot of improvements that could have been made.
+
+			e.g: database layer refinement (as before mentioned)
+				more unit tests
+				stopping the server (currently only through closing the window/an exception)
+					could be done through own request
+					or BeginAcceptTcpClient
+				load tests
+				look more into thread safety
+				async instead of threading
+
+
+UNIT TEST DESIGN:
+	
+	• explain why these unit tests are chosen and why the tested code is critical 
+
+
+
+
+
+TIME SPENT:
+	The total time spent on the project was TOTAL TIME SPENT HERE !!!!!!!!!!!!!!!
+	Additional info in MTCG_workLog.xlsx
+
+
+LINK TO GIT:
+	https://github.com/ezveee/WS2023-MTCG
